@@ -1,0 +1,43 @@
+<idea-plugin version="2">
+  <id>com.ac.gla.teamL.ebnf</id>
+  <name>EBNF Plugin</name>
+  <version>0.1</version>
+  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">The L Team.</vendor>
+
+  <description><![CDATA[
+      Does EBNF stuff.<br>
+      <em>Sup?</em>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      Now it Exists!<br>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="131"/>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+      <fileTypeFactory implementation="uk.ac.gla.teamL.EBNFFileTypeFactory"/>
+  </extensions>
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>
