@@ -46,5 +46,5 @@ nestedRule ::= LB rule RB
 
 element ::= pattern | identifier
 
-pattern ::= string_singleQuotes | string_doubleQuotes
+pattern ::= string_singleQuotes | string_doubleQuotes | string_tripleQuotes
 identifier ::= id
