@@ -1,0 +1,50 @@
+// This was created using guidance from http://jflex.de/manual.html
+// and https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md
+
+{
+  parserUtilClass="uk.ac.gla.teamL.EBNFParserUtil"
+	tokens = [
+		character = 'regexp:(a-Z)'
+        digit = 'regexp:(0-9)'
+        nonTerminalSymbols = 'regexp:(-_)'
+
+		comment_singleline = "regexp://[^\n]*"
+		comment_block = "regexp:/\*[^*\\]*\*/"
+
+		id = "regexp:[A-z][A-z|0-9|_]*"
+
+		// Match all characters except the outer character, unless it is
+		// escaped using the '\' character.
+		// Strings can be enclosed in: "..." OR '...'
+		string_doubleQuotes = 'regexp:"([^"\\]|\\.)*"'
+		string_singleQuotes = "regexp:'([^'\\]|\\.)*'"
+		string_tripleQuotes = "regexp:'''([^'''\\]|\\.)*'''"
+
+		lineBreak = "regexp:[\r|\n|\r\n]"
+
+		EQ = '='
+		OR = '|'
+		LB = '('
+		RB = ')'
+
+
+	]
+}
+
+
+program ::= (assignment | comment) {linebreak+ (assignment | comment)}*
+
+comment ::= comment_singleline | comment_block
+
+assignment ::= identifier eq rule
+
+rule ::= element+
+	   | nestedRule
+	   | element+ OR rule
+
+nestedRule ::= LB rule RB
+
+element ::= pattern | identifier
+
+pattern ::= string_singleQuotes | string_doubleQuotes
+identifier ::= id
