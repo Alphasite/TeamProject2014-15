@@ -11,7 +11,7 @@
 		comment_singleline = "regexp://[^\n]*"
 		comment_block = "regexp:/\*[^*\\]*\*/"
 
-		id = "regexp:[A-z][A-z|0-9|_]*"
+		ID = "regexp:[A-z][A-z|0-9|_]*"
 
 		// Match all characters except the outer character, unless it is
 		// escaped using the '\' character.
@@ -20,31 +20,49 @@
 		string_singleQuotes = "regexp:'([^'\\]|\\.)*'"
 		string_tripleQuotes = "regexp:'''([^'''\\]|\\.)*'''"
 
-		lineBreak = "regexp:[\r|\n|\r\n]"
+		lineBreak = "regexp:\r|\n|\r\n"
 
 		EQ = '='
 		OR = '|'
+		AND = ','
+
 		LB = '('
 		RB = ')'
+		LOB = '{'
+		ROB = '}'
 
+		REPEAT = "*"
+		ZERO_OR_ONE = "?"
+		ONE_OR_MORE = "+"
 
+		TERMINAL = ';'
 	]
 }
 
+program ::= ( assignment
+			| comment
+			| lineBreak
+			) *
 
-program ::= (assignment | comment) {linebreak+ (assignment | comment)}*
+comment ::= comment_singleline
+		  | comment_block
 
-comment ::= comment_singleline | comment_block
+assignment ::= identifier EQ rule TERMINAL
 
-assignment ::= identifier eq rule
+rule ::= ruleElement OR {rule}*
+	   | ruleElement {rule}*
 
-rule ::= element+
-	   | nestedRule
-	   | element+ OR rule
+ruleElement ::= ( string
+			    | identifier
+			    | nestedRule
+			    | optionalRule
+			    ) {REPEAT|ZERO_OR_ONE|ONE_OR_MORE}?
 
 nestedRule ::= LB rule RB
+optionalRule ::= LOB rule ROB
 
-element ::= pattern | identifier
+string ::= string_singleQuotes
+		 | string_doubleQuotes
+		 | string_tripleQuotes
 
-pattern ::= string_singleQuotes | string_doubleQuotes | string_tripleQuotes
-identifier ::= id
+identifier ::= ID
