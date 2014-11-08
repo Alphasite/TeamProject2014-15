@@ -26,6 +26,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
       <fileTypeFactory implementation="uk.ac.gla.teamL.EBNFFileTypeFactory"/>
+      <lang.parserDefinition language="EBNF" implementationClass="uk.ac.gla.teamL.EBNFParserDefinition"/>
   </extensions>
 
   <application-components>

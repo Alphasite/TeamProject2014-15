@@ -2,11 +2,22 @@
 // and https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md
 
 {
-  parserUtilClass="uk.ac.gla.teamL.EBNFParserUtil"
+
+	parserClass="uk.ac.gla.teamL.Parser.EBNFParser"
+    parserUtilClass="uk.ac.gla.teamL.Parser.EBNFParserUtil"
+
+	extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+	psiClassPrefix="EBNF"
+	psiImplClassSuffix="Impl"
+	psiPackage="uk.ac.gla.teamL.Parser.psi"
+	psiImplPackage="uk.ac.gla.teamL.Parser.psi.impl"
+
+	elementTypeHolderClass="uk.ac.gla.teamL.Parser.psi.EBNFTypes"
+	elementTypeClass="uk.ac.gla.teamL.Parser.psi.EBNFElementType"
+	tokenTypeClass="uk.ac.gla.teamL.Parser.psi.EBNFTokenType"
+
 	tokens = [
-		character = 'regexp:(a-Z)'
-        digit = 'regexp:(0-9)'
-        nonTerminalSymbols = 'regexp:(-_)'
 
 		comment_singleline = "regexp://[^\n]*"
 		comment_block = "regexp:/\*[^*\\]*\*/"
@@ -20,7 +31,7 @@
 		string_singleQuotes = "regexp:'([^'\\]|\\.)*'"
 		string_tripleQuotes = "regexp:'''([^'''\\]|\\.)*'''"
 
-		lineBreak = "regexp:\r|\n|\r\n"
+		regular_expression_identifier = "regex:"
 
 		EQ = '='
 		OR = '|'
@@ -35,31 +46,28 @@
 		ZERO_OR_ONE = "?"
 		ONE_OR_MORE = "+"
 
-		TERMINAL = ';'
+		TERMINAL = ";"
 	]
 }
 
-program ::= ( assignment
-			| comment
-			| lineBreak
-			) *
+program ::= assignment*
 
-comment ::= comment_singleline
-		  | comment_block
-
-assignment ::= identifier EQ rule TERMINAL
+assignment ::= identifier EQ rule terminal
 
 rule ::= ruleElement OR {rule}*
 	   | ruleElement {rule}*
 
 ruleElement ::= ( string
 			    | identifier
+			    | regularExpression
 			    | nestedRule
 			    | optionalRule
 			    ) {REPEAT|ZERO_OR_ONE|ONE_OR_MORE}?
 
 nestedRule ::= LB rule RB
 optionalRule ::= LOB rule ROB
+
+regularExpression ::= REGULAR_EXPRESSION_IDENTIFIER string
 
 string ::= string_singleQuotes
 		 | string_doubleQuotes
