@@ -27,6 +27,8 @@
     <!-- Add your extensions here -->
       <fileTypeFactory implementation="uk.ac.gla.teamL.EBNFFileTypeFactory"/>
       <lang.parserDefinition language="EBNF" implementationClass="uk.ac.gla.teamL.EBNFParserDefinition"/>
+      <lang.syntaxHighlighterFactory key="EBNF" implementationClass="uk.ac.gla.teamL.EBNFSyntaxHighlighterFactory"/>
+      <colorSettingsPage implementation="uk.ac.gla.teamL.EBNFColourSettingsPage"/>
   </extensions>
 
   <application-components>

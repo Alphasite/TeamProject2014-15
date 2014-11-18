@@ -19,32 +19,35 @@
 
 	tokens = [
 
-		comment_singleline = "regexp://[^\n]*"
-		comment_block = "regexp:/\*[^*\\]*\*/"
+		ID = "regexp:[A-z][_a-zA-Z0-9]*"
 
-		ID = "regexp:[A-z][A-z|0-9|_]*"
+		comment_singleline = "regexp://[^\n]*"
+		comment_block = "regexp:/\*[^*/\*]*\*/"
 
 		// Match all characters except the outer character, unless it is
 		// escaped using the '\' character.
-		// Strings can be enclosed in: "..." OR '...'
-		string_doubleQuotes = 'regexp:"([^"\\]|\\.)*"'
-		string_singleQuotes = "regexp:'([^'\\]|\\.)*'"
-		string_tripleQuotes = "regexp:'''([^'''\\]|\\.)*'''"
-
-		regular_expression_identifier = "regex:"
+		// Strings can be enclosed in: "..." OR '''...'''
+		string_singleCharacter = "regexp:'([^']|(\\'))'"
+		string_doubleQuotes = 'regexp:"([^"\\"]|\\.)*"'
+		string_tripleQuotes = "regexp:'''([^(''')]|(\\'))*'''"
 
 		EQ = '='
 		OR = '|'
-		AND = ','
 
 		LB = '('
 		RB = ')'
 		LOB = '{'
 		ROB = '}'
+		LSB = '['
+		RSB = ']'
 
-		REPEAT = "*"
+		ZERO_OR_MORE = "*"
 		ZERO_OR_ONE = "?"
 		ONE_OR_MORE = "+"
+
+		RANGE_OPERATOR = '..'
+		EXCLUSION_OPERATOR = '^'
+		ALL_OPERATOR = '.'
 
 		TERMINAL = ";"
 	]
@@ -54,23 +57,27 @@ program ::= assignment*
 
 assignment ::= identifier EQ rule terminal
 
-rule ::= ruleElement OR {rule}*
-	   | ruleElement {rule}*
+rule ::= ruleElement OR rule*
+	   | ruleElement rule*
 
 ruleElement ::= ( string
 			    | identifier
-			    | regularExpression
+			    | range
+			    | excluding
 			    | nestedRule
-			    | optionalRule
-			    ) {REPEAT|ZERO_OR_ONE|ONE_OR_MORE}?
+			    | all
+			    ) {ZERO_OR_MORE|ZERO_OR_ONE|ONE_OR_MORE}?
 
 nestedRule ::= LB rule RB
-optionalRule ::= LOB rule ROB
 
-regularExpression ::= REGULAR_EXPRESSION_IDENTIFIER string
+all ::= ALL_OPERATOR
 
-string ::= string_singleQuotes
-		 | string_doubleQuotes
-		 | string_tripleQuotes
+range ::=  string_singleCharacter RANGE_OPERATOR string_singleCharacter {methods=[getUpperBound getLowerBound]}
 
-identifier ::= ID
+excluding ::= LSB EXCLUSION_OPERATOR ruleElement RSB
+
+string ::= string_doubleQuotes
+		 | string_tripleQuotes {methods = [getString]}
+
+identifier ::= ID {methods = [getName]}
+

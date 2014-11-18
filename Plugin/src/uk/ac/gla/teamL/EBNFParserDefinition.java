@@ -27,7 +27,7 @@ public class EBNFParserDefinition implements ParserDefinition {
     public static final TokenSet COMMENTS = TokenSet.create(EBNFTypes.COMMENT_BLOCK, EBNFTypes.COMMENT_SINGLELINE);
     public static final TokenSet STRINGS = TokenSet.create(
         EBNFTypes.STRING,
-        EBNFTypes.STRING_SINGLEQUOTES,
+        EBNFTypes.STRING_SINGLECHARACTER,
         EBNFTypes.STRING_DOUBLEQUOTES,
         EBNFTypes.STRING_TRIPLEQUOTES
     );
