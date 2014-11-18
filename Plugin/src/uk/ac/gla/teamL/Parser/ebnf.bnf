@@ -1,0 +1,83 @@
+// This was created using guidance from http://jflex.de/manual.html
+// and https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md
+
+{
+
+	parserClass="uk.ac.gla.teamL.Parser.EBNFParser"
+    parserUtilClass="uk.ac.gla.teamL.Parser.EBNFParserUtil"
+
+	extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+	psiClassPrefix="EBNF"
+	psiImplClassSuffix="Impl"
+	psiPackage="uk.ac.gla.teamL.Parser.psi"
+	psiImplPackage="uk.ac.gla.teamL.Parser.psi.impl"
+
+	elementTypeHolderClass="uk.ac.gla.teamL.Parser.psi.EBNFTypes"
+	elementTypeClass="uk.ac.gla.teamL.Parser.psi.EBNFElementType"
+	tokenTypeClass="uk.ac.gla.teamL.Parser.psi.EBNFTokenType"
+
+	tokens = [
+
+		ID = "regexp:[A-z][_a-zA-Z0-9]*"
+
+		comment_singleline = "regexp://[^\n]*"
+		comment_block = "regexp:/\*[^*/\*]*\*/"
+
+		// Match all characters except the outer character, unless it is
+		// escaped using the '\' character.
+		// Strings can be enclosed in: "..." OR '''...'''
+		string_singleCharacter = "regexp:'([^']|(\\'))'"
+		string_doubleQuotes = 'regexp:"([^"\\"]|\\.)*"'
+		string_tripleQuotes = "regexp:'''([^(''')]|(\\'))*'''"
+
+		EQ = '='
+		OR = '|'
+
+		LB = '('
+		RB = ')'
+		LOB = '{'
+		ROB = '}'
+		LSB = '['
+		RSB = ']'
+
+		ZERO_OR_MORE = "*"
+		ZERO_OR_ONE = "?"
+		ONE_OR_MORE = "+"
+
+		RANGE_OPERATOR = '..'
+		EXCLUSION_OPERATOR = '^'
+		ALL_OPERATOR = '.'
+
+		TERMINAL = ";"
+	]
+}
+
+program ::= assignment*
+
+assignment ::= identifier EQ rule terminal
+
+rule ::= ruleElement OR rule*
+	   | ruleElement rule*
+
+ruleElement ::= ( string
+			    | identifier
+			    | range
+			    | excluding
+			    | nestedRule
+			    | all
+			    ) {ZERO_OR_MORE|ZERO_OR_ONE|ONE_OR_MORE}?
+
+nestedRule ::= LB rule RB
+
+all ::= ALL_OPERATOR
+
+range ::=  string_singleCharacter RANGE_OPERATOR string_singleCharacter {methods=[getUpperBound getLowerBound]}
+
+excluding ::= LSB EXCLUSION_OPERATOR ruleElement RSB
+
+string ::= string_doubleQuotes
+		 | string_tripleQuotes {methods = [getString]}
+
+identifier ::= ID {methods = [getName]}
+
