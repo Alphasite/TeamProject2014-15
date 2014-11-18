@@ -54,9 +54,11 @@ public class EBNFColourSettingsPage implements ColorSettingsPage {
         return ""+
                        "//Yo, this is a comment. \n" +
                        "andThis = isARule* andAnother+ | orIsIt?; \n" +
+                       "\n" +
                        "thisIsARange = 'a'..'b'; \n" +
-                       "somePeople = \"People like strings\";" +
+                       "somePeople = \"like strings\"; \n" +
                        "otherPeople = '''Do not'''; \n" +
+                       "\n" +
                        "/* Blocks on the other hand \n" +
                        " * suck \n" +
                        " */";
