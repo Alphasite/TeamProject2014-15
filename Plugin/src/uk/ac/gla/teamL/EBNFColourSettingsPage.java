@@ -7,6 +7,7 @@ import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import uk.ac.gla.teamL.editor.EBNFSyntaxHighlighter;
 
 import javax.swing.*;
 import java.util.Map;

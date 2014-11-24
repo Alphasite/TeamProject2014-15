@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.Parser;
+package uk.ac.gla.teamL.parser;
 
 import com.intellij.lang.parser.GeneratedParserUtilBase;
 

@@ -15,7 +15,7 @@ import javax.swing.*;
  */
 public class EBNFFile extends PsiFileBase {
 
-    protected EBNFFile(@NotNull FileViewProvider viewProvider) {
+    public EBNFFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, EBNFLanguage.INSTANCE);
     }
 

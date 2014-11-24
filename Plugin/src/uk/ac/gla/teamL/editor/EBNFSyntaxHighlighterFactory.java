@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL;
+package uk.ac.gla.teamL.editor;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;

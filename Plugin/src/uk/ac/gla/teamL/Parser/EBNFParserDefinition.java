@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL;
+package uk.ac.gla.teamL.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -13,9 +13,9 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.Parser.EBNFLexer;
-import uk.ac.gla.teamL.Parser.EBNFParser;
-import uk.ac.gla.teamL.Parser.psi.EBNFTypes;
+import uk.ac.gla.teamL.EBNFFile;
+import uk.ac.gla.teamL.EBNFLanguage;
+import uk.ac.gla.teamL.parser.psi.EBNFTypes;
 
 /**
  * User: nishad
@@ -27,7 +27,7 @@ public class EBNFParserDefinition implements ParserDefinition {
     public static final TokenSet COMMENTS = TokenSet.create(EBNFTypes.COMMENT_BLOCK, EBNFTypes.COMMENT_SINGLELINE);
     public static final TokenSet STRINGS = TokenSet.create(
         EBNFTypes.STRING,
-        EBNFTypes.STRING_SINGLECHARACTER,
+        EBNFTypes.STRING_SINGLEQUOTES,
         EBNFTypes.STRING_DOUBLEQUOTES,
         EBNFTypes.STRING_TRIPLEQUOTES
     );

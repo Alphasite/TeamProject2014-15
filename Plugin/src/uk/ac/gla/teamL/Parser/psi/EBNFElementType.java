@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.Parser.psi;
+package uk.ac.gla.teamL.parser.psi;
 
 import com.intellij.psi.tree.IElementType;
 import uk.ac.gla.teamL.EBNFLanguage;
