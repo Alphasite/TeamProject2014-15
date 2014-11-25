@@ -67,8 +67,8 @@ public class EBNFSyntaxHighlighter extends SyntaxHighlighterBase {
             return BLOCK_COMMENT_KEYS;
         } else if (iElementType.equals(EBNFTypes.COMMENT_SINGLELINE)) {
             return LINE_COMMENT_KEYS;
-        } else if (iElementType.equals(EBNFTypes.LOB)
-                    | iElementType.equals(EBNFTypes.ROB)
+        } else if (iElementType.equals(EBNFTypes.LCB)
+                    | iElementType.equals(EBNFTypes.RCB)
                     | iElementType.equals(EBNFTypes.LSB)
                     | iElementType.equals(EBNFTypes.RSB)
                     | iElementType.equals(EBNFTypes.LB)

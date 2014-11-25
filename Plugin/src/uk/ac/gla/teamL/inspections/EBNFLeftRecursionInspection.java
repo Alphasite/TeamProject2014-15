@@ -10,7 +10,7 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.parser.psi.EBNFRule;
+import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
 
 /**
  * User: nishad
@@ -80,7 +80,7 @@ public class EBNFLeftRecursionInspection extends LocalInspectionTool implements 
 
         PsiElement parent = element.getParent();
 
-        if (element instanceof EBNFRule) {
+        if (element instanceof EBNFAssignment) {
             //TODO implement this as well.
         }
     }

@@ -13,10 +13,15 @@
 	psiImplClassSuffix="Impl"
 	psiPackage="uk.ac.gla.teamL.parser.psi"
 	psiImplPackage="uk.ac.gla.teamL.parser.psi.impl"
+	psiImplUtilClass="uk.ac.gla.teamL.parser.psi.impl.EBNFParserImplUtil"
 
 	elementTypeHolderClass="uk.ac.gla.teamL.parser.psi.EBNFTypes"
 	elementTypeClass="uk.ac.gla.teamL.parser.psi.EBNFElementType"
 	tokenTypeClass="uk.ac.gla.teamL.parser.psi.EBNFTokenType"
+
+	implements("identifier") = "com.intellij.psi.PsiNamedElement"
+
+	name("string*") = "String"
 
 	tokens = [
 
@@ -37,8 +42,8 @@
 
 		LB = '('
 		RB = ')'
-		LOB = '{'
-		ROB = '}'
+		LCB = '{'
+		RCB = '}'
 		LSB = '['
 		RSB = ']'
 
@@ -57,33 +62,32 @@
 		ID = "regexp:[a-zA-Z][_a-zA-Z0-9]*"
 
 		NUMBER = "regexp:[0-9]"
+		LETTER = "regexp:[a-zA-Z]"
 	]
 }
 
-program ::= assignment*
-
-assignment ::=  let identifier EQ rules terminal {
-	mixin = "uk.ac.gla.teamL.parser.psi.impl.EBNfAssignmentImplUtil"
-	pin = rules
+program ::= assignment * {
+	pin = assignment
 	recoverWhile = assignment_recover
 }
 
-assignment_recover ::= !(let | terminal)
-
-rules ::= rule+ (OR rules)? {
-	pin = rule
-	recoverWhile = rules_recover
+assignment ::=  let identifier EQ rules terminal {
+	pin = rules
+	recoverWhile = assignment_recover
+	methods = [ID="identifier"]
 }
 
-rules_recover ::= !(terminal|let|ROB|RSB|RB)
+assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB)
 
-rule ::= predicate?
-	   ( string
-	   | identifier
-	   | range
-	   | nestedRules
-	   | any
-	   ) quantifier?
+private rules ::= ruleElement (OR? ruleElement)*
+
+ruleElement ::= predicate?
+	          ( string
+	          | identifier
+	          | range
+	          | nestedRules
+	          | any
+	          ) quantifier?
 
 nestedRules ::= LB rules RB
 
@@ -94,22 +98,29 @@ quantifier ::= ZERO_OR_MORE
 			 | ONE_OR_MORE
 			 | arbitraryQuantifier
 
-arbitraryQuantifier ::= LSB NUMBER (LIST_SEPERATOR NUMBER)? RSB
+arbitraryQuantifier ::= LCB NUMBER (LIST_SEPERATOR NUMBER)? RCB
 
 any ::= ANY_OPERATOR
 
 // I really cant think of anyway to match multiple alternative ranges in this.
-range ::= RSB (string RANGE_OPERATOR string)+ LSB {
-	mixin = "uk.ac.gla.teamL.parser.psi.impl.EBNFRangeImplUtil"
+//range ::= LSB singleRange+ RSB {
+//	methods = [getRanges="\singleRange"]
+//}
+//
+//private singleRange ::= string RANGE_OPERATOR string {
+//	methods = [getLowerBound="/string[0]" getUpperBound="/string[1]"]
+//}
+
+range ::= LSB (number|string) RANGE_OPERATOR (number|string) RSB {
+	methods = [getLowerBound="/string[0]" getUpperBound="/string[1]"]
 }
 
 string ::= string_tripleQuotes
 		 | string_doubleQuotes
 		 | string_singleQuotes {
-	mixin = "uk.ac.gla.teamL.parser.psi.impl.EBNFStringImplUtil"
+	methods = [getString]
 }
 
 identifier ::= ID {
-	mixin = "uk.ac.gla.teamL.parser.psi.impl.EBNFIdentifierImplUtil"
+	methods=[getName setName]
 }
-
