@@ -37,21 +37,34 @@ public class EBNFParserImplUtil {
         return id;
     }
 
+    public static String getName(EBNFAssignmentImpl element) {
+        return element.getId().getName();
+    }
+
+    public static PsiElement setName(EBNFAssignmentImpl element, @NonNls @NotNull String name) throws IncorrectOperationException {
+        element.getId().setName(name);
+        return element;
+    }
+
+    public static PsiElement getNameIdentifier(EBNFAssignmentImpl element) {
+        return element.getId();
+    }
+
     public static String getString(EBNFString string) {
         PsiElement stringNode;
 
         if ((stringNode = string.getStringDoubleQuotes()) != null) {
-            String toString = stringNode.toString();
+            String toString = stringNode.getText();
             toString = toString.replace("\\" , "");
             return toString.substring(1, toString.length() - 1);
 
         } else if ((stringNode = string.getStringSingleQuotes()) != null) {
-            String toString = stringNode.toString();
+            String toString = stringNode.getText();
             toString = toString.replace("\\", "");
             return toString.substring(1, toString.length() - 1);
 
         } else  if((stringNode = string.getStringTripleQuotes()) != null) {
-            String toString = stringNode.toString();
+            String toString = stringNode.getText();
             toString = toString.replace("\\", "");
             return toString.substring(3, toString.length() - 3);
 

@@ -42,7 +42,7 @@ public class EBNFCompletionContributor extends CompletionContributor {
 
                     PsiReference partialToken = file.findReferenceAt(completionParameters.getOffset());
 
-                    List<EBNFAssignmentImpl> rules = EBNFParserUtil.getRules(file);
+                    List<EBNFAssignmentImpl> rules = EBNFParserUtil.findRules(file);
 
                     for (EBNFAssignmentImpl rule: rules) {
                         if (rule != null) {

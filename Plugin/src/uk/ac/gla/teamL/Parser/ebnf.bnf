@@ -20,6 +20,7 @@
 	tokenTypeClass="uk.ac.gla.teamL.parser.psi.EBNFTokenType"
 
 	implements("identifier") = "com.intellij.psi.PsiNamedElement"
+	implements("assignment") = "uk.ac.gla.teamL.parser.psi.EBNFNamedIdentifierOwnerCompositeElement"
 
 	name("string*") = "String"
 
@@ -74,7 +75,12 @@ program ::= assignment * {
 assignment ::=  let identifier EQ rules terminal {
 	pin = rules
 	recoverWhile = assignment_recover
-	methods = [ID="identifier"]
+	methods = [
+		ID="identifier"
+		getName
+		setName
+		getNameIdentifier
+	]
 }
 
 assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB)
@@ -111,8 +117,11 @@ any ::= ANY_OPERATOR
 //	methods = [getLowerBound="/string[0]" getUpperBound="/string[1]"]
 //}
 
-range ::= LSB (number|string) RANGE_OPERATOR (number|string) RSB {
-	methods = [getLowerBound="/string[0]" getUpperBound="/string[1]"]
+range ::= LSB string RANGE_OPERATOR string RSB {
+	methods = [
+		getLowerBound="/string[0]"
+		getUpperBound="/string[1]"
+	]
 }
 
 string ::= string_tripleQuotes
