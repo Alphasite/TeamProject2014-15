@@ -30,6 +30,8 @@
     <lang.syntaxHighlighterFactory key="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFSyntaxHighlighterFactory"/>
     <colorSettingsPage implementation="uk.ac.gla.teamL.EBNFColourSettingsPage"/>
     <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCompletionContributor"/>
+    <psi.referenceContributor implementation="uk.ac.gla.teamL.editor.EBNFReferenceContributor"/>
+
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRuleErrorAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRangeErrorAnnotator"/>
   </extensions>
