@@ -24,8 +24,24 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-      <fileTypeFactory implementation="uk.ac.gla.teamL.EBNFFileTypeFactory"/>
+    <fileTypeFactory implementation="uk.ac.gla.teamL.EBNFFileTypeFactory"/>
+
+    <lang.parserDefinition language="EBNF" implementationClass="uk.ac.gla.teamL.parser.EBNFParserDefinition"/>
+    <lang.syntaxHighlighterFactory key="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFSyntaxHighlighterFactory"/>
+
+    <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCompletionContributor"/>
+
+    <colorSettingsPage implementation="uk.ac.gla.teamL.EBNFColourSettingsPage"/>
+
+    <lang.findUsagesProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFFindUsagesProvider"/>
+
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRuleErrorAnnotator"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRangeErrorAnnotator"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFLeftRecursionAnnotator"/>
+
+    <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
+
+    <elementDescriptionProvider implementation="uk.ac.gla.teamL.EBNFDescriptionProvider"/>
   </extensions>
 
   <application-components>

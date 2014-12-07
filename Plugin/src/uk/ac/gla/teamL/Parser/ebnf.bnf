@@ -1,0 +1,139 @@
+// This was created using guidance from http://jflex.de/manual.html
+// and https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md
+
+{
+
+	parserClass="uk.ac.gla.teamL.parser.EBNFParser"
+    parserUtilClass="uk.ac.gla.teamL.parser.EBNFParserUtil"
+
+    implements="uk.ac.gla.teamL.parser.psi.EBNFCompositeElement"
+    extends="uk.ac.gla.teamL.parser.psi.impl.EBNFCompositeElementImpl"
+
+	psiClassPrefix="EBNF"
+	psiImplClassSuffix="Impl"
+	psiPackage="uk.ac.gla.teamL.parser.psi"
+	psiImplPackage="uk.ac.gla.teamL.parser.psi.impl"
+	psiImplUtilClass="uk.ac.gla.teamL.parser.psi.impl.EBNFParserImplUtil"
+
+	elementTypeHolderClass="uk.ac.gla.teamL.parser.psi.EBNFTypes"
+	elementTypeClass="uk.ac.gla.teamL.parser.psi.EBNFElementType"
+	tokenTypeClass="uk.ac.gla.teamL.parser.psi.EBNFTokenType"
+
+	implements("identifier") = "uk.ac.gla.teamL.parser.psi.EBNFNamedElement"
+	implements("assignment") = "uk.ac.gla.teamL.parser.psi.EBNFNamedIdentifierOwnerCompositeElement"
+
+	name("string*") = "String"
+
+	tokens = [
+
+		LET = 'let'
+
+		comment_singleline = "regexp://[^\n]*"
+		comment_block = "regexp:/\*[^*/\*]*\*/"
+
+		// Match all characters except the outer character, unless it is
+		// escaped using the '\' character.
+		// Strings can be enclosed in: "..." OR '''...'''
+		string_tripleQuotes = "regexp:'''([^(''')]|(\\'))*'''"
+		string_doubleQuotes = 'regexp:"([^"\\"]|\\.)*"'
+		string_singleQuotes = "regexp:'([^(')]|(\\\\'))*'"
+
+		EQ = '='
+		OR = '|'
+
+		LB = '('
+		RB = ')'
+		LCB = '{'
+		RCB = '}'
+		LSB = '['
+		RSB = ']'
+
+		ZERO_OR_MORE = "*"
+		ZERO_OR_ONE = "?"
+		ONE_OR_MORE = "+"
+
+		RANGE_OPERATOR = '..'
+		NEGATION_OPERATOR = '!'
+		ANY_OPERATOR = '.'
+
+		LIST_SEPERATOR = ","
+
+		TERMINAL = ";"
+
+		ID = "regexp:[a-zA-Z][_a-zA-Z0-9]*"
+
+		NUMBER = "regexp:[0-9]"
+		LETTER = "regexp:[a-zA-Z]"
+	]
+}
+
+program ::= assignment * {
+	pin = assignment
+	recoverWhile = assignment_recover
+}
+
+assignment ::=  let identifier EQ rules terminal {
+	pin = rules
+	recoverWhile = assignment_recover
+	methods = [
+		ID="identifier"
+		getName
+		setName
+		getNameIdentifier
+	]
+}
+
+assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB)
+
+private rules ::= ruleElement (OR? ruleElement)*
+
+ruleElement ::= predicate?
+	          ( string
+	          | identifier
+	          | range
+	          | nestedRules
+	          | any
+	          ) quantifier?
+
+nestedRules ::= LB rules RB
+
+predicate ::= NEGATION_OPERATOR
+
+quantifier ::= ZERO_OR_MORE
+			 | ZERO_OR_ONE
+			 | ONE_OR_MORE
+			 | arbitraryQuantifier
+
+arbitraryQuantifier ::= LCB NUMBER (LIST_SEPERATOR NUMBER)? RCB
+
+any ::= ANY_OPERATOR
+
+// I really cant think of anyway to match multiple alternative ranges in this.
+//range ::= LSB singleRange+ RSB {
+//	methods = [getRanges="\singleRange"]
+//}
+//
+//private singleRange ::= string RANGE_OPERATOR string {
+//	methods = [getLowerBound="/string[0]" getUpperBound="/string[1]"]
+//}
+
+range ::= LSB string RANGE_OPERATOR string RSB {
+	methods = [
+		getLowerBound="/string[0]"
+		getUpperBound="/string[1]"
+	]
+}
+
+string ::= string_tripleQuotes
+		 | string_doubleQuotes
+		 | string_singleQuotes {
+	methods = [getString]
+}
+
+identifier ::= ID {
+	methods=[
+		getName
+		setName
+		resolveReference
+	]
+}
