@@ -6,6 +6,7 @@ import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.FunctionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,8 +18,6 @@ import uk.ac.gla.teamL.parser.psi.EBNFRuleElement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList;
 
 /**
  * User: nishad
@@ -41,12 +40,12 @@ public class EBNFRecursiveLineMarkerProvider implements LineMarkerProvider {
                 String name = assignment.getName();
 
                 for (EBNFRuleElement element: assignment.getRuleElementList()) {
-                    List<EBNFIdentifier> identifiers = new ArrayList<>();
+                    Collection<EBNFIdentifier> identifiers = new ArrayList<>();
 
                     if (element instanceof EBNFIdentifier) {
                         identifiers.add((EBNFIdentifier) element);
                     } else {
-                        identifiers = getChildrenOfTypeAsList(element, EBNFIdentifier.class);
+                        identifiers = PsiTreeUtil.findChildrenOfType(element, EBNFIdentifier.class);
                     }
 
                     for (EBNFIdentifier id: identifiers) {
