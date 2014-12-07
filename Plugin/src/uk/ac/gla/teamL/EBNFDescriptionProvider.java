@@ -15,7 +15,7 @@ public class EBNFDescriptionProvider implements ElementDescriptionProvider {
     public String getElementDescription(PsiElement psiElement, ElementDescriptionLocation elementDescriptionLocation) {
         if (psiElement instanceof PsiNamedElement) {
             boolean isAssignment = psiElement.getParent() instanceof PsiNameIdentifierOwner;
-            return (isAssignment? "Rule: " : "Identifier: ") + ((EBNFIdentifier) psiElement).getName();
+            return /*(isAssignment? "Rule: " : "Identifier: ") +*/ ((EBNFIdentifier) psiElement).getName();
         } else {
             return null;
         }

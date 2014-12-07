@@ -39,6 +39,8 @@
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRangeErrorAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFLeftRecursionAnnotator"/>
 
+    <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
+
     <elementDescriptionProvider implementation="uk.ac.gla.teamL.EBNFDescriptionProvider"/>
   </extensions>
 

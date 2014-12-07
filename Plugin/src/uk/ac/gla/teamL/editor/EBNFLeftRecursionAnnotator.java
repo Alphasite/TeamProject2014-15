@@ -32,7 +32,7 @@ public class EBNFLeftRecursionAnnotator implements Annotator {
 
                 if (leftMostRule != null && leftMostRule.getName() != null) {
                     if (leftMostRule.getName().equals(name)) {
-                        annotationHolder.createWeakWarningAnnotation(leftMostRule, "Rule is left recursive. This may cause issues with certain parser generators.");
+                        annotationHolder.createWarningAnnotation(leftMostRule, "Rule is left recursive. This may cause issues with certain parser generators.");
                     }
                 }
             }

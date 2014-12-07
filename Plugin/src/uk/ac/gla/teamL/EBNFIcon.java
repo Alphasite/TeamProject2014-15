@@ -11,4 +11,5 @@ import javax.swing.*;
  */
 public class EBNFIcon {
     public static final Icon FILE = IconLoader.getIcon("/Assets/Icon/TeamProjectIcon16MK2.png");
+    public static final Icon RECURSIVE = IconLoader.getIcon("/Assets/Icon/RecursiveMarker13.png");
 }
