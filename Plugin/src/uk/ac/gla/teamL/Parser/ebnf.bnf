@@ -19,7 +19,7 @@
 	elementTypeClass="uk.ac.gla.teamL.parser.psi.EBNFElementType"
 	tokenTypeClass="uk.ac.gla.teamL.parser.psi.EBNFTokenType"
 
-	implements("identifier") = "com.intellij.psi.PsiNamedElement"
+	implements("identifier") = "uk.ac.gla.teamL.parser.psi.EBNFNamedElement"
 	implements("assignment") = "uk.ac.gla.teamL.parser.psi.EBNFNamedIdentifierOwnerCompositeElement"
 
 	name("string*") = "String"
@@ -131,5 +131,9 @@ string ::= string_tripleQuotes
 }
 
 identifier ::= ID {
-	methods=[getName setName]
+	methods=[
+		getName
+		setName
+		resolveReference
+	]
 }

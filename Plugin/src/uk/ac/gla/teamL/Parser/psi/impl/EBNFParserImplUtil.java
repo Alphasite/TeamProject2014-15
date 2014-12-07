@@ -1,15 +1,13 @@
 package uk.ac.gla.teamL.parser.psi.impl;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.PsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import uk.ac.gla.teamL.EBNFLanguage;
+import uk.ac.gla.teamL.EBNFUtil;
+import uk.ac.gla.teamL.parser.psi.EBNFCompositeElement;
 import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
 import uk.ac.gla.teamL.parser.psi.EBNFString;
 
@@ -25,15 +23,8 @@ public class EBNFParserImplUtil {
         return id != null ? id.getText() : null;
     }
 
-    public static PsiElement setName(EBNFIdentifier id, @NonNls @NotNull String name) throws IncorrectOperationException {
-
-        Project project = id.getProject();
-        PsiFile file = PsiFileFactory
-                               .getInstance(project)
-                               .createFileFromText("foo.ebnf", EBNFLanguage.INSTANCE, name, false, false);
-
-        id.getId().replace(PsiTreeUtil.getDeepestFirst(file));
-
+    public static PsiElement setName(EBNFIdentifier id, @NonNls @NotNull String newName) throws IncorrectOperationException {
+        id.getId().replace(EBNFUtil.createElement(id.getProject(), newName));
         return id;
     }
 
@@ -71,5 +62,15 @@ public class EBNFParserImplUtil {
         } else {
             return "";
         }
+    }
+
+    public static PsiReference resolveReference (EBNFIdentifier identifier) {
+        return new EBNFReferenceImpl<EBNFCompositeElement>(identifier, identifier.getTextRange()) {
+            @Override
+            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+                ((EBNFIdentifier) myElement).setName(newElementName);
+                return myElement;
+            }
+        };
     }
 }

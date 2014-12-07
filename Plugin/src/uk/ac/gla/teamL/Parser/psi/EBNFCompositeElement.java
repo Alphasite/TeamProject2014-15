@@ -1,6 +1,8 @@
 package uk.ac.gla.teamL.parser.psi;
 
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * User: nishad
@@ -13,4 +15,8 @@ public interface EBNFCompositeElement extends PsiElement {
 
         ...BOO
     */
+
+    @Nullable
+    @Override
+    PsiReference getReference();
 }
