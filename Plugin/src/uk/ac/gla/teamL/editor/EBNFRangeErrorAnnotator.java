@@ -27,15 +27,18 @@ public class EBNFRangeErrorAnnotator implements Annotator {
 
             if (lbString.length() != 1) {
                 annotationHolder.createErrorAnnotation(range.getGetLowerBound(), "Lower bound is >1 character.");
+                return;
             }
 
             if (ubString.length() != 1) {
                 annotationHolder.createErrorAnnotation(range.getGetUpperBound(), "Upper bound is >1 character.");
+                return;
             }
 
             // technically this should hold for all java compatible UTF15 strings. (i hope)
             if (lbString.charAt(0) > ubString.charAt(0)) {
                 annotationHolder.createWarningAnnotation(psiElement, "Lower bound occurs after upper bound");
+                return;
             }
 
         }

@@ -28,7 +28,7 @@ public class EBNFRuleErrorAnnotator implements Annotator {
                 List<EBNFAssignmentImpl> rules = EBNFParserUtil.findRules(id.getContainingFile());
 
                 List<EBNFAssignmentImpl> occurrences = new ArrayList<>();
-                for (EBNFAssignmentImpl rule: rules) {
+                for (EBNFAssignmentImpl rule : rules) {
                     if (id.getName().equals(rule.getId().getName())) {
                         occurrences.add(rule);
                     }
