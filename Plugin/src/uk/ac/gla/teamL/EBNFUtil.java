@@ -5,6 +5,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * User: nishad
@@ -17,5 +21,10 @@ public class EBNFUtil {
             .getInstance(inProject)
             .createFileFromText("_temp.ebnf", EBNFLanguage.INSTANCE, withText, false, false);
         return PsiTreeUtil.getDeepestFirst(file);
+    }
+
+    @NotNull
+    public static <T> Collection<T> notNull(Collection<T> collection) {
+        return collection == null? new ArrayList<T>(0) : collection;
     }
 }

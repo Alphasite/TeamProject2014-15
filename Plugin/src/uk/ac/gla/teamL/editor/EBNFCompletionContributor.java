@@ -54,8 +54,6 @@ public class EBNFCompletionContributor extends CompletionContributor {
                         }
                     }
                 }
-
-
             }
         });
     }

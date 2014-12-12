@@ -35,6 +35,9 @@ public class EBNFColourSettingsPage implements ColorSettingsPage {
         new AttributesDescriptor("Line Comments", EBNFSyntaxHighlighter.LINE_COMMENT),
         new AttributesDescriptor("Identifiers", EBNFSyntaxHighlighter.IDENTIFIER),
         new AttributesDescriptor("Semi-Colon", EBNFSyntaxHighlighter.TERMINAL),
+        new AttributesDescriptor("Keywords", EBNFSyntaxHighlighter.KEYWORDS),
+        new AttributesDescriptor("Literals", EBNFSyntaxHighlighter.NUMBER),
+        new AttributesDescriptor("Annotations", EBNFSyntaxHighlighter.ANNOTATION)
     };
 
     @Nullable
@@ -54,11 +57,12 @@ public class EBNFColourSettingsPage implements ColorSettingsPage {
     public String getDemoText() {
         return ""+
                        "//Yo, this is a comment. \n" +
-                       "andThis = isARule* andAnother+ | orIsIt?; \n" +
+                       "let andThis = isARule* andAnother+ | orIsIt? .*; \n" +
                        "\n" +
-                       "thisIsARange = 'a'..'b'; \n" +
-                       "somePeople = \"like strings\"; \n" +
-                       "otherPeople = '''Do not'''; \n" +
+                       "let thisIsARange = ['a'..'b']; \n" +
+                       "let somePeople = \"like strings\"; \n" +
+                       "@Ignored \n"+
+                       "let otherPeople = '''Do not'''; \n" +
                        "\n" +
                        "/* Blocks on the other hand \n" +
                        " * suck \n" +

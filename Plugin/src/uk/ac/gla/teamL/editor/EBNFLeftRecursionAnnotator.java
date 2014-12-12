@@ -24,7 +24,7 @@ public class EBNFLeftRecursionAnnotator implements Annotator {
             EBNFAssignment assignment = (EBNFAssignment) psiElement;
 
             String name = assignment.getName();
-            List<EBNFRuleElement> subRules = assignment.getRuleElementList();
+            List<EBNFRuleElement> subRules = assignment.getRules().getRuleElementList();
 
             if (subRules.size() > 0) {
                 PsiElement deepest = PsiTreeUtil.getDeepestFirst(subRules.get(0));

@@ -2,7 +2,6 @@ package uk.ac.gla.teamL.editor;
 
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.parser.EBNFParserUtil;
@@ -23,35 +22,31 @@ public class EBNFRuleErrorAnnotator implements Annotator {
 
         if (psiElement instanceof EBNFIdentifier) {
             EBNFIdentifier id = (EBNFIdentifier) psiElement;
-            if (id.getName() != null) {
-                Project project = id.getProject();
-                List<EBNFAssignmentImpl> rules = EBNFParserUtil.findRules(id.getContainingFile());
+            String name = id.getName().toLowerCase();
 
-                List<EBNFAssignmentImpl> occurrences = new ArrayList<>();
-                for (EBNFAssignmentImpl rule : rules) {
-                    if (id.getName().equals(rule.getId().getName())) {
-                        occurrences.add(rule);
-                    }
+            List<EBNFAssignmentImpl> rules = EBNFParserUtil.findRules(id.getContainingFile());
 
-                    rule.getId();
-                    rule.getRuleElementList().get(0);
+            List<EBNFAssignmentImpl> occurrences = new ArrayList<>();
+            for (EBNFAssignmentImpl rule : rules) {
+                String occurrenceName = rule.getId().getName();
+                if (name.equals(occurrenceName.toLowerCase())) {
+                    occurrences.add(rule);
+                }
+            }
 
+            if (id.getParent() instanceof EBNFAssignmentImpl) {
+                // Check for duplicate identifier declarations.
+
+                EBNFAssignmentImpl parent = (EBNFAssignmentImpl) id.getParent();
+                if (occurrences.size() > 1) {
+                    annotationHolder.createErrorAnnotation(psiElement.getTextRange(), "Duplicate identifier");
                 }
 
-                if (id.getParent() instanceof EBNFAssignmentImpl) {
-                    // Check for duplicate identifier declarations.
+            } else {
+                // Find undeclared rule identifier usage.
 
-                    EBNFAssignmentImpl parent = (EBNFAssignmentImpl) id.getParent();
-                    if (occurrences.size() > 1) {
-                        annotationHolder.createErrorAnnotation(psiElement.getTextRange(), "Duplicate identifier");
-                    }
-
-                } else {
-                    // Find undeclared rule identifier usage.
-
-                    if (occurrences.size() == 0) {
-                        annotationHolder.createErrorAnnotation(psiElement.getTextRange(), "Undeclared identifier");
-                    }
+                if (occurrences.size() == 0) {
+                    annotationHolder.createErrorAnnotation(psiElement.getTextRange(), "Undeclared identifier");
                 }
             }
         }
