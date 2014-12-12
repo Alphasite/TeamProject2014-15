@@ -64,8 +64,7 @@
 
 		ID = "regexp:[a-zA-Z][_a-zA-Z0-9]*"
 
-		NUMBER = "regexp:[0-9]"
-		LETTER = "regexp:[a-zA-Z]"
+		NUMBERS = "regexp:[0-9]+"
 	]
 }
 
@@ -124,7 +123,7 @@ arbitraryQuantifier ::= LCB num (LIST_SEPERATOR num)? RCB {
 	]
 }
 
-num ::= NUMBER {
+num ::= NUMBERS {
 	methods = [getValue]
 }
 

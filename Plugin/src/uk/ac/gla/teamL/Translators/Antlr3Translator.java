@@ -74,7 +74,7 @@ public class Antlr3Translator implements Translator {
 
         builder.append("\n// Lexer Rules \n");
         for (StringBuilder rule: lexRules) {
-            builder.append(rule);
+            builder.append(reformatLine(rule.toString()));
         }
     }
 
@@ -94,7 +94,7 @@ public class Antlr3Translator implements Translator {
         }
 
         builder.append(this.canonicalNames.get(assignment.getName().toLowerCase()));
-        builder.append(" : ");
+        builder.append(": ");
 
         generateRules(assignment.getRules(), builder);
 
@@ -150,8 +150,6 @@ public class Antlr3Translator implements Translator {
             local.append(")");
         }
 
-        local.append(" ");
-
         if (ruleElement.getQuantifier() != null) {
             if (ruleElement.getQuantifier().getArbitraryQuantifier() != null) {
                 EBNFArbitraryQuantifier arbitraryQuantifier = ruleElement.getQuantifier().getArbitraryQuantifier();
@@ -159,7 +157,7 @@ public class Antlr3Translator implements Translator {
                 int lowerBound = arbitraryQuantifier.getGetLowerBound().getValue();
 
                 for (int i = 0; i < lowerBound; i++) {
-                    builder.append(local);
+                    builder.append(local).append(" ");
                 }
 
 
@@ -173,7 +171,7 @@ public class Antlr3Translator implements Translator {
                     int openedNested = 0;
                     for (int i = lowerBound; i < upperBound; i++) {
                         builder.append("(");
-                        builder.append(arbitraryQuantifier);
+                        builder.append(local);
                         openedNested++;
                     }
 
@@ -200,7 +198,7 @@ public class Antlr3Translator implements Translator {
                 }
             }
         } else {
-            builder.append(local);
+            builder.append(local).append(" ");
         }
     }
 
@@ -214,50 +212,62 @@ public class Antlr3Translator implements Translator {
     }
 
     public static String reformatLine(String line) {
-        if (line.length() > 60) {
-            int offset = line.indexOf(":");
+        int offset = line.indexOf(":");
+        StringBuilder newLine = new StringBuilder(line.substring(0, offset));
 
-            StringBuilder newLine = new StringBuilder(line.substring(0, offset));
+        String offsetString; {
+            if (line.length() > 60) {
 
-            String offsetString; {
                 StringBuilder offsetStringBuilder = new StringBuilder("\n");
                 for (int i = 0; i < offset; i++) {
                     offsetStringBuilder.append(" ");
                 }
                 offsetString = offsetStringBuilder.toString();
+            } else {
+                offsetString = "";
             }
-
-            boolean inString = false;
-            boolean escape = false;
-
-            for (char c: line.substring(offset).toCharArray()) {
-                if (escape) {
-                    escape = false;
-                } else {
-                    switch (c) {
-                        case '"':
-                            inString = !inString;
-                            break;
-
-                        case '\\':
-                            escape = true;
-                            break;
-
-                        case '|':
-                        case '(':
-                        case ')':
-                            newLine.append(offsetString);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                newLine.append(c);
-            }
-
-            return newLine.toString();
-        } else {
-            return line;
         }
+
+        boolean inString = false;
+        boolean escape = false;
+        boolean inWhiteSpace = false;
+
+        for (char c: line.substring(offset).toCharArray()) {
+            if (c == ' ') {
+                inWhiteSpace = true;
+                continue;
+            } else if (inWhiteSpace) {
+                inWhiteSpace = false;
+
+                if (c != ';') {
+                    newLine.append(" ");
+                }
+            }
+
+            if (escape) {
+                escape = false;
+            } else {
+                switch (c) {
+                    case '"':
+                        inString = !inString;
+                        break;
+
+                    case '\\':
+                        escape = true;
+                        break;
+
+                    case '|':
+                    case '(':
+                    case ')':
+                        newLine.append(offsetString);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            newLine.append(c);
+        }
+
+        return newLine.toString();
     }
 }

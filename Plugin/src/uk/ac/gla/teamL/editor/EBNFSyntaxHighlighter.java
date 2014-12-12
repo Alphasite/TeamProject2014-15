@@ -84,7 +84,7 @@ public class EBNFSyntaxHighlighter extends SyntaxHighlighterBase {
             return IDENTIFIERS_KEYS;
         } else if (iElementType.equals(EBNFTypes.LET)) {
             return KEYWORD_KEYS;
-        } else if (iElementType.equals(EBNFTypes.NUMBER)) {
+        } else if (iElementType.equals(EBNFTypes.NUMBERS)) {
             return NUMBER_KEYS;
         } else if (iElementType.equals(EBNFTypes.ANNOTATION)){
             return ANNOTATION_KEYS;

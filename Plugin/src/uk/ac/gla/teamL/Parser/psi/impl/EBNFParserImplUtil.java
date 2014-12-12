@@ -78,7 +78,7 @@ public class EBNFParserImplUtil {
 
     public static int getValue(EBNFNum num) {
         try {
-            return Integer.parseInt(num.getNumber().getText());
+            return Integer.parseInt(num.getNumbers().getText());
         } catch (Exception e) {
             return 0;
         }
