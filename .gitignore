@@ -30,3 +30,11 @@ log/
 target/
 
 .idea/findbugs-idea.xml
+
+*.aux
+
+*.log
+
+*.gz
+
+docs/Nishad/IndividualExercise.pdf

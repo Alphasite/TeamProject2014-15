@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.Translators;
+package uk.ac.gla.teamL.translators;
 
 import uk.ac.gla.teamL.EBNFFile;
 

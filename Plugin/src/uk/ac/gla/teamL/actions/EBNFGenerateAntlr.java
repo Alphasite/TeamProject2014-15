@@ -6,8 +6,8 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.Translators.Antlr3Translator;
-import uk.ac.gla.teamL.Translators.Translator;
+import uk.ac.gla.teamL.translators.Antlr3Translator;
+import uk.ac.gla.teamL.translators.Translator;
 
 import java.io.IOException;
 import java.nio.file.Files;

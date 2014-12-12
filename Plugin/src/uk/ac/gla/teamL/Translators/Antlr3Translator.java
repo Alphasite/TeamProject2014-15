@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.Translators;
+package uk.ac.gla.teamL.translators;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -68,7 +68,7 @@ public class Antlr3Translator implements Translator {
 
         builder.append("\n// Parser Rules \n");
         for (StringBuilder rule: parseRules) {
-            builder.append(rule);
+            builder.append(reformatLine(rule.toString()));
             builder.append("\n");
         }
 
@@ -145,7 +145,7 @@ public class Antlr3Translator implements Translator {
             local.append(escapeString(ruleElement.getString().getString()));
             local.append("\"");
         } else if (ruleElement.getNestedRules() != null){
-            local.append("(");
+            local.append("( ");
             generateRules(ruleElement.getNestedRules().getRules(), local);
             local.append(")");
         }
@@ -211,5 +211,34 @@ public class Antlr3Translator implements Translator {
     public static boolean isLexRule(EBNFAssignment assignment) {
         return PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class).size() <= 0
             && PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFAny.class).size() <= 0;
+    }
+
+    public static String reformatLine(String line) {
+        if (line.length() > 60) {
+            int offset = line.indexOf(":");
+
+            StringBuilder newLine = new StringBuilder(line.substring(0, offset));
+
+            String offsetString; {
+                StringBuilder offsetStringBuilder = new StringBuilder("\n");
+                for (int i = 0; i < offset; i++) {
+                    offsetStringBuilder.append(" ");
+                }
+                offsetString = offsetStringBuilder.toString();
+            }
+
+            for (char c: line.substring(offset).toCharArray()) {
+                if (c == '|' || c == '(' || c == ')') {
+                    newLine.append(offsetString);
+                    newLine.append(c);
+                } else {
+                    newLine.append(c);
+                }
+            }
+
+            return newLine.toString();
+        } else {
+            return line;
+        }
     }
 }
