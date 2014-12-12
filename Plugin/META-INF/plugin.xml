@@ -39,6 +39,7 @@
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRangeErrorAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFLeftRecursionAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFUnusedRuleAnnotation"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFAnnotationAnnotator"/>
 
     <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
 
@@ -55,6 +56,10 @@
 
   <actions>
     <!-- Add your actions here -->
+    <action id="uk.ac.gla.teamL.actions.EBNFGenerateAntlr" class="uk.ac.gla.teamL.actions.EBNFGenerateAntlr"
+            text="Generate Antlr3 Code..." description="Convert eBNF code into Antlr3">
+      <add-to-group group-id="CodeMenu" anchor="first"/>
+    </action>
   </actions>
 
 </idea-plugin>
