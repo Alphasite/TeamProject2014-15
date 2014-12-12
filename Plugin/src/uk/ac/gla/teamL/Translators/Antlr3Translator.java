@@ -227,13 +227,32 @@ public class Antlr3Translator implements Translator {
                 offsetString = offsetStringBuilder.toString();
             }
 
+            boolean inString = false;
+            boolean escape = false;
+
             for (char c: line.substring(offset).toCharArray()) {
-                if (c == '|' || c == '(' || c == ')') {
-                    newLine.append(offsetString);
-                    newLine.append(c);
+                if (escape) {
+                    escape = false;
                 } else {
-                    newLine.append(c);
+                    switch (c) {
+                        case '"':
+                            inString = !inString;
+                            break;
+
+                        case '\\':
+                            escape = true;
+                            break;
+
+                        case '|':
+                        case '(':
+                        case ')':
+                            newLine.append(offsetString);
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                newLine.append(c);
             }
 
             return newLine.toString();
