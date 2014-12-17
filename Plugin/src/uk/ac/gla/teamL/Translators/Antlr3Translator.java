@@ -19,8 +19,14 @@ import static uk.ac.gla.teamL.EBNFUtil.notNull;
  * Time: 13:27
  */
 public class Antlr3Translator implements Translator {
+    private static enum Type {
+        lexer, literal, parser
+    }
+
     Map<String, String> canonicalNames;
-    Map<String, Boolean> isLexRule;
+    Map<String, Type> type;
+
+    String indent;
 
     @Override
     public String translate(EBNFFile file) {
@@ -31,7 +37,17 @@ public class Antlr3Translator implements Translator {
 
     private void generate(EBNFFile program, StringBuilder builder) {
         this.canonicalNames = new HashMap<>();
-        this.isLexRule = new HashMap<>();
+        this.type = new HashMap<>();
+
+        int indentSize = 4;
+
+        {
+            StringBuilder indentBuilder = new StringBuilder();
+            for (int i = 0; i < indentSize; i++) {
+                indentBuilder.append(" ");
+            }
+            indent = indentBuilder.toString();
+        }
 
         builder.append("// Auto Generated Code. \n\n");
         builder.append("grammar ");
@@ -42,28 +58,57 @@ public class Antlr3Translator implements Translator {
         for (EBNFAssignment assignment: notNull(findChildrenOfAnyType(program, EBNFAssignment.class))) {
             String name = assignment.getName().toLowerCase();
 
-            if (isLexRule(assignment)) {
+            if (isLiteral(assignment)) {
                 this.canonicalNames.put(name, name.toUpperCase());
-                this.isLexRule.put(name, true);
+                this.type.put(name, Type.literal);
+            } else if (isLexRule(assignment)) {
+                this.canonicalNames.put(name, name.toUpperCase());
+                this.type.put(name, Type.lexer);
             } else {
                 String newName = Character.toLowerCase(name.charAt(0)) + assignment.getName().substring(1);
                 this.canonicalNames.put(name, newName);
-                this.isLexRule.put(name, false);
+                this.type.put(name, Type.parser);
             }
         }
 
         List<StringBuilder> lexRules = new ArrayList<>();
         List<StringBuilder> parseRules = new ArrayList<>();
+        List<StringBuilder> literals = new ArrayList<>();
 
         for (EBNFAssignment assignment: notNull(findChildrenOfAnyType(program, EBNFAssignment.class))) {
             StringBuilder rule = new StringBuilder();
-            generateRule(assignment, rule);
 
-            if (this.isLexRule.get(assignment.getName().toLowerCase())) {
+            if (this.type.get(assignment.getName().toLowerCase()).equals(Type.lexer)) {
+                generateRule(assignment, rule);
                 lexRules.add(rule);
-            } else {
+            } else if (this.type.get(assignment.getName().toLowerCase()).equals(Type.parser)) {
+                generateRule(assignment, rule);
                 parseRules.add(rule);
+            } else if (this.type.get(assignment.getName().toLowerCase()).equals(Type.literal)){
+                generateLiteral(assignment, rule);
+                literals.add(rule);
             }
+        }
+
+        generateLiterals(builder, literals);
+        generateParserRules(builder, parseRules);
+        generateLexerRules(builder, lexRules);
+    }
+
+    private void generateLexerRules(StringBuilder builder, List<StringBuilder> lexRules) {
+        if (lexRules.size() == 0) {
+            return;
+        }
+
+        builder.append("\n// Lexer Rules \n");
+        for (StringBuilder rule: lexRules) {
+            builder.append(reformatLine(rule.toString()));
+        }
+    }
+
+    private void generateParserRules(StringBuilder builder, List<StringBuilder> parseRules) {
+        if (parseRules.size() == 0) {
+            return;
         }
 
         builder.append("\n// Parser Rules \n");
@@ -71,11 +116,21 @@ public class Antlr3Translator implements Translator {
             builder.append(reformatLine(rule.toString()));
             builder.append("\n");
         }
+    }
 
-        builder.append("\n// Lexer Rules \n");
-        for (StringBuilder rule: lexRules) {
-            builder.append(reformatLine(rule.toString()));
+    private void generateLiterals(StringBuilder builder, List<StringBuilder> literals) {
+        if (literals.size() == 0) {
+            return;
         }
+
+        builder.append("\n// Literals \n");
+        builder.append("tokens { \n");
+        for (StringBuilder token: literals) {
+            builder.append(indent);
+            builder.append(token);
+            builder.append("\n");
+        }
+        builder.append("}\n");
     }
 
     private void generateRule(EBNFAssignment assignment, StringBuilder builder) {
@@ -87,6 +142,7 @@ public class Antlr3Translator implements Translator {
                 case "Ignored":
                     isIgnored = true;
                     break;
+
                 default:
                     // Do nothing.
                     break;
@@ -98,14 +154,38 @@ public class Antlr3Translator implements Translator {
 
         generateRules(assignment.getRules(), builder);
 
-        builder.append(";");
-
         // TODO check if capitalisation is correct for the name.
         if (isIgnored) {
-            builder.append("\t { $channel=HIDDEN; }");
+            builder.append("{channel=HIDDEN;}");
         }
 
+        builder.append(";");
+
         builder.append("\n");
+    }
+
+    public void generateLiteral(EBNFAssignment assignment, StringBuilder builder) {
+        List<EBNFRuleElement> ruleElementList = assignment.getRules().getRuleElementList();
+        int size = ruleElementList.size();
+
+        if (size == 0 || ruleElementList.get(0).getString() == null) {
+            builder.append("// Token: (");
+            builder.append(assignment.getName());
+            builder.append(") has no valid tokens.");
+        } else {
+            if (size > 1) {
+                builder.append("// This token was truncated as it contained >1 children.");
+            }
+
+            EBNFString ruleElement = ruleElementList.get(0).getString();
+
+            assert ruleElement != null;
+
+            builder.append(this.canonicalNames.get(assignment.getName().toLowerCase()));
+            builder.append(" = ");
+            builder.append(createString(ruleElement.getString()));
+            builder.append(";");
+        }
     }
 
     private void generateRules(EBNFRules rule, StringBuilder builder) {
@@ -134,16 +214,14 @@ public class Antlr3Translator implements Translator {
         if (ruleElement.getAny() != null) {
             local.append(".");
         } else if (ruleElement.getIdentifier() != null) {
-            local.append(ruleElement.getIdentifier().getName());
+            local.append(this.canonicalNames.get(ruleElement.getIdentifier().getName().toLowerCase()));
         } else if (ruleElement.getRange() != null) {
             EBNFRange range = ruleElement.getRange();
-            local.append("'").append(range.getGetLowerBound().getString()).append("'");
+            local.append(createString(range.getGetLowerBound().getString()));
             local.append("..");
-            local.append("'").append(range.getGetUpperBound().getString()).append("'");
+            local.append(createString(range.getGetUpperBound().getString()));
         } else if (ruleElement.getString() != null) {
-            local.append("\"");
-            local.append(escapeString(ruleElement.getString().getString()));
-            local.append("\"");
+            local.append(createString(ruleElement.getString().getString()));
         } else if (ruleElement.getNestedRules() != null){
             local.append("( ");
             generateRules(ruleElement.getNestedRules().getRules(), local);
@@ -202,9 +280,32 @@ public class Antlr3Translator implements Translator {
         }
     }
 
+    public static String createString(String string) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append('\'');
+        builder.append(escapeString(string));
+        builder.append('\'');
+
+        return builder.toString();
+    }
+
     public static String escapeString(String string) {
         return string.replace("\"", "\\\"");
     }
+
+    public static boolean isLiteral(EBNFAssignment assignment) {
+        List<EBNFAnnotation> annotations = assignment.getAnnotationList();
+
+        for (EBNFAnnotation annotation: annotations) {
+            if (annotation.getName().equals("Literal")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     public static boolean isLexRule(EBNFAssignment assignment) {
         return PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class).size() <= 0

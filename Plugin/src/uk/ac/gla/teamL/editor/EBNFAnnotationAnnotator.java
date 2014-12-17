@@ -21,6 +21,7 @@ public class EBNFAnnotationAnnotator implements Annotator {
         valid = new HashSet<>();
         valid.add("Ignored");
         valid.add("MultiLine");
+        valid.add("Literal");
     }
 
 

@@ -44,17 +44,17 @@ public class EBNFParserImplUtil {
 
         if ((stringNode = string.getStringDoubleQuotes()) != null) {
             String toString = stringNode.getText();
-            toString = toString.replace("\\" , "");
+//            toString = toString.replace("\\" , "");
             return toString.substring(1, toString.length() - 1);
 
         } else if ((stringNode = string.getStringSingleQuotes()) != null) {
             String toString = stringNode.getText();
-            toString = toString.replace("\\", "");
+//            toString = toString.replace("\\", "");
             return toString.substring(1, toString.length() - 1);
 
         } else  if((stringNode = string.getStringTripleQuotes()) != null) {
             String toString = stringNode.getText();
-            toString = toString.replace("\\", "");
+//            toString = toString.replace("\\", "");
             return toString.substring(3, toString.length() - 3);
 
         } else {

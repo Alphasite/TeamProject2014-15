@@ -27,7 +27,8 @@ public class EBNFGenerateAntlr extends AnAction {
         if (file instanceof EBNFFile) {
             String translate = translator.translate((EBNFFile) file);
 
-            Path path = Paths.get(file.getContainingDirectory().getVirtualFile().getPath(), file.getName() + ".g");
+            String name = file.getName().split("\\.")[0];
+            Path path = Paths.get(file.getContainingDirectory().getVirtualFile().getPath(), name + ".g");
             try {
                 if (!Files.exists(path)) {
                     path = Files.createFile(path);
