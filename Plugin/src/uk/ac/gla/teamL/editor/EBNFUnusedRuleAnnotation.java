@@ -24,15 +24,20 @@ public class EBNFUnusedRuleAnnotation implements Annotator {
             EBNFAssignment ruleDecl = (EBNFAssignment) psiElement;
             List<EBNFIdentifier> rules = EBNFParserUtil.findIdentifiers(ruleDecl.getContainingFile());
 
-            List<EBNFIdentifier> occurrences = new ArrayList<>();
-            for (EBNFIdentifier id: rules) {
-                if (ruleDecl.getName() != null && ruleDecl.getName().equals(id.getName())) {
-                    occurrences.add(id);
-                }
-            }
+            String name = ruleDecl.getName();
+            if (name != null) {
 
-            if (occurrences.size() <= 1) {
-                annotationHolder.createInfoAnnotation(ruleDecl, "Rule is never used.");
+                List<EBNFIdentifier> occurrences = new ArrayList<>();
+                for (EBNFIdentifier id : rules) {
+                    String occurrenceName = id.getName();
+                    if (occurrenceName != null && name.equals(occurrenceName.toLowerCase())) {
+                        occurrences.add(id);
+                    }
+                }
+
+                if (occurrences.size() <= 1) {
+                    annotationHolder.createInfoAnnotation(ruleDecl, "Rule is never used.");
+                }
             }
         }
     }

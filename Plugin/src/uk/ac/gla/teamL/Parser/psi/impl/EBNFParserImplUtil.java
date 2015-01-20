@@ -5,11 +5,8 @@ import com.intellij.psi.PsiReference;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFUtil;
-import uk.ac.gla.teamL.parser.psi.EBNFCompositeElement;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.parser.psi.EBNFString;
+import uk.ac.gla.teamL.parser.psi.*;
 
 /**
  * User: nishad
@@ -17,17 +14,17 @@ import uk.ac.gla.teamL.parser.psi.EBNFString;
  * Time: 23:35
  */
 public class EBNFParserImplUtil {
-    @Nullable
-    @NonNls
+    @NotNull
     public static String getName(EBNFIdentifier id) {
-        return id != null ? id.getText() : null;
+        return id == null? "" : id.getText();
     }
 
     public static PsiElement setName(EBNFIdentifier id, @NonNls @NotNull String newName) throws IncorrectOperationException {
-        id.getId().replace(EBNFUtil.createElement(id.getProject(), newName));
+        ((EBNFIdentifierImpl) id).getId().replace(EBNFUtil.createElement(id.getProject(), newName));
         return id;
     }
 
+    @NotNull
     public static String getName(EBNFAssignmentImpl element) {
         return element.getId().getName();
     }
@@ -41,22 +38,23 @@ public class EBNFParserImplUtil {
         return element.getId();
     }
 
+    @NotNull
     public static String getString(EBNFString string) {
         PsiElement stringNode;
 
         if ((stringNode = string.getStringDoubleQuotes()) != null) {
             String toString = stringNode.getText();
-            toString = toString.replace("\\" , "");
+//            toString = toString.replace("\\" , "");
             return toString.substring(1, toString.length() - 1);
 
         } else if ((stringNode = string.getStringSingleQuotes()) != null) {
             String toString = stringNode.getText();
-            toString = toString.replace("\\", "");
+//            toString = toString.replace("\\", "");
             return toString.substring(1, toString.length() - 1);
 
         } else  if((stringNode = string.getStringTripleQuotes()) != null) {
             String toString = stringNode.getText();
-            toString = toString.replace("\\", "");
+//            toString = toString.replace("\\", "");
             return toString.substring(3, toString.length() - 3);
 
         } else {
@@ -64,13 +62,34 @@ public class EBNFParserImplUtil {
         }
     }
 
-    public static PsiReference resolveReference (EBNFIdentifier identifier) {
-        return new EBNFReferenceImpl<EBNFCompositeElement>(identifier, identifier.getTextRange()) {
-            @Override
-            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-                ((EBNFIdentifier) myElement).setName(newElementName);
-                return myElement;
+    public static PsiReference getReference (EBNFIdentifier identifier) {
+
+        // Assignments cannot be references, they are the reference base.
+        if (identifier.getParent() instanceof EBNFAssignment) {
+            return null;
+        } else {
+            return new EBNFIdentifierReferenceImpl<EBNFNamedElement>(identifier, identifier.getTextRange());
+        }
+    }
+
+    private boolean hasReference(EBNFIdentifier identifier, @NotNull final PsiElement element, @NotNull final Class<? extends PsiReference> referenceClass) {
+        for (PsiReference reference : element.getReferences()) {
+            if (reference.getClass().equals(referenceClass)) {
+                return true;
             }
-        };
+        }
+        return false;
+    }
+
+    public static String getName(EBNFAnnotation annotation) {
+        return annotation.getId().getText();
+    }
+
+    public static int getValue(EBNFNum num) {
+        try {
+            return Integer.parseInt(num.getNumbers().getText());
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

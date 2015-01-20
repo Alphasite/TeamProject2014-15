@@ -21,12 +21,14 @@ public class EBNFSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey KEYWORDS = createTextAttributesKey("EBNF_KEYWORDS", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey IDENTIFIER = createTextAttributesKey("EBNF_OPERATORS", DefaultLanguageHighlighterColors.IDENTIFIER);
     public static final TextAttributesKey OPERATORS = createTextAttributesKey("EBNF_OPERATORS", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-    public static final TextAttributesKey BRACKETS = createTextAttributesKey("EBNF_BRACETS", DefaultLanguageHighlighterColors.BRACKETS);
+    public static final TextAttributesKey BRACKETS = createTextAttributesKey("EBNF_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
     public static final TextAttributesKey TERMINAL = createTextAttributesKey("EBNF_TERMINAL", DefaultLanguageHighlighterColors.SEMICOLON);
     public static final TextAttributesKey STRING = createTextAttributesKey("EBNF_STRING", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey BLOCK_COMMENT = createTextAttributesKey("EBNF_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey LINE_COMMENT = createTextAttributesKey("EBNF_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey NUMBER = createTextAttributesKey("EBNF_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
+    public static final TextAttributesKey ANNOTATION = createTextAttributesKey("EBNF_ANNOTATION", DefaultLanguageHighlighterColors.METADATA);
+
 
     private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{KEYWORDS};
     private static final TextAttributesKey[] OPERATORS_KEYS = new TextAttributesKey[]{OPERATORS};
@@ -37,6 +39,7 @@ public class EBNFSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] BRACKETS_KEYS = new TextAttributesKey[]{BRACKETS};
     private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
     private static final TextAttributesKey[] IDENTIFIERS_KEYS = new TextAttributesKey[]{IDENTIFIER};
+    private static final TextAttributesKey[] ANNOTATION_KEYS = new TextAttributesKey[]{ANNOTATION};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[]{};
 
 
@@ -57,7 +60,8 @@ public class EBNFSyntaxHighlighter extends SyntaxHighlighterBase {
                     | iElementType.equals(EBNFTypes.ZERO_OR_ONE)
                     | iElementType.equals(EBNFTypes.RANGE)
                     | iElementType.equals(EBNFTypes.ANY_OPERATOR)
-                    | iElementType.equals(EBNFTypes.LIST_SEPERATOR)) {
+                    | iElementType.equals(EBNFTypes.LIST_SEPERATOR)
+                    | iElementType.equals(EBNFTypes.OR_OPERATOR)) {
             return OPERATORS_KEYS;
         } else if (iElementType.equals(EBNFTypes.STRING_DOUBLEQUOTES)
                     | iElementType.equals(EBNFTypes.STRING_SINGLEQUOTES)
@@ -80,8 +84,10 @@ public class EBNFSyntaxHighlighter extends SyntaxHighlighterBase {
             return IDENTIFIERS_KEYS;
         } else if (iElementType.equals(EBNFTypes.LET)) {
             return KEYWORD_KEYS;
-        } else if (iElementType.equals(EBNFTypes.NUMBER)) {
+        } else if (iElementType.equals(EBNFTypes.NUMBERS)) {
             return NUMBER_KEYS;
+        } else if (iElementType.equals(EBNFTypes.ANNOTATION)){
+            return ANNOTATION_KEYS;
         } else {
             return EMPTY_KEYS;
         }

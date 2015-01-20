@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+
+\usepackage{geometry}
+\usepackage{pdflscape}
+\usepackage{listings}
+
+
+
+\title{[DRAFT] Introduction}
+\author{Nishad Mathur}
+
+\begin{document}
+\maketitle
+% \newgeometry{margin=3cm}
+
+% Motivation 
+%     Why is the project interesting and/or worthwhile?
+%
+% Aims 
+%     What is the project intended to achieve?
+%
+% Background
+%     How did the project come about? What previous work does it build on, if any?
+%
+% Preliminaries
+%     What does the reader need to know to understand the report?
+%
+% Progress
+%     What has been achieved in the first semester of work on the team project?
+
+\section{Background}
+% How did the project come about? What previous work does it build on, if any?
+% Stage: writing
+
+The project that we have undertaken is to develop an 'interactive grammar editor', or specifically for us, an IDE for grammars.
+
+The project was devised by our supervisor as a tool to simplify working with grammars, by allowing you to work with a high level BNF variant instead of the lower level parser generators, such as Antlr. Presumably its a tool intended for further use by future students and, with extra work, by people out with the university.
+
+The plugin its self is completely greenfield, but is developed upon the base of the IntelliJ platform framework. The framework provides facilities to aid you with many common tasks, and has really simplified the process of creating the UI to support our tool - which lets us focus on the key task of implementing the core functionality and ignore the trivialities of UI design and cross compatibility.
+
+There is a plugin for IntelliJ which supports a subset of features which we require, but it is very specialised (specifically, it is for developing parsers for IntelliJ plugins) and has no support for several features which we intend to develop, so we decided to start from afresh, using the plugin as reference for the undocumented sections of the API. 
+
+\section{Preliminaries}
+% What does the reader need to know to understand the report?
+% Stage: todo
+% I'm not sure if this is meant to be target at the lecturers or the layman...
+% So, sorry if it is at the wrong level.
+
+Depending on your pre-exisitng knowledge, it is worth understanding what role a grammar plays a programming language; a grammar in a language really defines the rules of how the code can be structured, how it can be understood and what is valid input. In short it defines what the language looks like and how it is converted into a machine readable format. It is important to structure your grammar in such a way as to keep your resultant Abstract Syntax Tree (AST) as shallow as possible, to really keep it simple to work with.
+
+Another important and related term is An abstract syntax tree (AST for short), which is the machine readable form of an input file, whether it be a source code file or just a plain old novel. 
+
+Lastly, it is worth while to understand that IntelliJ provides a set of utilities for tasks common across a variety of plugins and provide a consistent UI across multiple languages and platforms.
+
+\section{Aims}
+% What is the project intended to achieve?
+% Stage: preliminary
+
+The goal for this project was simple, to develop a tool to make working with programming language (PL) grammars simpler. It is intended to do that by leveraging a variety of different tools and applying them to general purpose eBNF grammar. 
+
+The key deliverables for this project are the Grammar its self and the source translators, with other strongly desired features, but (ultimately) those are not crucial to the success of our project. 
+
+The secondary targets are much more in flux than the aforementioned goals as they are rather dependant on time constraints, as well as the capabilities of IntelliJ's plugin API. The largest of these goals is to support refactoring tools and error reporting facilities for the language. Then our goals are to implement (in no particular order): source reformatting; unit testing framework; a variety of visualisers including a railroad diagram generator and a source tree digram generator; templates and source maps, to allow you to better debug issues in the output code. These are still subject to change and may be amended or removed entirely.
+
+\section{Motivation}
+% Why is the project interesting and/or worthwhile?
+% Stage: writing
+
+There are a number of interesting factors in this project actually, many of which aren't visible on the surface of the matter, especially given the vague definition of the project that was provided initially. But when you dig further into the meat of the task the real scope of the project becomes much more visible; you get to cover some very interesting hard computer science topics such as developing your own programming language and integrate it with some softer, but still very interesting software design problems.
+
+Frankly, the best part of it is that it takes what the university teaches and lets us build upon it and really develop our knowledge on the topic. Allowing us to dive deeply on the topic to our hearts content, a good balance between freedom and guidance. A large number of the topics are very interesting, but they lack any real relation to what has been taught thus far and that is a missed opportunity, which this project really hits. Especially since it is an exercise to improve the tools which we, our selves use.
+
+There is also the very real possibility that with enough work this could actually become a useful project for someone, which really motivates you to push your self and make sure it works and presents a rich feature set.
+
+\section{Progress}
+% What has been achieved in the first semester of work on the team project?
+% Stage: writing
+% I may update this over the holidays to include stuff we've done then,
+% so its up to date by the time we submit it.
+
+Thus far we have been making good progress, we have started to push ahead in developing the tooling for the language, with the grammar its self having been nearly finalised at this point. It is capable of expressing its self in a concise manner (see appendix). Efforts were also made to design the redesign the grammar and keep it as shallow as possible, which is paying off in our effort to implement the refactoring tools.
+
+Thus far, the other major features which have been implemented are the error recovery for the parser (the ability to continue parsing after encountering an error) and a variety of different error and warnings for the language as well as syntax highlighting and semantically aware code completion. The code completion is aware of what constitutes a valid identifier and only offers completions based on valid identifiers, as well as filtering out invalid choices using prefix filtering. 
+
+There is also rudimentary support for left recursion detection, but currently there is a show stopper bugs relating to nested statements. There is also the question on how best to handle indirect recursion and whether it should supported at all.
+
+Initial support for the basic refactoring tools and utilities (rename, find usages, etc) is progressing well, but there are some hold ups with the reference provider preventing them from functioning correctly.
+
+\section{Retrospective}
+
+Overall the team has made good progress on our tasks thus far, and are ahead of the schedule that was defined previously, but it would be best to update that to match a more realistic timescale. As we have completed one of the major deliverables, and progressing well on several of the minor ones we are currently on schedule to meet the deadlines. The potential showstopper tasks are the source translators, which could be very problematic to implement in a timely manner.
+
+The near future goals are to ensure the whole team is aware of the structure of the internals, as well as finishing the left recursion and refactoring tools. With a focus on the translator as the next major goal.
+
+\pagebreak
+\section{Appendix}
+
+\lstset{tabsize=4}
+\begin{lstlisting}
+/* This is an implementation of a subset of our grammar, 
+   which should hopefully be eventually compilable 
+ */
+
+let character = ['A'..'z'];
+let number = ['0'..'9'];
+let whitespace = '\n'|'\t';
+
+let comment = '//' (!'\n')*;
+
+let string = '"' (character | number | whitespace)* '"';
+
+let program = assignment*;
+let assignment =  'let' identifier '=' rules ';';
+
+let rules = ruleElement ('|'? ruleElement)*;
+
+let ruleElement = predicate?
+	            ( string
+	            | identifier
+	            | range
+	            | nestedRules
+	            | any
+	            ) quantifier?;
+
+let nestedRules = "(" rules ")";
+let predicate = '!';
+
+let range = '['  string '..' string ']';
+let any = '.';
+
+let quantifier = '*'
+	 		   | '?'
+	 		   | '+'
+			   | arbitraryQuantifier;
+
+let arbitraryQuantifier = '{' number (',' number)? '}';
+
+let identifier = character+;
+
+\end{lstlisting}
+
+\end{document}
+

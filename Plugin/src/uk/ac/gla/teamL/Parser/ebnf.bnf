@@ -20,7 +20,7 @@
 	tokenTypeClass="uk.ac.gla.teamL.parser.psi.EBNFTokenType"
 
 	implements("identifier") = "uk.ac.gla.teamL.parser.psi.EBNFNamedElement"
-	implements("assignment") = "uk.ac.gla.teamL.parser.psi.EBNFNamedIdentifierOwnerCompositeElement"
+//	implements("assignment") = "uk.ac.gla.teamL.parser.psi.EBNFNamedIdentifierOwnerCompositeElement"
 
 	name("string*") = "String"
 
@@ -39,7 +39,7 @@
 		string_singleQuotes = "regexp:'([^(')]|(\\\\'))*'"
 
 		EQ = '='
-		OR = '|'
+		OR_OPERATOR = '|'
 
 		LB = '('
 		RB = ')'
@@ -60,19 +60,29 @@
 
 		TERMINAL = ";"
 
+		ANNOTATION_OPERATOR = "@"
+
 		ID = "regexp:[a-zA-Z][_a-zA-Z0-9]*"
 
-		NUMBER = "regexp:[0-9]"
-		LETTER = "regexp:[a-zA-Z]"
+		NUMBERS = "regexp:[0-9]+"
 	]
 }
 
 program ::= assignment * {
 	pin = assignment
 	recoverWhile = assignment_recover
+	methods = [
+		getRules = "\assignment"
+	]
 }
 
-assignment ::=  let identifier EQ rules terminal {
+annotation ::= ANNOTATION_OPERATOR ID {
+	methods = [
+		getName
+	]
+}
+
+assignment ::=  annotation* let identifier EQ rules terminal {
 	pin = rules
 	recoverWhile = assignment_recover
 	methods = [
@@ -83,9 +93,9 @@ assignment ::=  let identifier EQ rules terminal {
 	]
 }
 
-assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB)
+assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB | ANNOTATION_OPERATOR)
 
-private rules ::= ruleElement (OR? ruleElement)*
+rules ::= ruleElement (or? ruleElement)*;
 
 ruleElement ::= predicate?
 	          ( string
@@ -93,7 +103,9 @@ ruleElement ::= predicate?
 	          | range
 	          | nestedRules
 	          | any
-	          ) quantifier?
+	          ) quantifier? {
+	name = "element"
+}
 
 nestedRules ::= LB rules RB
 
@@ -104,9 +116,20 @@ quantifier ::= ZERO_OR_MORE
 			 | ONE_OR_MORE
 			 | arbitraryQuantifier
 
-arbitraryQuantifier ::= LCB NUMBER (LIST_SEPERATOR NUMBER)? RCB
+arbitraryQuantifier ::= LCB num (LIST_SEPERATOR num)? RCB {
+	methods = [
+		getLowerBound = "/num[0]"
+		getUpperBound = "/num[1]"
+	]
+}
+
+num ::= NUMBERS {
+	methods = [getValue]
+}
 
 any ::= ANY_OPERATOR
+
+or ::= OR_OPERATOR
 
 // I really cant think of anyway to match multiple alternative ranges in this.
 //range ::= LSB singleRange+ RSB {
@@ -134,6 +157,7 @@ identifier ::= ID {
 	methods=[
 		getName
 		setName
-		resolveReference
+		getReference
+		hasReference
 	]
 }

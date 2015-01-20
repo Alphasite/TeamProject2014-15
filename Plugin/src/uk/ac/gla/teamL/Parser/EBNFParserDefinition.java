@@ -23,7 +23,7 @@ import uk.ac.gla.teamL.parser.psi.EBNFTypes;
  * Time: 22:07
  */
 public class EBNFParserDefinition implements ParserDefinition {
-    public static final TokenSet IDENTIFIERS = TokenSet.create(EBNFTypes.ID);
+    public static final TokenSet IDENTIFIERS = TokenSet.create(EBNFTypes.ID, EBNFTypes.ASSIGNMENT, EBNFTypes.IDENTIFIER);
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     public static final TokenSet COMMENTS = TokenSet.create(EBNFTypes.COMMENT_BLOCK, EBNFTypes.COMMENT_SINGLELINE);
     public static final TokenSet STRINGS = TokenSet.create(
