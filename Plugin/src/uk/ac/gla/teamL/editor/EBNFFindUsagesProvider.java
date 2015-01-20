@@ -6,7 +6,6 @@ import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.ElementDescriptionUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
 import com.intellij.usageView.UsageViewTypeLocation;
@@ -25,7 +24,7 @@ public class EBNFFindUsagesProvider implements FindUsagesProvider {
         new EBNFLexer(),
         EBNFParserDefinition.IDENTIFIERS,
         EBNFParserDefinition.COMMENTS,
-        TokenSet.EMPTY
+        EBNFParserDefinition.STRINGS
     );
 
     @Nullable
@@ -62,4 +61,6 @@ public class EBNFFindUsagesProvider implements FindUsagesProvider {
     public String getNodeText(@NotNull PsiElement psiElement, boolean useFullName) {
         return ElementDescriptionUtil.getElementDescription(psiElement, UsageViewNodeTextLocation.INSTANCE);
     }
+
+
 }

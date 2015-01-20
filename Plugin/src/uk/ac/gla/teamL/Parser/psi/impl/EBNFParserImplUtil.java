@@ -20,7 +20,7 @@ public class EBNFParserImplUtil {
     }
 
     public static PsiElement setName(EBNFIdentifier id, @NonNls @NotNull String newName) throws IncorrectOperationException {
-        id.getId().replace(EBNFUtil.createElement(id.getProject(), newName));
+        ((EBNFIdentifierImpl) id).getId().replace(EBNFUtil.createElement(id.getProject(), newName));
         return id;
     }
 
@@ -62,14 +62,23 @@ public class EBNFParserImplUtil {
         }
     }
 
-    public static PsiReference resolveReference (EBNFIdentifier identifier) {
-        return new EBNFReferenceImpl<EBNFCompositeElement>(identifier, identifier.getTextRange()) {
-            @Override
-            public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
-                ((EBNFIdentifier) myElement).setName(newElementName);
-                return myElement;
+    public static PsiReference getReference (EBNFIdentifier identifier) {
+
+        // Assignments cannot be references, they are the reference base.
+        if (identifier.getParent() instanceof EBNFAssignment) {
+            return null;
+        } else {
+            return new EBNFIdentifierReferenceImpl<EBNFNamedElement>(identifier, identifier.getTextRange());
+        }
+    }
+
+    private boolean hasReference(EBNFIdentifier identifier, @NotNull final PsiElement element, @NotNull final Class<? extends PsiReference> referenceClass) {
+        for (PsiReference reference : element.getReferences()) {
+            if (reference.getClass().equals(referenceClass)) {
+                return true;
             }
-        };
+        }
+        return false;
     }
 
     public static String getName(EBNFAnnotation annotation) {

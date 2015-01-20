@@ -19,11 +19,9 @@ public class EBNFAnnotationAnnotator implements Annotator {
 
     static {
         valid = new HashSet<>();
-        valid.add("Ignored");
-        valid.add("MultiLine");
-        valid.add("Literal");
+        valid.add(Annotations.ignored.identifier);
+        valid.add(Annotations.literal.identifier);
     }
-
 
     @Override
     public void annotate(@NotNull PsiElement psiElement, @NotNull AnnotationHolder annotationHolder) {

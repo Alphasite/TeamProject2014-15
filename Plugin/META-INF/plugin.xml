@@ -30,6 +30,7 @@
     <lang.syntaxHighlighterFactory key="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFSyntaxHighlighterFactory"/>
 
     <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCompletionContributor"/>
+    <psi.referenceContributor implementation="uk.ac.gla.teamL.editor.EBNFIdentifierReferenceContributor"/>
 
     <colorSettingsPage implementation="uk.ac.gla.teamL.EBNFColourSettingsPage"/>
 

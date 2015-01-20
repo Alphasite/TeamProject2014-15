@@ -3,6 +3,7 @@ package uk.ac.gla.teamL.translators;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import uk.ac.gla.teamL.EBNFFile;
+import uk.ac.gla.teamL.editor.Annotations;
 import uk.ac.gla.teamL.parser.psi.*;
 
 import java.util.ArrayList;
@@ -78,15 +79,19 @@ public class Antlr3Translator implements Translator {
         for (EBNFAssignment assignment: notNull(findChildrenOfAnyType(program, EBNFAssignment.class))) {
             StringBuilder rule = new StringBuilder();
 
-            if (this.type.get(assignment.getName().toLowerCase()).equals(Type.lexer)) {
-                generateRule(assignment, rule);
-                lexRules.add(rule);
-            } else if (this.type.get(assignment.getName().toLowerCase()).equals(Type.parser)) {
-                generateRule(assignment, rule);
-                parseRules.add(rule);
-            } else if (this.type.get(assignment.getName().toLowerCase()).equals(Type.literal)){
-                generateLiteral(assignment, rule);
-                literals.add(rule);
+            switch (this.type.get(assignment.getName().toLowerCase())) {
+                case lexer:
+                    generateRule(assignment, rule);
+                    lexRules.add(rule);
+                    break;
+                case parser:
+                    generateRule(assignment, rule);
+                    parseRules.add(rule);
+                    break;
+                case literal:
+                    generateLiteral(assignment, rule);
+                    literals.add(rule);
+                    break;
             }
         }
 
@@ -135,19 +140,7 @@ public class Antlr3Translator implements Translator {
 
     private void generateRule(EBNFAssignment assignment, StringBuilder builder) {
         List<EBNFAnnotation> annotations = assignment.getAnnotationList();
-        boolean isIgnored = false;
-
-        for (EBNFAnnotation annotation: annotations) {
-            switch (annotation.getName()) {
-                case "Ignored":
-                    isIgnored = true;
-                    break;
-
-                default:
-                    // Do nothing.
-                    break;
-            }
-        }
+        boolean isIgnored = hasAnnotation(assignment, Annotations.ignored);
 
         builder.append(this.canonicalNames.get(assignment.getName().toLowerCase()));
         builder.append(": ");
@@ -156,7 +149,18 @@ public class Antlr3Translator implements Translator {
 
         // TODO check if capitalisation is correct for the name.
         if (isIgnored) {
-            builder.append("{channel=HIDDEN;}");
+            switch (this.type.get(assignment.getName().toLowerCase())) {
+                case lexer:
+                    builder.append("{$channel=HIDDEN;}");
+                    break;
+                case parser:
+                    builder.append("// Cannot ignore parser rules.");
+                    break;
+                case literal:
+                    builder.append("{$channel=HIDDEN;}");
+                    break;
+            }
+
         }
 
         builder.append(";");
@@ -295,21 +299,36 @@ public class Antlr3Translator implements Translator {
     }
 
     public static boolean isLiteral(EBNFAssignment assignment) {
+        return hasAnnotation(assignment, Annotations.literal);
+    }
+
+
+    public static boolean isLexRule(EBNFAssignment assignment) {
+        return hasAnnotation(assignment, Annotations.ignored)
+            || PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class).size() <= 0
+            && PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFAny.class).size() <= 0;
+
+//        // I'd like to come up with a way to integrate it, but it might be
+//        // better to keep it simple and easy to understand.
+//        for (EBNFIdentifier identifier : PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class)) {
+//            PsiReference psiReference = identifier.resolveReference();
+//            if (psiReference instanceof EBNFAssignment && !isLexRule((EBNFAssignment) psiReference)) {
+//                return false;
+//            }
+//        }
+//        return true;
+    }
+
+    public static boolean hasAnnotation(EBNFAssignment assignment, Annotations label) {
         List<EBNFAnnotation> annotations = assignment.getAnnotationList();
 
         for (EBNFAnnotation annotation: annotations) {
-            if (annotation.getName().equals("Literal")) {
+            if (annotation.getName().equals(label.identifier)) {
                 return true;
             }
         }
 
         return false;
-    }
-
-
-    public static boolean isLexRule(EBNFAssignment assignment) {
-        return PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class).size() <= 0
-            && PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFAny.class).size() <= 0;
     }
 
     public static String reformatLine(String line) {
@@ -332,6 +351,7 @@ public class Antlr3Translator implements Translator {
         boolean inString = false;
         boolean escape = false;
         boolean inWhiteSpace = false;
+        boolean inCommand = false;
 
         for (char c: line.substring(offset).toCharArray()) {
             if (c == ' ') {
@@ -340,7 +360,7 @@ public class Antlr3Translator implements Translator {
             } else if (inWhiteSpace) {
                 inWhiteSpace = false;
 
-                if (c != ';') {
+                if (c != ';' && !inCommand) {
                     newLine.append(" ");
                 }
             }
@@ -349,7 +369,20 @@ public class Antlr3Translator implements Translator {
                 escape = false;
             } else {
                 switch (c) {
+                    case '{':
+                        if (!inString) {
+                            inCommand = true;
+                        }
+                        break;
+
+                    case '}':
+                        if (!inString) {
+                            inCommand = false;
+                        }
+                        break;
+
                     case '"':
+                    case '\'':
                         inString = !inString;
                         break;
 

@@ -20,7 +20,7 @@
 	tokenTypeClass="uk.ac.gla.teamL.parser.psi.EBNFTokenType"
 
 	implements("identifier") = "uk.ac.gla.teamL.parser.psi.EBNFNamedElement"
-	implements("assignment") = "uk.ac.gla.teamL.parser.psi.EBNFNamedIdentifierOwnerCompositeElement"
+//	implements("assignment") = "uk.ac.gla.teamL.parser.psi.EBNFNamedIdentifierOwnerCompositeElement"
 
 	name("string*") = "String"
 
@@ -157,6 +157,7 @@ identifier ::= ID {
 	methods=[
 		getName
 		setName
-		resolveReference
+		getReference
+		hasReference
 	]
 }
