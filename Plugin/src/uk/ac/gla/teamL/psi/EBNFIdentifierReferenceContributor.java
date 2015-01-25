@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.editor;
+package uk.ac.gla.teamL.psi;
 
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiNamedElement;
@@ -14,6 +14,6 @@ import org.jetbrains.annotations.NotNull;
 public class EBNFIdentifierReferenceContributor extends PsiReferenceContributor {
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar psiReferenceRegistrar) {
-        psiReferenceRegistrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiNamedElement.class), new EBNFReferenceProvider());
+        psiReferenceRegistrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiNamedElement.class), new EBNFIdentifierReferenceProvider());
     }
 }

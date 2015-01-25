@@ -1,6 +1,6 @@
 package uk.ac.gla.teamL.psi;
 
-import com.intellij.psi.PsiNamedElement;
+import com.intellij.psi.PsiNameIdentifierOwner;
 
 
 /**
@@ -8,5 +8,5 @@ import com.intellij.psi.PsiNamedElement;
  * Date: 06/12/14
  * Time: 20:45
  */
-public interface EBNFNamedElement extends PsiNamedElement, EBNFCompositeElement {
+public interface EBNFNamedElement extends PsiNameIdentifierOwner, EBNFCompositeElement {
 }

@@ -1,5 +1,6 @@
 package uk.ac.gla.teamL.psi.impl;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.util.IncorrectOperationException;
@@ -23,6 +24,14 @@ public class EBNFParserImplUtil {
         ((EBNFIdentifierImpl) id).getId().replace(EBNFUtil.createElement(id.getProject(), newName));
         return id;
     }
+
+    public static PsiElement getNameIdentifier(EBNFIdentifier element) {
+        ASTNode IdNode = element.getNode().findChildByType(EBNFTypes.ID);
+        if (IdNode != null) {
+            return IdNode.getPsi();
+        } else {
+            return null;
+        }    }
 
     @NotNull
     public static String getName(EBNFAssignmentImpl element) {
@@ -72,15 +81,6 @@ public class EBNFParserImplUtil {
         }
     }
 
-    private boolean hasReference(EBNFIdentifier identifier, @NotNull final PsiElement element, @NotNull final Class<? extends PsiReference> referenceClass) {
-        for (PsiReference reference : element.getReferences()) {
-            if (reference.getClass().equals(referenceClass)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static String getName(EBNFAnnotation annotation) {
         return annotation.getId().getText();
     }
@@ -91,5 +91,13 @@ public class EBNFParserImplUtil {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    public static String toString(EBNFIdentifier id) {
+        return "Identifier: " + id.getName();
+    }
+
+    public static String toString(EBNFAssignment assignment) {
+        return "Assignment: " + assignment.getName();
     }
 }
