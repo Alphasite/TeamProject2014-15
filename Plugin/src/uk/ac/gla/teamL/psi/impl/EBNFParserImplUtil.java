@@ -1,12 +1,7 @@
 package uk.ac.gla.teamL.psi.impl;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.EBNFUtil;
 import uk.ac.gla.teamL.psi.*;
 
 /**
@@ -15,38 +10,6 @@ import uk.ac.gla.teamL.psi.*;
  * Time: 23:35
  */
 public class EBNFParserImplUtil {
-    @NotNull
-    public static String getName(EBNFIdentifier id) {
-        return id == null? "" : id.getText();
-    }
-
-    public static PsiElement setName(EBNFIdentifier id, @NonNls @NotNull String newName) throws IncorrectOperationException {
-        ((EBNFIdentifierImpl) id).getId().replace(EBNFUtil.createElement(id.getProject(), newName));
-        return id;
-    }
-
-    public static PsiElement getNameIdentifier(EBNFIdentifier element) {
-        ASTNode IdNode = element.getNode().findChildByType(EBNFTypes.ID);
-        if (IdNode != null) {
-            return IdNode.getPsi();
-        } else {
-            return null;
-        }    }
-
-    @NotNull
-    public static String getName(EBNFAssignmentImpl element) {
-        return element.getId().getName();
-    }
-
-    public static PsiElement setName(EBNFAssignmentImpl element, @NonNls @NotNull String name) throws IncorrectOperationException {
-        element.getId().setName(name);
-        return element;
-    }
-
-    public static PsiElement getNameIdentifier(EBNFAssignmentImpl element) {
-        return element.getId();
-    }
-
     @NotNull
     public static String getString(EBNFString string) {
         PsiElement stringNode;
@@ -68,16 +31,6 @@ public class EBNFParserImplUtil {
 
         } else {
             return "";
-        }
-    }
-
-    public static PsiReference getReference (EBNFIdentifier identifier) {
-
-        // Assignments cannot be references, they are the reference base.
-        if (identifier.getParent() instanceof EBNFAssignment) {
-            return null;
-        } else {
-            return new EBNFIdentifierReferenceImpl<EBNFNamedElement>(identifier, identifier.getTextRange());
         }
     }
 
