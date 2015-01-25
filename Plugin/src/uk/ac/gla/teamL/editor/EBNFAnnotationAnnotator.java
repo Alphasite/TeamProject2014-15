@@ -4,7 +4,7 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.parser.psi.EBNFAnnotation;
+import uk.ac.gla.teamL.psi.EBNFAnnotation;
 
 import java.util.HashSet;
 import java.util.Set;

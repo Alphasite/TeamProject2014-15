@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.parser;
+package uk.ac.gla.teamL.lexer;
 
 import com.intellij.lexer.FlexAdapter;
 

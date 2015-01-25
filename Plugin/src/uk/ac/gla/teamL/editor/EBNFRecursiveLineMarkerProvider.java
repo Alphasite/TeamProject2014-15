@@ -10,8 +10,8 @@ import com.intellij.util.FunctionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFIcon;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
 
 import java.util.Collection;
 import java.util.List;

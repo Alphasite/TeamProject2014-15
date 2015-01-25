@@ -5,8 +5,8 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.parser.EBNFParserUtil;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.parser.psi.impl.EBNFAssignmentImpl;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.impl.EBNFAssignmentImpl;
 
 import java.util.ArrayList;
 import java.util.List;

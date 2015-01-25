@@ -4,8 +4,8 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.parser.psi.EBNFRange;
-import uk.ac.gla.teamL.parser.psi.impl.EBNFRangeImpl;
+import uk.ac.gla.teamL.psi.EBNFRange;
+import uk.ac.gla.teamL.psi.impl.EBNFRangeImpl;
 
 /**
  * User: nishad

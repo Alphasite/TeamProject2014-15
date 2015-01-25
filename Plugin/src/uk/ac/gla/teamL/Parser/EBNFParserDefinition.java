@@ -15,7 +15,8 @@ import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.EBNFFile;
 import uk.ac.gla.teamL.EBNFLanguage;
-import uk.ac.gla.teamL.parser.psi.EBNFTypes;
+import uk.ac.gla.teamL.lexer.EBNFLexer;
+import uk.ac.gla.teamL.psi.EBNFTypes;
 
 /**
  * User: nishad

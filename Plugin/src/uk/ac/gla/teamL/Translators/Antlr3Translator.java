@@ -4,7 +4,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import uk.ac.gla.teamL.EBNFFile;
 import uk.ac.gla.teamL.editor.Annotations;
-import uk.ac.gla.teamL.parser.psi.*;
+import uk.ac.gla.teamL.psi.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -6,8 +6,8 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.parser.EBNFLexer;
-import uk.ac.gla.teamL.parser.psi.EBNFTypes;
+import uk.ac.gla.teamL.lexer.EBNFLexer;
+import uk.ac.gla.teamL.psi.EBNFTypes;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 

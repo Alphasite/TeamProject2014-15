@@ -28,7 +28,7 @@
 
     <lang.parserDefinition language="EBNF" implementationClass="uk.ac.gla.teamL.parser.EBNFParserDefinition"/>
     <lang.syntaxHighlighterFactory key="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFSyntaxHighlighterFactory"/>
-    <lang.commenter language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EbnfCommenter"/>
+    <lang.commenter language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCommenter"/>
     <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCompletionContributor"/>
     <psi.referenceContributor implementation="uk.ac.gla.teamL.editor.EBNFIdentifierReferenceContributor"/>
 
@@ -36,11 +36,18 @@
 
     <lang.findUsagesProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFFindUsagesProvider"/>
 
-    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRuleErrorAnnotator"/>
+    <!--<annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRuleErrorAnnotator"/>-->
+    <!--<annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFUnusedRuleAnnotation"/>-->
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRangeErrorAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFLeftRecursionAnnotator"/>
-    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFUnusedRuleAnnotation"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFAnnotationAnnotator"/>
+
+    <localInspection language="EBNF" shortName="EBNFUnusedRuleInspection" displayName="Unused rule" groupName="Grammar Inspections"
+                     enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUnusedRuleInspection"/>
+    <localInspection language="EBNF" shortName="EBNFUndeclaredIdentifierInspection" displayName="Unrecognised Reference" groupName="Grammar Inspections"
+                     enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUndeclaredRuleInspection"/>
+    <localInspection language="EBNF" shortName="EBNFDuplicateRuleInspection" displayName="Duplicate Reference" groupName="Grammar Inspections"
+                     enabledByDefault="true" level="ERROR" implementationClass="uk.ac.gla.teamL.inspections.EBNFDuplicateRuleInspection"/>
 
     <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
 

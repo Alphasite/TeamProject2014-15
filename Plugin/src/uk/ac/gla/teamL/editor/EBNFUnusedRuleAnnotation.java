@@ -5,8 +5,8 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.parser.EBNFParserUtil;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +25,17 @@ public class EBNFUnusedRuleAnnotation implements Annotator {
             List<EBNFIdentifier> rules = EBNFParserUtil.findIdentifiers(ruleDecl.getContainingFile());
 
             String name = ruleDecl.getName();
-            if (name != null) {
 
-                List<EBNFIdentifier> occurrences = new ArrayList<>();
-                for (EBNFIdentifier id : rules) {
-                    String occurrenceName = id.getName();
-                    if (occurrenceName != null && name.equals(occurrenceName.toLowerCase())) {
-                        occurrences.add(id);
-                    }
+            List<EBNFIdentifier> occurrences = new ArrayList<>();
+            for (EBNFIdentifier id : rules) {
+                String occurrenceName = id.getName();
+                if (name.equals(occurrenceName.toLowerCase())) {
+                    occurrences.add(id);
                 }
+            }
 
-                if (occurrences.size() <= 1) {
-                    annotationHolder.createInfoAnnotation(ruleDecl, "Rule is never used.");
-                }
+            if (occurrences.size() <= 1) {
+                annotationHolder.createWarningAnnotation(ruleDecl, "Rule is never used.");
             }
         }
     }

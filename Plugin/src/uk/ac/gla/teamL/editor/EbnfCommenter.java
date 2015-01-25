@@ -3,7 +3,7 @@ package uk.ac.gla.teamL.editor;
 import com.intellij.lang.Commenter;
 import org.jetbrains.annotations.Nullable;
 
-public class EbnfCommenter implements Commenter {
+public class EBNFCommenter implements Commenter {
     @Nullable
     @Override
     public String getLineCommentPrefix() {

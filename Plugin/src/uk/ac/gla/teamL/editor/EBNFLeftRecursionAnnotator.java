@@ -5,10 +5,10 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.parser.psi.EBNFNestedRules;
-import uk.ac.gla.teamL.parser.psi.EBNFRuleElement;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFNestedRules;
+import uk.ac.gla.teamL.psi.EBNFRuleElement;
 
 import java.util.List;
 

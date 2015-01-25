@@ -11,7 +11,7 @@ import com.intellij.usageView.UsageViewNodeTextLocation;
 import com.intellij.usageView.UsageViewTypeLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import uk.ac.gla.teamL.parser.EBNFLexer;
+import uk.ac.gla.teamL.lexer.EBNFLexer;
 import uk.ac.gla.teamL.parser.EBNFParserDefinition;
 
 /**

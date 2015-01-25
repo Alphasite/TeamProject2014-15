@@ -1,6 +1,7 @@
-package uk.ac.gla.teamL.parser.psi;
+package uk.ac.gla.teamL.psi;
 
 import com.intellij.psi.PsiNamedElement;
+
 
 /**
  * User: nishad

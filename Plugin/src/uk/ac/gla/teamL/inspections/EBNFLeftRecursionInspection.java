@@ -10,7 +10,7 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
 
 /**
  * User: nishad

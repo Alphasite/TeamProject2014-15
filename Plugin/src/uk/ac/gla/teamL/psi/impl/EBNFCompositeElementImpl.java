@@ -1,8 +1,8 @@
-package uk.ac.gla.teamL.parser.psi.impl;
+package uk.ac.gla.teamL.psi.impl;
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
-import uk.ac.gla.teamL.parser.psi.EBNFCompositeElement;
+import uk.ac.gla.teamL.psi.EBNFCompositeElement;
 
 /**
  * User: nishad

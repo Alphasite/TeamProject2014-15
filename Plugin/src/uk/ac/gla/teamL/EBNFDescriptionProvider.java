@@ -2,7 +2,7 @@ package uk.ac.gla.teamL;
 
 import com.intellij.psi.*;
 import org.jetbrains.annotations.Nullable;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
 
 /**
  * User: nishad

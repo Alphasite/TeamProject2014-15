@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.parser.psi;
+package uk.ac.gla.teamL.psi;
 
 import com.intellij.psi.tree.IElementType;
 import uk.ac.gla.teamL.EBNFLanguage;
@@ -19,3 +19,4 @@ public class EBNFTokenType extends IElementType {
         return "EBNFTokenType(" + super.toString() + ")";
     }
 }
+

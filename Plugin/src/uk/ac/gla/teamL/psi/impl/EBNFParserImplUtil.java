@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.parser.psi.impl;
+package uk.ac.gla.teamL.psi.impl;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -6,7 +6,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.EBNFUtil;
-import uk.ac.gla.teamL.parser.psi.*;
+import uk.ac.gla.teamL.psi.*;
 
 /**
  * User: nishad

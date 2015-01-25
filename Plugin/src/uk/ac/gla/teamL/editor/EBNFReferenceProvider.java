@@ -5,7 +5,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceProvider;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.parser.psi.EBNFNamedElement;
+import uk.ac.gla.teamL.psi.EBNFNamedElement;
 
 /**
  * User: nishad

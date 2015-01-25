@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.parser.psi.impl;
+package uk.ac.gla.teamL.psi.impl;
 
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -10,9 +10,9 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.parser.EBNFParserUtil;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.parser.psi.EBNFNamedElement;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFNamedElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,11 +32,11 @@ public class EBNFIdentifierReferenceImpl<T extends EBNFNamedElement> extends Psi
 
     @Override
     public boolean isReferenceTo(PsiElement element) {
-        if (element instanceof EBNFNamedElement) {
-            return ((EBNFIdentifier) element).getName().equals(myElement.getName());
-        } else {
-            return false;
-        }
+        String elementName = ((EBNFNamedElement) element).getName();
+        String myElementName = myElement.getName();
+
+        return element.getContainingFile().equals(element.getContainingFile())
+            && myElementName != null && myElementName.equals(elementName);
     }
 
     @Nullable
@@ -48,7 +48,7 @@ public class EBNFIdentifierReferenceImpl<T extends EBNFNamedElement> extends Psi
             String referenceName = getRangeInElement().substring(myElement.getText());
 
             // Find the matching rule.
-            for (EBNFAssignmentImpl assignment : EBNFParserUtil.findRules(containingFile)) {
+            for (EBNFAssignment assignment : EBNFParserUtil.findRules(containingFile)) {
                 if (assignment != null && assignment.getName().equals(referenceName)) {
                     return assignment;
                 }

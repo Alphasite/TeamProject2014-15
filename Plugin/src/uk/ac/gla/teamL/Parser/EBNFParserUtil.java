@@ -3,9 +3,9 @@ package uk.ac.gla.teamL.parser;
 import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.parser.psi.impl.EBNFAssignmentImpl;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.impl.EBNFAssignmentImpl;
 
 import java.util.ArrayList;
 import java.util.List;

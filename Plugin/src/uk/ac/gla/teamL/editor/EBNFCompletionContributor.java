@@ -7,9 +7,9 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFCompositeElement;
-import uk.ac.gla.teamL.parser.psi.EBNFNestedRules;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFCompositeElement;
+import uk.ac.gla.teamL.psi.EBNFNestedRules;
 
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 
