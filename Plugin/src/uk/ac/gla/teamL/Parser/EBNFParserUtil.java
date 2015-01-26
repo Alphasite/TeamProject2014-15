@@ -20,7 +20,7 @@ public class EBNFParserUtil extends GeneratedParserUtilBase {
         List<EBNFAssignment> identifiers = new ArrayList<>();
 
         for (EBNFAssignment assignment: PsiTreeUtil.findChildrenOfType(file, EBNFAssignment.class)) {
-            if (name.equals(assignment.getName())) {
+            if (name.toLowerCase().equals(assignment.getName().toLowerCase())) {
                 identifiers.add(assignment);
             }
         }

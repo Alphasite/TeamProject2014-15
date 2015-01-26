@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 25/01/15
  * Time: 21:13
  */
-public class EBNFReference extends PsiReferenceBase<PsiNamedElement>implements PsiPolyVariantReference {
+public class EBNFReference extends PsiReferenceBase<PsiNamedElement> {
     private String name;
 
     public EBNFReference(@NotNull PsiElement element, TextRange textRange) {
@@ -25,24 +25,11 @@ public class EBNFReference extends PsiReferenceBase<PsiNamedElement>implements P
         name = ((PsiNamedElement) element).getName();
     }
 
-    @NotNull
-    @Override
-    public ResolveResult[] multiResolve(boolean incompleteCode) {
-        final List<EBNFAssignment> rules = EBNFParserUtil.findRules(myElement.getContainingFile(), name);
-
-        List<ResolveResult> results = new ArrayList<ResolveResult>();
-        for (EBNFAssignment property : rules) {
-            results.add(new PsiElementResolveResult(property.getId()));
-        }
-
-        return results.toArray(new ResolveResult[results.size()]);
-    }
-
     @Nullable
     @Override
     public PsiElement resolve() {
-        ResolveResult[] resolveResults = multiResolve(false);
-        return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
+        List<EBNFAssignment> rules = EBNFParserUtil.findRules(myElement.getContainingFile(), name);
+        return rules.size() >= 1? rules.get(0) : null;
     }
 
     @NotNull
