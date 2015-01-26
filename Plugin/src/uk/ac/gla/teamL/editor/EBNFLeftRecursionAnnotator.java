@@ -5,9 +5,9 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.parser.psi.EBNFRuleElement;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFRuleElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -58,7 +58,7 @@ public class EBNFLeftRecursionAnnotator implements Annotator {
     private static ArrayList<String> getIdentifiers(EBNFAssignment assignment) {
         ArrayList<String> identifiers = new ArrayList<String>();
 
-            List<EBNFRuleElement> rules = assignment.getRuleElementList();
+            List<EBNFRuleElement> rules = assignment.getRules().getRuleElementList();
             for (EBNFRuleElement rule : rules) {
                 PsiElement child = rule.getFirstChild();
                 if (child instanceof EBNFIdentifier) {

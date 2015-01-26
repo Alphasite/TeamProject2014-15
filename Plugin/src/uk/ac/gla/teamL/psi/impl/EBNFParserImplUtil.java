@@ -12,10 +12,12 @@ import uk.ac.gla.teamL.psi.*;
  */
 public class EBNFParserImplUtil {
 
+    @NotNull
     public static String getName(EBNFAssignment element) {
         return element.getId().getText();
     }
 
+    @NotNull
     public static String getName(EBNFIdentifier element) {
         return element.getId().getText();
     }
@@ -32,6 +34,7 @@ public class EBNFParserImplUtil {
         return element;
     }
 
+    @NotNull
     public static PsiElement getNameIdentifier(EBNFIdentifier element) {
         ASTNode node = element.getNode().findChildByType(EBNFTypes.ID);
         if (node != null) {
