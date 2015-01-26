@@ -19,9 +19,6 @@
 	elementTypeClass="uk.ac.gla.teamL.psi.EBNFElementType"
 	tokenTypeClass="uk.ac.gla.teamL.psi.EBNFTokenType"
 
-	implements("identifier") = "uk.ac.gla.teamL.psi.EBNFNamedElement"
-//	implements("assignment") = "uk.ac.gla.teamL.psi.EBNFNamedIdentifierOwnerCompositeElement"
-
 	name("string*") = "String"
 
 	tokens = [
@@ -86,10 +83,9 @@ assignment ::=  annotation* let identifier EQ rules terminal {
 	pin = rules
 	recoverWhile = assignment_recover
 	methods = [
-		ID="identifier"
+		toString
 		getName
-		setName
-		getNameIdentifier
+		ID="identifier"
 	]
 }
 
@@ -131,15 +127,6 @@ any ::= ANY_OPERATOR
 
 or ::= OR_OPERATOR
 
-// I really cant think of anyway to match multiple alternative ranges in this.
-//range ::= LSB singleRange+ RSB {
-//	methods = [getRanges="\singleRange"]
-//}
-//
-//private singleRange ::= string RANGE_OPERATOR string {
-//	methods = [getLowerBound="/string[0]" getUpperBound="/string[1]"]
-//}
-
 range ::= LSB string RANGE_OPERATOR string RSB {
 	methods = [
 		getLowerBound="/string[0]"
@@ -154,10 +141,12 @@ string ::= string_tripleQuotes
 }
 
 identifier ::= ID {
+	mixin="uk.ac.gla.teamL.psi.impl.EBNFNamedElementImpl"
+	implements="uk.ac.gla.teamL.psi.EBNFNamedElement"
 	methods=[
+		toString
 		getName
 		setName
-		getReference
-		hasReference
+		getNameIdentifier
 	]
 }

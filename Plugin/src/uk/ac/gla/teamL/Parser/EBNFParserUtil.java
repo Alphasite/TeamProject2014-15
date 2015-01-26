@@ -5,7 +5,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
 import uk.ac.gla.teamL.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.psi.impl.EBNFAssignmentImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +16,10 @@ import java.util.List;
  */
 public class EBNFParserUtil extends GeneratedParserUtilBase {
 
-    public static List<EBNFAssignmentImpl> findRules(PsiElement file, String name) {
-        List<EBNFAssignmentImpl> identifiers = new ArrayList<>();
+    public static List<EBNFAssignment> findRules(PsiElement file, String name) {
+        List<EBNFAssignment> identifiers = new ArrayList<>();
 
-        for (EBNFAssignmentImpl assignment: PsiTreeUtil.findChildrenOfType(file, EBNFAssignmentImpl.class)) {
+        for (EBNFAssignment assignment: PsiTreeUtil.findChildrenOfType(file, EBNFAssignment.class)) {
             if (name.equals(assignment.getName())) {
                 identifiers.add(assignment);
             }
@@ -29,8 +28,8 @@ public class EBNFParserUtil extends GeneratedParserUtilBase {
         return identifiers;
     }
 
-    public static List<EBNFAssignmentImpl> findRules(PsiElement file) {
-        return PsiTreeUtil.getChildrenOfTypeAsList(file, EBNFAssignmentImpl.class);
+    public static List<EBNFAssignment> findRules(PsiElement file) {
+        return PsiTreeUtil.getChildrenOfTypeAsList(file, EBNFAssignment.class);
     }
 
     public static List<EBNFIdentifier> findIdentifiers(PsiElement file, String name) {
