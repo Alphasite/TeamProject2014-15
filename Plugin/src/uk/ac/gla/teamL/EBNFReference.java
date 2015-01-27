@@ -39,7 +39,7 @@ public class EBNFReference extends PsiReferenceBase<PsiNamedElement> {
         List<LookupElement> variants = new ArrayList<LookupElement>();
 
         for (EBNFAssignment rule : properties) {
-            if (rule.getName() != null && rule.getName().length() > 0) {
+            if (rule.getName().length() > 0) {
                 variants.add(LookupElementBuilder.create(rule.getId()));
             }
         }
