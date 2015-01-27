@@ -18,6 +18,12 @@ public abstract class EBNFNamedElementImpl extends ASTWrapperPsiElement implemen
         super(node);
     }
 
+    @NotNull
+    @Override
+    public PsiReference[] getReferences() {
+        return super.getReferences();
+    }
+
     @Override
     public PsiReference getReference() {
         if (!(this.getParent() instanceof EBNFAssignment)) {
