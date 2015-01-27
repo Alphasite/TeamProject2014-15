@@ -38,7 +38,6 @@
     <lang.findUsagesProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFFindUsagesProvider"/>
 
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Annotators.EBNFRangeErrorAnnotator"/>
-    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.EBNFLeftRecursionAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Annotators.EBNFAnnotationAnnotator"/>
 
     <localInspection language="EBNF" shortName="EBNFUnusedRuleInspection" displayName="Unused rule" groupName="Grammar Inspections"

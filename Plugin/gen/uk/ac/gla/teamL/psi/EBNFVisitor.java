@@ -19,7 +19,7 @@ public class EBNFVisitor extends PsiElementVisitor {
   }
 
   public void visitAssignment(@NotNull EBNFAssignment o) {
-    visitCompositeElement(o);
+    visitNamedElement(o);
   }
 
   public void visitAssignmentRecover(@NotNull EBNFAssignmentRecover o) {
@@ -27,7 +27,7 @@ public class EBNFVisitor extends PsiElementVisitor {
   }
 
   public void visitIdentifier(@NotNull EBNFIdentifier o) {
-    visitNamedElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNestedRules(@NotNull EBNFNestedRules o) {

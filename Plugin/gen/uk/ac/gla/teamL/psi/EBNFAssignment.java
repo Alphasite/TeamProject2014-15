@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface EBNFAssignment extends EBNFCompositeElement {
+public interface EBNFAssignment extends EBNFNamedElement {
 
   @NotNull
   List<EBNFAnnotation> getAnnotationList();
@@ -13,10 +13,14 @@ public interface EBNFAssignment extends EBNFCompositeElement {
   @NotNull
   EBNFRules getRules();
 
-  String toString();
-
   @NotNull
   String getName();
+
+  @NotNull
+  PsiElement getNameIdentifier();
+
+  @NotNull
+  PsiElement setName(String newName);
 
   @NotNull
   EBNFIdentifier getId();

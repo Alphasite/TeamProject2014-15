@@ -80,11 +80,15 @@ annotation ::= ANNOTATION_OPERATOR ID {
 }
 
 assignment ::=  annotation* let identifier EQ rules terminal {
+	mixin="uk.ac.gla.teamL.psi.impl.EBNFNamedElementImpl"
+	implements="uk.ac.gla.teamL.psi.EBNFNamedElement"
 	pin = rules
 	recoverWhile = assignment_recover
 	methods = [
-		toString
+//		toString
 		getName
+		getNameIdentifier
+		setName
 		ID="identifier"
 	]
 }
@@ -141,12 +145,11 @@ string ::= string_tripleQuotes
 }
 
 identifier ::= ID {
-	mixin="uk.ac.gla.teamL.psi.impl.EBNFNamedElementImpl"
-	implements="uk.ac.gla.teamL.psi.EBNFNamedElement"
 	methods=[
-		toString
+//		toString
 		getName
 		setName
 		getNameIdentifier
+		getReference
 	]
 }

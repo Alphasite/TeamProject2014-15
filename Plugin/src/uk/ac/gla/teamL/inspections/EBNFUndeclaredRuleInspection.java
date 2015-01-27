@@ -52,6 +52,8 @@ public class EBNFUndeclaredRuleInspection extends LocalInspectionTool {
 
         ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
 
+        boolean visitedFirst = false;
+
         if (file instanceof EBNFFile) {
             EBNFAssignment[] rules = PsiTreeUtil.getChildrenOfType(file, EBNFAssignment.class);
             List<EBNFIdentifier> identifiers = EBNFParserUtil.findIdentifiers(file);
@@ -65,7 +67,11 @@ public class EBNFUndeclaredRuleInspection extends LocalInspectionTool {
 
                 for (EBNFIdentifier identifier: identifiers) {
                     if (!declaredIdentifiers.contains(identifier.getName().toLowerCase())) {
-                        problemsHolder.registerProblem(identifier.getId(), "Identifier doesnt point to a known rule.");
+                        if (visitedFirst) {
+                            problemsHolder.registerProblem(identifier.getId(), "Identifier doesnt point to a known rule.");
+                        } else {
+                            visitedFirst = true;
+                        }
                     }
                 }
             }

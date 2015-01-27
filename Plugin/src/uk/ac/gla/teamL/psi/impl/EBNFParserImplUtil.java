@@ -1,8 +1,11 @@
 package uk.ac.gla.teamL.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
+import uk.ac.gla.teamL.EBNFReference;
 import uk.ac.gla.teamL.psi.*;
 
 /**
@@ -12,26 +15,42 @@ import uk.ac.gla.teamL.psi.*;
  */
 public class EBNFParserImplUtil {
 
+    @NotNull
     public static String getName(EBNFAssignment element) {
         return element.getId().getText();
     }
 
+    @NotNull
+    public static PsiElement setName(EBNFAssignment element, String newName) {
+        element.getId().setName(newName);
+        return element;
+    }
+
+    @NotNull
+    public static PsiElement getNameIdentifier(EBNFAssignment element) {
+        return element.getId().getId();
+    }
+
+    @NotNull
     public static String getName(EBNFIdentifier element) {
         return element.getId().getText();
     }
 
+    @NotNull
     public static PsiElement setName(EBNFIdentifier element, String newName) {
         ASTNode oldNode = element.getNode().findChildByType(EBNFTypes.ID);
 
         if (oldNode != null) {
             EBNFIdentifier identifier = EBNFElementFactory.createIdentifier(element.getProject(), newName);
 
-            element.getNode().replaceChild(oldNode, (ASTNode) identifier);
+            element.replace(identifier);
+            //element.getNode().replaceChild(oldNode, (ASTNode) identifier);
         }
 
         return element;
     }
 
+    @NotNull
     public static PsiElement getNameIdentifier(EBNFIdentifier element) {
         ASTNode node = element.getNode().findChildByType(EBNFTypes.ID);
         if (node != null) {
@@ -39,6 +58,11 @@ public class EBNFParserImplUtil {
         } else {
             return null;
         }
+    }
+
+    @NotNull
+    public static PsiReference getReference(EBNFIdentifier identifier) {
+        return new EBNFReference(identifier, new TextRange(0, identifier.getName().length()));
     }
 
     @NotNull
