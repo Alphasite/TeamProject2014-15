@@ -1,9 +1,6 @@
 *.class
 #gen/
 
-_*Lexer.java
-_*Lexer.flex
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
