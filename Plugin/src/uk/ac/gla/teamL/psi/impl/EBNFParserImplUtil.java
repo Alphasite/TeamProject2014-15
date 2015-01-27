@@ -42,9 +42,7 @@ public class EBNFParserImplUtil {
 
         if (oldNode != null) {
             EBNFIdentifier identifier = EBNFElementFactory.createIdentifier(element.getProject(), newName);
-
             element.replace(identifier);
-            //element.getNode().replaceChild(oldNode, (ASTNode) identifier);
         }
 
         return element;

@@ -56,6 +56,11 @@ public class EBNFUnusedRuleInspection extends LocalInspectionTool {
             Set<String> usedIdentifiers = new HashSet<>();
 
             if (rules != null) {
+                // Find the very first rule in the file, which is
+                // by convention, the base rule. Hence, it is always used.
+                // Also if there are >=1 there must be a first rule.
+                String firstRule = EBNFParserUtil.getFirstRule(file).getName().toLowerCase();
+
                 for (EBNFAssignment rule: rules) {
                     for (EBNFIdentifier identifier : EBNFParserUtil.findIdentifiers(rule.getRules())) {
                         usedIdentifiers.add(identifier.getName().toLowerCase());
@@ -64,7 +69,9 @@ public class EBNFUnusedRuleInspection extends LocalInspectionTool {
 
                 for (EBNFAssignment rule: rules) {
                     if (!usedIdentifiers.contains(rule.getName().toLowerCase())) {
-                        problemsHolder.registerProblem(rule.getId(), "Rule is never used.");
+                        if (!rule.getName().toLowerCase().endsWith(firstRule)) {
+                            problemsHolder.registerProblem(rule.getId(), "Rule is never used.");
+                        }
                     }
                 }
             }
