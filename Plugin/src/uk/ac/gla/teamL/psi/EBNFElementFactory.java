@@ -24,7 +24,7 @@ public class EBNFElementFactory {
         } else {
             return null;
         }
-
+        
     }
 
     public static EBNFFile createFile(Project project, String text) {

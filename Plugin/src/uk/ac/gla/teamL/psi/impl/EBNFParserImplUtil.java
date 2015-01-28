@@ -1,6 +1,5 @@
 package uk.ac.gla.teamL.psi.impl;
 
-import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -43,24 +42,15 @@ public class EBNFParserImplUtil {
 
     @NotNull
     public static PsiElement setName(EBNFIdentifier element, String newName) {
-        ASTNode oldNode = element.getNode().findChildByType(EBNFTypes.ID);
-
-        if (oldNode != null) {
-            EBNFIdentifier identifier = EBNFElementFactory.createIdentifier(element.getProject(), newName);
-            element.replace(identifier);
-        }
+        EBNFIdentifier identifier = EBNFElementFactory.createIdentifier(element.getProject(), newName);
+        element.replace(identifier);
 
         return element;
     }
 
     @NotNull
     public static PsiElement getNameIdentifier(EBNFIdentifier element) {
-        ASTNode node = element.getNode().findChildByType(EBNFTypes.ID);
-        if (node != null) {
-            return node.getPsi();
-        } else {
-            return null;
-        }
+        return element.getId();
     }
 
     @NotNull

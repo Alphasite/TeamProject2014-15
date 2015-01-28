@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.editor.StructureView;
+package uk.ac.gla.teamL.editor.structureView;
 
 import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.StructureViewModelBase;

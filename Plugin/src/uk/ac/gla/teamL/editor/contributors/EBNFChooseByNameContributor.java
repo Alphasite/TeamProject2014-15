@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.editor;
+package uk.ac.gla.teamL.editor.contributors;
 
 import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
