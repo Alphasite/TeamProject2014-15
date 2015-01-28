@@ -1,14 +1,15 @@
 // This is a generated file. Not intended for manual editing.
 package uk.ac.gla.teamL.psi.impl;
 
+import java.util.List;
+import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import org.jetbrains.annotations.NotNull;
+import static uk.ac.gla.teamL.psi.EBNFTypes.*;
 import uk.ac.gla.teamL.psi.*;
-
-import java.util.List;
+import com.intellij.navigation.ItemPresentation;
 
 public class EBNFAssignmentImpl extends EBNFNamedElementImpl implements EBNFAssignment {
 
@@ -46,6 +47,10 @@ public class EBNFAssignmentImpl extends EBNFNamedElementImpl implements EBNFAssi
   @NotNull
   public PsiElement setName(String newName) {
     return EBNFParserImplUtil.setName(this, newName);
+  }
+
+  public ItemPresentation getPresentation() {
+    return EBNFParserImplUtil.getPresentation(this);
   }
 
   @Override

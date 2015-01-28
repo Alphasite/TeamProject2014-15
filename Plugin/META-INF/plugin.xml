@@ -50,6 +50,10 @@
     <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
 
     <elementDescriptionProvider implementation="uk.ac.gla.teamL.EBNFDescriptionProvider"/>
+
+    <gotoSymbolContributor implementation="uk.ac.gla.teamL.editor.EBNFChooseByNameContributor"/>
+
+    <lang.psiStructureViewFactory language="EBNF" implementationClass="uk.ac.gla.teamL.editor.StructureView.EBNFStructureViewFactory"/>
   </extensions>
 
   <application-components>

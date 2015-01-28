@@ -89,6 +89,7 @@ assignment ::=  annotation* let identifier EQ rules terminal {
 		getName
 		getNameIdentifier
 		setName
+		getPresentation
 		ID="identifier"
 	]
 }
