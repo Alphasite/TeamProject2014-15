@@ -31,8 +31,6 @@
     <lang.commenter language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCommenter"/>
     <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCompletionContributor"/>
 
-    <!--<psi.referenceContributor implementation="uk.ac.gla.teamL.EBNFReferenceContributor"/>-->
-
     <colorSettingsPage implementation="uk.ac.gla.teamL.EBNFColourSettingsPage"/>
 
     <lang.findUsagesProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFFindUsagesProvider"/>
@@ -48,12 +46,13 @@
                      enabledByDefault="true" level="ERROR" implementationClass="uk.ac.gla.teamL.inspections.EBNFDuplicateRuleInspection"/>
 
     <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
-
     <elementDescriptionProvider implementation="uk.ac.gla.teamL.EBNFDescriptionProvider"/>
-
     <gotoSymbolContributor implementation="uk.ac.gla.teamL.editor.EBNFChooseByNameContributor"/>
-
+    <defaultLiveTemplatesProvider implementation="uk.ac.gla.teamL.editor.EBNFDefaultLiveTemplateProvider"/>
     <lang.psiStructureViewFactory language="EBNF" implementationClass="uk.ac.gla.teamL.editor.StructureView.EBNFStructureViewFactory"/>
+    <lang.namesValidator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Validator.EBNFNamesValidator"/>
+    <lang.braceMatcher language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFBraceMatcher"/>
+
   </extensions>
 
   <application-components>

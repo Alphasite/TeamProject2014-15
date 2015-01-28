@@ -6,8 +6,8 @@ package uk.ac.gla.teamL.editor;
  * Time: 11:02
  */
 public enum Annotations {
-    ignored("Ignored"),
-    literal("Literal");
+    ignored("ignored"),
+    literal("literal");
 
     public final String identifier;
 

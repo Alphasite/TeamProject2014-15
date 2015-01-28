@@ -16,12 +16,16 @@ import java.util.Set;
  * Time: 12:50
  */
 public class EBNFAnnotationAnnotator implements Annotator {
-    private static final Set<String> valid;
+    private static final Set<String> validAnnotations;
 
     static {
-        valid = new HashSet<>();
-        valid.add(Annotations.ignored.identifier);
-        valid.add(Annotations.literal.identifier);
+        validAnnotations = new HashSet<>();
+        validAnnotations.add(Annotations.ignored.identifier);
+        validAnnotations.add(Annotations.literal.identifier);
+    }
+
+    public static Boolean isValidAnnotation(String name) {
+        return validAnnotations.contains(name.replace("@", "").toLowerCase());
     }
 
     @Override
@@ -29,7 +33,7 @@ public class EBNFAnnotationAnnotator implements Annotator {
         if (psiElement instanceof EBNFAnnotation) {
             EBNFAnnotation annotation = (EBNFAnnotation) psiElement;
 
-            if (!valid.contains(annotation.getName())) {
+            if (!isValidAnnotation(annotation.getName())) {
                 annotationHolder.createErrorAnnotation(annotation, "Unrecognised annotation.");
             }
         }

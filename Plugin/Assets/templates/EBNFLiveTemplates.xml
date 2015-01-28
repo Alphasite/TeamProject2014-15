@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templateSet group="EBNF">
+    <template name="Operator Priority" value="let $IDENTIFIER$ = $TYPE$ $SYMBOLS$ ($TYPE$ | $IDENTIFIER$);" description="Handlebars Each block" toReformat="true">
+        <variable name="IDENTIFIER" expression="" defaultValue="" alwaysStopAt="true"/>
+        <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true"/>
+        <variable name="SYMBOLS" expression="" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="Handlebars" value="true"/>
+        </context>
+    </template>
+</templateSet>

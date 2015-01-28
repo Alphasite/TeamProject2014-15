@@ -123,7 +123,7 @@ public class EBNFParserImplUtil {
             @Nullable
             @Override
             public String getLocationString() {
-                return element.getContainingFile().getName();
+                return element.getContainingFile() != null? element.getContainingFile().getName() : null;
             }
 
             @Nullable
