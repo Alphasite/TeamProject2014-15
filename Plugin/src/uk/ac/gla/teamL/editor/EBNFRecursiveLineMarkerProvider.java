@@ -6,18 +6,17 @@ import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.FunctionUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFIcon;
-import uk.ac.gla.teamL.parser.psi.EBNFAssignment;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
-import uk.ac.gla.teamL.parser.psi.EBNFRuleElement;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfType;
 
 /**
  * User: nishad
@@ -39,22 +38,28 @@ public class EBNFRecursiveLineMarkerProvider implements LineMarkerProvider {
                 EBNFAssignment assignment = (EBNFAssignment) node;
                 String name = assignment.getName();
 
-                for (EBNFRuleElement element: assignment.getRuleElementList()) {
-                    Collection<EBNFIdentifier> identifiers = new ArrayList<>();
-
-                    if (element instanceof EBNFIdentifier) {
-                        identifiers.add((EBNFIdentifier) element);
-                    } else {
-                        identifiers = PsiTreeUtil.findChildrenOfType(element, EBNFIdentifier.class);
-                    }
-
-                    for (EBNFIdentifier id: identifiers) {
-                        if (id.getName() != null && id.getName().equals(name)) {
-                            lines.add(new RecursiveMarker(assignment));
-                            break;
-                        }
+                for (EBNFIdentifier id : findChildrenOfType(assignment.getRules(), EBNFIdentifier.class)) {
+                    if (id.getName() != null && id.getName().equals(name)) {
+                        lines.add(new RecursiveMarker(assignment));
+                        break;
                     }
                 }
+//                for (EBNFRuleElement element: assignment.getRules().getRuleElementList()) {
+//                    Collection<EBNFIdentifier> identifiers = new ArrayList<>();
+//
+//                    if (element instanceof EBNFIdentifier) {
+//                        identifiers.add((EBNFIdentifier) element);
+//                    } else {
+//                        identifiers = PsiTreeUtil.findChildrenOfType(element, EBNFIdentifier.class);
+//                    }
+//
+//                    for (EBNFIdentifier id: identifiers) {
+//                        if (id.getName() != null && id.getName().equals(name)) {
+//                            lines.add(new RecursiveMarker(assignment));
+//                            break;
+//                        }
+//                    }
+//                }
 
             }
         }

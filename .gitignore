@@ -1,8 +1,5 @@
 *.class
-gen/
-
-_*Lexer.java
-_*Lexer.flex
+#gen/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -30,3 +27,11 @@ log/
 target/
 
 .idea/findbugs-idea.xml
+
+*.aux
+
+*.log
+
+*.gz
+
+docs/Nishad/IndividualExercise.pdf

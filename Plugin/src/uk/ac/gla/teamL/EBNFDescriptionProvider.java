@@ -1,8 +1,12 @@
 package uk.ac.gla.teamL;
 
-import com.intellij.psi.*;
+import com.intellij.psi.ElementDescriptionLocation;
+import com.intellij.psi.ElementDescriptionProvider;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFNamedElement;
 
 /**
  * User: nishad
@@ -12,10 +16,9 @@ import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
 public class EBNFDescriptionProvider implements ElementDescriptionProvider {
     @Nullable
     @Override
-    public String getElementDescription(PsiElement psiElement, ElementDescriptionLocation elementDescriptionLocation) {
+    public String getElementDescription(@NotNull PsiElement psiElement, @NotNull ElementDescriptionLocation elementDescriptionLocation) {
         if (psiElement instanceof PsiNamedElement) {
-            boolean isAssignment = psiElement.getParent() instanceof PsiNameIdentifierOwner;
-            return /*(isAssignment? "Rule: " : "Identifier: ") +*/ ((EBNFIdentifier) psiElement).getName();
+            return ((EBNFNamedElement) psiElement).getName();
         } else {
             return null;
         }

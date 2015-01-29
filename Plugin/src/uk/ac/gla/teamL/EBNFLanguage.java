@@ -21,6 +21,6 @@ public class EBNFLanguage extends Language {
 
     @Override
     public boolean isCaseSensitive() {
-        return true;
+        return false;
     }
 }

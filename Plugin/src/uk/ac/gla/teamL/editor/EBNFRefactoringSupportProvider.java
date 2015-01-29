@@ -3,7 +3,7 @@ package uk.ac.gla.teamL.editor;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.parser.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
 
 /**
  * User: nishad
