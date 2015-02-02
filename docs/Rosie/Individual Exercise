@@ -1,0 +1,37 @@
+Team Project – Individual Writing Exercise
+Rosie Wilson – 2034899w – Team L
+
+The project we have chosen to study and implement throughout the course of the year is an ‘Interactive Grammar Editor’ which is essentially a tool for working with a grammar for a programming language. We have chosen to implement this tool as a plugin for an IDE. I will now discuss our approach and initial planning for our project.
+
+Motivation
+
+This is interesting because we are essentially creating one of the building blocks for a programming language which people tend to either not know about or have little understanding of it. In doing this project we learn about the basics of programming language compilers and in turn this expands our knowledge in how to use them properly.
+Developing this feature as a tool can be useful to many IDEs as an efficient way of checking the syntax of grammars and have a visual representation of the syntax (through syntax trees/diagrams).
+
+Aims
+
+Our aim for this project is to produce a tool for working with grammar, we aim to implement a tool that will become a useful way of analysing input text and giving feedback (if needed) on the grammar and then exporting it in the form required by any parser generator. We also aim to have various features within the tool which will help with editing and understanding the grammar and also perhaps some help buttons to make the tool more user-friendly.
+We want to design this so that it would actually be useful to other developers and perhaps find use in the creation of new programming languages.
+
+Background
+
+Once we understood the project description, we looked further into the project and arrived at a decision between developing it as an online tool vs a plugin for an IDE. We chose the option of a plugin as it was something the whole team could work on and also there are a lot of resources available online for people to create plug-ins in IntelliJ, helping us focus more on the core aspect of the plugin rather than the mechanics of the plugin itself.
+Our Programming Languages course also expanded our understanding of what a grammar was in terms of programming language syntax and gave us more resources to use in the development.
+
+Preliminaries
+
+In order to understand this project you need to have a good understanding of Java as the whole project is written Java, there are comments surrounding the code for understanding purposes but knowing Java will greatly help.
+Some experience with using IDEs is also needed, ideally some awareness of IntelliJ IDEA would be best but it is not vital. If the user has used other IDEs such as Eclipse then they would still be able to find their way about IntelliJ.
+
+IntelliJ is a Java IDE for writing and developing software, similar to Eclipse. It has many useful features including various Enterprise Frameworks, built-in developer tools (as well as integrated version control), mobile development and web development. What made us choose IntelliJ ultimately was the ability to build plug-ins easily.
+Basic understanding of the syntax/grammar of programming languages and the diagrams associated with them. As this project is about working with and editing the grammar of programming languages, some understanding of what that entails, especially Lexers and Parsers, will be needed otherwise the methods will not make sense.
+Context-free grammar, similar to that used in linguistics, is a set of rules that define the syntax of a language. Each rule specifies how each phrase in the language may be formed using symbols used in the language.
+Understand what a Compiler or Interpreter is and a little knowledge on how they work as this project follows the idea of a Compiler or Interpreter.
+
+Progress
+
+Currently, in terms of progress, we have quite a lot of implementation already there. We first had to make some planning decisions such as what to implement the project as – deciding on a plugin as opposed to an online tool. We have started development of the tool as a plug-in for IntelliJ and have quite a few of the main features started too including EBNF Lexer, Parser and PSI Support, Code Colourisation and some Basic Error Recovery.
+With help from online resources we quickly got started with the implementation of the Lexer and Parser generation as this feature is already supported with the addition of JFlex – a lexical analyser generator.
+The rest of the features build upon a plugin called ‘Grammar Kit’ for IntelliJ which provides BNF grammar features – we tailored these to EBNF suitable features and added some additional parts.
+We are working to schedule and organising our time efficiently and luckily have not experienced any major setbacks. This allows for any possible problems we may come across to be accounted for time-wise.
+In the future, we hope to implement more features such as Left-Recursion Elimination to partner with the Left-Recursion Detection and some more refactoring tools.
