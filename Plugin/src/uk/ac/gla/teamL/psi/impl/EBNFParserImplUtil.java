@@ -11,6 +11,8 @@ import uk.ac.gla.teamL.EBNFReference;
 import uk.ac.gla.teamL.psi.*;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: nishad
@@ -122,5 +124,25 @@ public class EBNFParserImplUtil {
                 return EBNFIcon.FILE;
             }
         };
+    }
+
+    @NotNull
+    public static List<List<EBNFRuleElement>> getRuleSegmentList(EBNFRules rules) {
+        List<List<EBNFRuleElement>> segments = new ArrayList<>();
+        PsiElement child = rules.getFirstChild();
+
+        List<EBNFRuleElement> segment = new ArrayList<>();
+        while (child.getNextSibling() != null) {
+            if (child instanceof EBNFOr) {
+                segments.add(segment);
+                segment = new ArrayList<>();
+            } else {
+                segment.add((EBNFRuleElement) child);
+            }
+        }
+
+        segments.add(segment);
+
+        return segments;
     }
 }

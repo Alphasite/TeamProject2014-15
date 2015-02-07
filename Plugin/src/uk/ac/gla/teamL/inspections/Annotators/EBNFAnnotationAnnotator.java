@@ -28,6 +28,10 @@ public class EBNFAnnotationAnnotator implements Annotator {
         return validAnnotations.contains(name.replace("@", "").toLowerCase());
     }
 
+    public static boolean isAnnotation(String name, Annotations annotation) {
+        return annotation.identifier.equals(name.toLowerCase());
+    }
+
     @Override
     public void annotate(@NotNull PsiElement psiElement, @NotNull AnnotationHolder annotationHolder) {
         if (psiElement instanceof EBNFAnnotation) {
