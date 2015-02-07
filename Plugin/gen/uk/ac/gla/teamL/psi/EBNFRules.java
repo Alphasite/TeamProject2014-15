@@ -13,4 +13,7 @@ public interface EBNFRules extends EBNFCompositeElement {
   @NotNull
   List<EBNFRuleElement> getRuleElementList();
 
+  @NotNull
+  List<List<EBNFRuleElement>> getRuleSegmentList();
+
 }

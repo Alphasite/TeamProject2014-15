@@ -33,4 +33,9 @@ public class EBNFRulesImpl extends EBNFCompositeElementImpl implements EBNFRules
     return PsiTreeUtil.getChildrenOfTypeAsList(this, EBNFRuleElement.class);
   }
 
+  @NotNull
+  public List<List<EBNFRuleElement>> getRuleSegmentList() {
+    return EBNFParserImplUtil.getRuleSegmentList(this);
+  }
+
 }

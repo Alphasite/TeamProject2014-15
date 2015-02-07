@@ -23,6 +23,9 @@ public class EBNFUtil {
         return PsiTreeUtil.getDeepestFirst(file);
     }
 
+    // TODO This is worth investigating, but for now its not much of an overhead to allocate an empty array.
+    // public static final List emptyList = new ArrayList();
+
     @NotNull
     public static <T> Collection<T> notNull(Collection<T> collection) {
         return collection == null? new ArrayList<T>(0) : collection;

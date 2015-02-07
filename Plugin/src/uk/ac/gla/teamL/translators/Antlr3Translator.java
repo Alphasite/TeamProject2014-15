@@ -1,18 +1,16 @@
 package uk.ac.gla.teamL.translators;
 
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import uk.ac.gla.teamL.EBNFFile;
 import uk.ac.gla.teamL.editor.Annotations;
+import uk.ac.gla.teamL.parser.EBNFParserUtil;
 import uk.ac.gla.teamL.psi.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfAnyType;
 import static uk.ac.gla.teamL.EBNFUtil.notNull;
+import static uk.ac.gla.teamL.translators.TranslatorUtils.*;
 
 /**
  * User: nishad
@@ -54,7 +52,10 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
         builder.append("grammar ");
         builder.append(program.getVirtualFile().getNameWithoutExtension());
         builder.append(";");
-        builder.append("\n");
+        builder.append("\n\n");
+
+        //TODO maybe remove this.
+        builder.append("options {\n\toutput=AST;\n}\n");
 
         for (EBNFAssignment assignment: notNull(findChildrenOfAnyType(program, EBNFAssignment.class))) {
             String name = assignment.getName().toLowerCase();
@@ -139,7 +140,6 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
     }
 
     private void generateRule(EBNFAssignment assignment, StringBuilder builder) {
-        List<EBNFAnnotation> annotations = assignment.getAnnotationList();
         boolean isIgnored = hasAnnotation(assignment, Annotations.ignored);
 
         builder.append(this.canonicalNames.get(assignment.getName().toLowerCase()));
@@ -161,6 +161,19 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
                     break;
             }
 
+        } else {
+            switch (this.type.get(assignment.getName().toLowerCase())) {
+                case parser:
+                    generateParserRuleASTReWrite(
+                        this.canonicalNames.get(assignment.getName().toLowerCase()),
+                        assignment.getRules(),
+                        builder
+                    );
+
+                    break;
+                default:
+                    break;
+            }
         }
 
         builder.append(";");
@@ -284,6 +297,37 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
         }
     }
 
+    public void generateParserRuleASTReWrite(String name, EBNFRules ruleElementList, StringBuilder builder) {
+        // TODO remove this or fix it to include named variables.
+
+        builder.append("^(");
+        builder.append(" '");
+        builder.append(name);
+        builder.append("' ");
+
+        Map<String, Integer> identifiers = new HashMap<>();
+        for (EBNFIdentifier identifier: EBNFParserUtil.findIdentifiers(ruleElementList)) {
+            if (identifiers.containsKey(identifier.getName())) {
+                identifiers.put(identifier.getName(), identifiers.get(identifier.getName()) + 1);
+            } else {
+                identifiers.put(identifier.getName(), 1);
+            }
+        }
+
+        for (String identifier: identifiers.keySet()) {
+            builder.append(this.canonicalNames.get(identifier.toLowerCase()));
+
+            if (identifiers.get(identifier) > 1) {
+                builder.append("*");
+            }
+
+            builder.append(" ");
+        }
+
+        builder.append(" )");
+
+    }
+
     public static String createString(String string) {
         StringBuilder builder = new StringBuilder();
 
@@ -292,43 +336,6 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
         builder.append('\'');
 
         return builder.toString();
-    }
-
-    public static String escapeString(String string) {
-        return string.replace("\"", "\\\"");
-    }
-
-    public static boolean isLiteral(EBNFAssignment assignment) {
-        return hasAnnotation(assignment, Annotations.literal);
-    }
-
-
-    public static boolean isLexRule(EBNFAssignment assignment) {
-        return hasAnnotation(assignment, Annotations.ignored)
-            || PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class).size() <= 0
-            && PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFAny.class).size() <= 0;
-
-//        // I'd like to come up with a way to integrate it, but it might be
-//        // better to keep it simple and easy to understand.
-//        for (EBNFIdentifier identifier : PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class)) {
-//            PsiReference psiReference = identifier.resolveReference();
-//            if (psiReference instanceof EBNFAssignment && !isLexRule((EBNFAssignment) psiReference)) {
-//                return false;
-//            }
-//        }
-//        return true;
-    }
-
-    public static boolean hasAnnotation(EBNFAssignment assignment, Annotations label) {
-        List<EBNFAnnotation> annotations = assignment.getAnnotationList();
-
-        for (EBNFAnnotation annotation: annotations) {
-            if (annotation.getName().equals(label.identifier)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public static String reformatLine(String line) {
@@ -352,6 +359,7 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
         boolean escape = false;
         boolean inWhiteSpace = false;
         boolean inCommand = false;
+        boolean inASTDeclaration = false;
 
         for (char c: line.substring(offset).toCharArray()) {
             if (c == ' ') {
@@ -365,25 +373,38 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
                 }
             }
 
+            if (c == '^') {
+                inASTDeclaration = true;
+            }
+
             if (escape) {
                 escape = false;
+            } else if (inASTDeclaration) {
+                if (c == ')') {
+                    inASTDeclaration = false;
+                }
             } else {
                 switch (c) {
                     case '{':
                         if (!inString) {
                             inCommand = true;
                         }
+
                         break;
 
                     case '}':
                         if (!inString) {
                             inCommand = false;
                         }
+
                         break;
 
                     case '"':
                     case '\'':
-                        inString = !inString;
+                        if (!escape) {
+                            inString = !inString;
+                        }
+
                         break;
 
                     case '\\':
@@ -399,6 +420,7 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
                         break;
                 }
             }
+
             newLine.append(c);
         }
 

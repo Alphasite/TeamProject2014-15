@@ -3,9 +3,9 @@ package uk.ac.gla.teamL.parser;
 import com.intellij.lang.parser.GeneratedParserUtilBase;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.psi.EBNFAssignment;
-import uk.ac.gla.teamL.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +49,6 @@ public class EBNFParserUtil extends GeneratedParserUtilBase {
         return new ArrayList<>(PsiTreeUtil.findChildrenOfType(file, EBNFIdentifier.class));
     }
 
-    public static boolean isRecursive(EBNFAssignment rule) {
-        return false; // TODO implement.
-    }
-
     public static EBNFAssignment getFirstRule(PsiElement file) {
         if (file instanceof EBNFFile) {
             PsiElement child = file.getFirstChild();
@@ -68,4 +64,7 @@ public class EBNFParserUtil extends GeneratedParserUtilBase {
 
         return null;
     }
+
+
+
 }
