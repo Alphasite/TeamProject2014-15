@@ -20,18 +20,18 @@ public class EBNFLeftRecursionAnnotator implements Annotator {
             EBNFAssignment assignment = (EBNFAssignment) psiElement;
 
             if (isLeftRecursive(assignment)) {
-                annotationHolder.createWarningAnnotation(assignment, "Rule is left recursive: May cause issues with certain parser generators.");
+                annotationHolder.createWeakWarningAnnotation(assignment, "Rule is left recursive: May cause issues with certain parser generators.");
             }
         }
     }
 
     private static boolean isLeftRecursive(EBNFAssignment assignment) {
 
-        ArrayList<String> visited = new ArrayList<String>();
+        ArrayList<String> visited = new ArrayList<>();
 
         String name = assignment.getName();
 
-        Stack<EBNFAssignment> stack = new Stack<EBNFAssignment>();
+        Stack<EBNFAssignment> stack = new Stack<>();
         stack.push(assignment);
         visited.add(assignment.getName());
 
@@ -56,7 +56,7 @@ public class EBNFLeftRecursionAnnotator implements Annotator {
     }
 
     private static ArrayList<String> getIdentifiers(EBNFAssignment assignment) {
-        ArrayList<String> identifiers = new ArrayList<String>();
+        ArrayList<String> identifiers = new ArrayList<>();
 
             List<EBNFRuleElement> rules = assignment.getRules().getRuleElementList();
             for (EBNFRuleElement rule : rules) {
