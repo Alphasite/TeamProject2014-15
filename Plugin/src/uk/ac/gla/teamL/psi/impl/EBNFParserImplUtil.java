@@ -4,6 +4,7 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiWhiteSpace;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFIcon;
@@ -11,6 +12,8 @@ import uk.ac.gla.teamL.EBNFReference;
 import uk.ac.gla.teamL.psi.*;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: nishad
@@ -122,5 +125,30 @@ public class EBNFParserImplUtil {
                 return EBNFIcon.FILE;
             }
         };
+    }
+
+    @NotNull
+    public static List<List<EBNFRuleElement>> getRuleSegmentList(EBNFRules rules) {
+        List<List<EBNFRuleElement>> segments = new ArrayList<>();
+        PsiElement child = rules.getFirstChild();
+
+        List<EBNFRuleElement> segment = new ArrayList<>();
+        for (EBNFRuleElement ruleElement : rules.getRuleElementList()) {
+            segment.add(ruleElement);
+
+            PsiElement nextSibling = ruleElement.getNextSibling();
+            if (nextSibling instanceof PsiWhiteSpace) {
+                nextSibling = nextSibling.getNextSibling();
+            }
+
+            if (nextSibling instanceof EBNFOr) {
+                segments.add(segment);
+                segment = new ArrayList<>();
+            }
+        }
+
+        segments.add(segment);
+
+        return segments;
     }
 }
