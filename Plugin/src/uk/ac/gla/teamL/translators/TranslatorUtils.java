@@ -2,7 +2,7 @@ package uk.ac.gla.teamL.translators;
 
 import com.intellij.psi.util.PsiTreeUtil;
 import uk.ac.gla.teamL.editor.Annotations;
-import uk.ac.gla.teamL.inspections.Annotators.EBNFAnnotationAnnotator;
+import uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator;
 import uk.ac.gla.teamL.psi.EBNFAnnotation;
 import uk.ac.gla.teamL.psi.EBNFAny;
 import uk.ac.gla.teamL.psi.EBNFAssignment;

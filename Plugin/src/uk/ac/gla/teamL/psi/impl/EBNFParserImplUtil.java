@@ -147,6 +147,8 @@ public class EBNFParserImplUtil {
             }
         }
 
+
+
         segments.add(segment);
 
         return segments;
