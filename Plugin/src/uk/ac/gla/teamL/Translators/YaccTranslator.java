@@ -40,6 +40,7 @@ public class YaccTranslator extends Translator {
 
         return declarations.toString()
                 .concat("%%")
+                .concat("\n")
                 .concat(literals.toString())
                 .concat("%%")
                 .concat(rules.toString());
@@ -52,7 +53,7 @@ public class YaccTranslator extends Translator {
         assert ruleElement != null;
 
         declarations.append("#define").append(" ").append(ruleElement.toString().toUpperCase()).append(" ")
-                .append(declarationNumber);
+                .append(declarationNumber).append("\n");
     }
 
     public void appendLiteral(EBNFAssignment assignment, StringBuilder builder) {
