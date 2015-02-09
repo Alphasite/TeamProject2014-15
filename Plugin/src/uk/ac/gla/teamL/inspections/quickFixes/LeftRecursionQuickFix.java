@@ -2,21 +2,15 @@ package uk.ac.gla.teamL.inspections.quickFixes;
 
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.parser.EBNFParserUtil;
 import uk.ac.gla.teamL.psi.*;
-import uk.ac.gla.teamL.psi.impl.EBNFParserImplUtil;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static uk.ac.gla.teamL.parser.EBNFParserUtil.findRules;
 
@@ -71,16 +65,16 @@ public class LeftRecursionQuickFix implements LocalQuickFix {
         String primedName = name + "_";
 
         EBNFRules rules = assignment.getRules();
-        List<List<EBNFRuleElement>> productions = EBNFParserImplUtil.getRuleSegmentList(rules);
+        List<EBNFRulesSegment> productions = rules.getRulesSegmentList(); //EBNFParserImplUtil.getRuleSegmentList(rules);
 
         ArrayList<List<EBNFRuleElement>> recursiveProductions = new ArrayList<>();
         ArrayList<List<EBNFRuleElement>> nonRecursiveProductions = new ArrayList<>();
 
-        for (List<EBNFRuleElement> production: productions) {
-            if (isDirectLeftRecursive(name, production)) {
-                recursiveProductions.add(production);
+        for (EBNFRulesSegment production: productions) {
+            if (isDirectLeftRecursive(name, production.getRuleElementList())) {
+                recursiveProductions.add(production.getRuleElementList());
             } else {
-                nonRecursiveProductions.add(production);
+                nonRecursiveProductions.add(production.getRuleElementList());
             }
         }
         if (recursiveProductions.isEmpty()) {
@@ -147,10 +141,10 @@ public class LeftRecursionQuickFix implements LocalQuickFix {
         rAssignmentBuilder.append("let " + assignment.getName() + " =");
 
         EBNFRules rules = assignment.getRules();
-        List<List<EBNFRuleElement>> productions = EBNFParserImplUtil.getRuleSegmentList(rules);
+        List<EBNFRulesSegment> productions = rules.getRulesSegmentList();
 
         for (int i = 0; i < productions.size(); i++) {
-            List<EBNFRuleElement> production = productions.get(i);
+            List<EBNFRuleElement> production = productions.get(i).getRuleElementList();
             if ((production.get(0).getFirstChild() instanceof EBNFIdentifier) && (production.get(0).getText().equals(identifier))) {
                 String newProductions = replaceLeftmostIdentifier(production, identifier);
                 rAssignmentBuilder.append(" " + newProductions);
@@ -189,9 +183,9 @@ public class LeftRecursionQuickFix implements LocalQuickFix {
         PsiFile file = production.get(0).getContainingFile();
         EBNFAssignment assignment = getAssignment(identifier, file);
         EBNFRules rules = assignment.getRules();
-        List<List<EBNFRuleElement>> productions = EBNFParserImplUtil.getRuleSegmentList(rules);
+        List<EBNFRulesSegment> productions = rules.getRulesSegmentList();
         for (int i = 0; i < productions.size(); i++){
-            List<EBNFRuleElement> rProduction = productions.get(i);
+            List<EBNFRuleElement> rProduction = productions.get(i).getRuleElementList();
             StringBuilder alphaBuilder = new StringBuilder();
             for (EBNFRuleElement element: rProduction) {
                 alphaBuilder.append(element.getText() + " ");

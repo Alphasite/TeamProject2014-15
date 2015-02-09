@@ -1,10 +1,13 @@
 package uk.ac.gla.teamL.inspections;
 
-import com.intellij.codeInspection.*;
-import com.intellij.openapi.project.Project;
+import com.intellij.codeInspection.InspectionManager;
+import com.intellij.codeInspection.LocalInspectionTool;
+import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFFile;
@@ -13,7 +16,7 @@ import uk.ac.gla.teamL.parser.EBNFParserUtil;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
 import uk.ac.gla.teamL.psi.EBNFIdentifier;
 import uk.ac.gla.teamL.psi.EBNFOr;
-import uk.ac.gla.teamL.psi.EBNFRuleElement;
+import uk.ac.gla.teamL.psi.EBNFRulesSegment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +81,7 @@ public class EBNFLeftRecursionInspection extends LocalInspectionTool {
 
         while (!stack.empty()) {
             EBNFAssignment poppedAssignment = stack.pop();
-            ArrayList<String> identifiers = getLeftmostIdentifiers(poppedAssignment);
+            List<String> identifiers = getLeftmostIdentifiers(poppedAssignment);
 
             for (String identifier: identifiers) {
                 if (identifier.equals(name)) {
@@ -96,11 +99,16 @@ public class EBNFLeftRecursionInspection extends LocalInspectionTool {
         return false;
     }
 
-    private static ArrayList<String> getLeftmostIdentifiers(EBNFAssignment assignment) {
-        ArrayList<String> identifiers = new ArrayList<String>();
+    private static List<String> getLeftmostIdentifiers(EBNFAssignment assignment) {
+        List<String> identifiers = new ArrayList<String>();
 
-        List<EBNFRuleElement> rules = assignment.getRules().getRuleElementList();
-        for (EBNFRuleElement rule : rules) {
+        List<EBNFRulesSegment> rulesSegments = PsiTreeUtil.getChildrenOfTypeAsList(
+            assignment.getRules(),
+            EBNFRulesSegment.class
+        );
+
+        for (EBNFRulesSegment rule : rulesSegments) {
+
             if (rule.getFirstChild() instanceof EBNFIdentifier) {
 
                 PsiElement prevSibling = rule.getPrevSibling();
@@ -119,6 +127,7 @@ public class EBNFLeftRecursionInspection extends LocalInspectionTool {
                 }
             }
         }
+
         return identifiers;
     }
 

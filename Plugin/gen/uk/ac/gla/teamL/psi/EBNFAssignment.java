@@ -12,6 +12,9 @@ public interface EBNFAssignment extends EBNFNamedElement {
   List<EBNFAnnotation> getAnnotationList();
 
   @NotNull
+  EBNFEquals getEquals();
+
+  @NotNull
   EBNFRules getRules();
 
   @NotNull
@@ -27,8 +30,5 @@ public interface EBNFAssignment extends EBNFNamedElement {
 
   @NotNull
   EBNFIdentifier getId();
-
-  @NotNull
-  PsiElement getGetEquals();
 
 }

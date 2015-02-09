@@ -200,7 +200,7 @@ public class EBNFParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // annotation* let identifier EQ rules terminal
+  // annotation* let identifier equals rules terminal
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
     boolean r, p;
@@ -208,7 +208,7 @@ public class EBNFParser implements PsiParser {
     r = assignment_0(b, l + 1);
     r = r && consumeToken(b, LET);
     r = r && identifier(b, l + 1);
-    r = r && consumeToken(b, EQ);
+    r = r && equals(b, l + 1);
     r = r && rules(b, l + 1);
     p = r; // pin = rules
     r = r && consumeToken(b, TERMINAL);

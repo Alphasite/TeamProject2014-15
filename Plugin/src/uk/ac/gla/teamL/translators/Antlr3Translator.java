@@ -215,8 +215,10 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
     private void generateRules(EBNFRules rule, StringBuilder builder) {
 
         for (PsiElement element : rule.getChildren()) {
-            if (element instanceof EBNFRuleElement) {
-                generateRuleElement((EBNFRuleElement) element, builder);
+            if (element instanceof EBNFRulesSegment) {
+                for (EBNFRuleElement ruleElement : ((EBNFRulesSegment) element).getRuleElementList()) {
+                    generateRuleElement(ruleElement, builder);
+                }
             } else if (element instanceof EBNFOr) {
                 builder.append("|");
             }

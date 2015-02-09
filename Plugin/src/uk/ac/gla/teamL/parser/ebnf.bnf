@@ -81,7 +81,7 @@ annotation ::= ANNOTATION_OPERATOR ID {
 	]
 }
 
-assignment ::=  annotation* let identifier EQ rules terminal {
+assignment ::=  annotation* let identifier equals rules terminal {
 	mixin="uk.ac.gla.teamL.psi.impl.EBNFNamedElementImpl"
 	implements="uk.ac.gla.teamL.psi.EBNFNamedElement"
 	pin = rules
@@ -96,6 +96,8 @@ assignment ::=  annotation* let identifier EQ rules terminal {
 		getEquals = "EQ"
 	]
 }
+
+equals ::= EQ
 
 assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB | ANNOTATION_OPERATOR)
 

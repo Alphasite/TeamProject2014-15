@@ -45,6 +45,10 @@ public class EBNFFormattingModelBuilder implements FormattingModelBuilder {
         );
 
         SpacingBuilder spacingBuilder = new SpacingBuilder(settings, EBNFLanguage.INSTANCE)
+                                                .before(EBNFTypes.QUANTIFIER)
+                                                    .none()
+                                                .after(EBNFTypes.QUANTIFIER)
+                                                    .spaces(1)
                                                 .after(EBNFTypes.ANNOTATION)
                                                     .spaces(1)
                                                 .around(bothSideSpaceElementSet)

@@ -3,13 +3,11 @@ package uk.ac.gla.teamL.editor.codeFormatter;
 import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.formatter.common.AbstractBlock;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.Nullable;
-import uk.ac.gla.teamL.psi.EBNFAssignment;
-import uk.ac.gla.teamL.psi.EBNFRules;
-import uk.ac.gla.teamL.psi.EBNFTypes;
+import uk.ac.gla.teamL.psi.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,16 @@ public class EBNFBlock extends AbstractBlock {
                 Alignment alignment;
                 if (child instanceof EBNFAssignment) {
                     alignment = Alignment.createChildAlignment(Alignment.createAlignment());
+                    blocks.add(new EBNFBlock(
+                        ((EBNFAssignment) child).getEquals().getNode(),
+                        Wrap.createWrap(WrapType.CHOP_DOWN_IF_LONG, false),
+                        alignment,
+                        spacingBuilder
+                    ));
+
+                } else if (child instanceof EBNFRules) {
+                    alignment = Alignment.createChildAlignment(Alignment.createAlignment());
+
                 } else {
                     alignment = Alignment.createAlignment();
                 }
@@ -94,29 +102,18 @@ public class EBNFBlock extends AbstractBlock {
             if (myNode.getPsi().getParent() instanceof EBNFAssignment) {
                 // Find the offset of the '='
                 EBNFAssignment assignment = (EBNFAssignment) myNode.getPsi().getParent();
-                PsiElement prevSibling = assignment.getRules().getPrevSibling();
-
-                if (prevSibling instanceof PsiWhiteSpace) {
-                    prevSibling = prevSibling.getPrevSibling();
-                }
+                PsiElement prevSibling = PsiTreeUtil.findChildOfType(assignment, EBNFEquals.class);
 
                 return Indent.getIndent(
                     Indent.Type.NONE,
-                    prevSibling.getTextRange().getEndOffset(),
+                    prevSibling.getTextRange().getStartOffset(),
                     true,
                     true
                 );
             } else {
-                // Offset to the start of the end of the previous node.
-                PsiElement prevSibling = myNode.getPsi().getPrevSibling();
-
-                if (prevSibling instanceof PsiWhiteSpace) {
-                    prevSibling = prevSibling.getPrevSibling();
-                }
-
                 return Indent.getIndent(
                     Indent.Type.NORMAL,
-                    prevSibling.getTextRange().getEndOffset(),
+                    myNode.getTextRange().getStartOffset(),
                     false,
                     false
                 );

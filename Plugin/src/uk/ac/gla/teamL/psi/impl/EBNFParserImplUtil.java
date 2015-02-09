@@ -4,7 +4,6 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiWhiteSpace;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFIcon;
@@ -12,8 +11,6 @@ import uk.ac.gla.teamL.EBNFReference;
 import uk.ac.gla.teamL.psi.*;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: nishad
@@ -126,63 +123,4 @@ public class EBNFParserImplUtil {
             }
         };
     }
-
-//    @NotNull
-//    public static List<List<EBNFRuleElement>> getRuleSegmentList(EBNFRules rules) {
-//        List<List<EBNFRuleElement>> segments = new ArrayList<>();
-//        PsiElement child = rules.getFirstChild();
-//
-//        List<EBNFRuleElement> segment = new ArrayList<>();
-//        while (child.getNextSibling() != null) {
-//            if (child instanceof EBNFOr) {
-//                segments.add(segment);
-//                segment = new ArrayList<>();
-//            } else {
-//                segment.add((EBNFRuleElement) child);
-//            }
-//        }
-//
-//        segments.add(segment);
-//
-//        return segments;
-//    }
-    @NotNull
-    public static List<List<EBNFRuleElement>> getRuleSegmentList(EBNFRules rules) {
-        List<List<EBNFRuleElement>> segments = new ArrayList<>();
-        //PsiElement child = rules.getFirstChild();
-
-        List<EBNFRuleElement> segment = new ArrayList<>();
-        for (EBNFRuleElement ruleElement : rules.getRuleElementList()) {
-<<<<<<< HEAD
-
-            segment.add(ruleElement);
-
-            if (ruleElement.getNextSibling() instanceof PsiWhiteSpace) {
-                if (ruleElement.getNextSibling().getNextSibling() instanceof EBNFOr) {
-                    segments.add(segment);
-                    segment = new ArrayList<>();
-                }
-            } else if (ruleElement.getNextSibling() instanceof EBNFOr) {
-=======
-            segment.add(ruleElement);
-
-            PsiElement nextSibling = ruleElement.getNextSibling();
-            if (nextSibling instanceof PsiWhiteSpace) {
-                nextSibling = nextSibling.getNextSibling();
-            }
-
-            if (nextSibling instanceof EBNFOr) {
->>>>>>> 0df98a98a77ed026860f2623c8a2ca74a7088ef6
-                segments.add(segment);
-                segment = new ArrayList<>();
-            }
-        }
-
-
-
-        segments.add(segment);
-
-        return segments;
-    }
-
 }
