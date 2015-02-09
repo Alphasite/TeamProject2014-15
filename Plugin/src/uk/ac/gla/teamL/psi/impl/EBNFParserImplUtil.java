@@ -1,9 +1,19 @@
 package uk.ac.gla.teamL.psi.impl;
 
-import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiWhiteSpace;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import uk.ac.gla.teamL.EBNFIcon;
+import uk.ac.gla.teamL.EBNFReference;
 import uk.ac.gla.teamL.psi.*;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: nishad
@@ -18,30 +28,37 @@ public class EBNFParserImplUtil {
     }
 
     @NotNull
+    public static PsiElement setName(EBNFAssignment element, String newName) {
+        element.getId().setName(newName);
+        return element;
+    }
+
+    @NotNull
+    public static PsiElement getNameIdentifier(EBNFAssignment element) {
+        return element.getId().getId();
+    }
+
+    @NotNull
     public static String getName(EBNFIdentifier element) {
         return element.getId().getText();
     }
 
+    @NotNull
     public static PsiElement setName(EBNFIdentifier element, String newName) {
-        ASTNode oldNode = element.getNode().findChildByType(EBNFTypes.ID);
-
-        if (oldNode != null) {
-            EBNFIdentifier identifier = EBNFElementFactory.createIdentifier(element.getProject(), newName);
-
-            element.getNode().replaceChild(oldNode, (ASTNode) identifier);
-        }
+        EBNFIdentifier identifier = EBNFElementFactory.createIdentifier(element.getProject(), newName);
+        element.replace(identifier);
 
         return element;
     }
 
     @NotNull
     public static PsiElement getNameIdentifier(EBNFIdentifier element) {
-        ASTNode node = element.getNode().findChildByType(EBNFTypes.ID);
-        if (node != null) {
-            return node.getPsi();
-        } else {
-            return null;
-        }
+        return element.getId();
+    }
+
+    @NotNull
+    public static PsiReference getReference(EBNFIdentifier identifier) {
+        return new EBNFReference(identifier, new TextRange(0, identifier.getName().length()));
     }
 
     @NotNull
@@ -58,7 +75,7 @@ public class EBNFParserImplUtil {
 //            toString = toString.replace("\\", "");
             return toString.substring(1, toString.length() - 1);
 
-        } else  if((stringNode = string.getStringTripleQuotes()) != null) {
+        } else if ((stringNode = string.getStringTripleQuotes()) != null) {
             String toString = stringNode.getText();
 //            toString = toString.replace("\\", "");
             return toString.substring(3, toString.length() - 3);
@@ -87,4 +104,72 @@ public class EBNFParserImplUtil {
     public static String toString(EBNFAssignment assignment) {
         return "Assignment: " + assignment.getName();
     }
+
+    public static ItemPresentation getPresentation(final EBNFAssignment element) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return element.getName();
+            }
+
+            @Nullable
+            @Override
+            public String getLocationString() {
+                return element.getContainingFile() != null? element.getContainingFile().getName() : null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return EBNFIcon.FILE;
+            }
+        };
+    }
+
+//    @NotNull
+//    public static List<List<EBNFRuleElement>> getRuleSegmentList(EBNFRules rules) {
+//        List<List<EBNFRuleElement>> segments = new ArrayList<>();
+//        PsiElement child = rules.getFirstChild();
+//
+//        List<EBNFRuleElement> segment = new ArrayList<>();
+//        while (child.getNextSibling() != null) {
+//            if (child instanceof EBNFOr) {
+//                segments.add(segment);
+//                segment = new ArrayList<>();
+//            } else {
+//                segment.add((EBNFRuleElement) child);
+//            }
+//        }
+//
+//        segments.add(segment);
+//
+//        return segments;
+//    }
+    @NotNull
+    public static List<List<EBNFRuleElement>> getRuleSegmentList(EBNFRules rules) {
+        List<List<EBNFRuleElement>> segments = new ArrayList<>();
+        //PsiElement child = rules.getFirstChild();
+
+        List<EBNFRuleElement> segment = new ArrayList<>();
+        for (EBNFRuleElement ruleElement : rules.getRuleElementList()) {
+
+            segment.add(ruleElement);
+
+            if (ruleElement.getNextSibling() instanceof PsiWhiteSpace) {
+                if (ruleElement.getNextSibling().getNextSibling() instanceof EBNFOr) {
+                    segments.add(segment);
+                    segment = new ArrayList<>();
+                }
+            } else if (ruleElement.getNextSibling() instanceof EBNFOr) {
+                segments.add(segment);
+                segment = new ArrayList<>();
+            }
+        }
+
+        segments.add(segment);
+
+        return segments;
+    }
+
 }

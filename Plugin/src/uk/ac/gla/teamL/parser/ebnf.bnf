@@ -80,18 +80,27 @@ annotation ::= ANNOTATION_OPERATOR ID {
 }
 
 assignment ::=  annotation* let identifier EQ rules terminal {
+	mixin="uk.ac.gla.teamL.psi.impl.EBNFNamedElementImpl"
+	implements="uk.ac.gla.teamL.psi.EBNFNamedElement"
 	pin = rules
 	recoverWhile = assignment_recover
 	methods = [
-		toString
+//		toString
 		getName
+		getNameIdentifier
+		setName
+		getPresentation
 		ID="identifier"
 	]
 }
 
 assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB | ANNOTATION_OPERATOR)
 
-rules ::= ruleElement (or? ruleElement)*;
+rules ::= ruleElement (or? ruleElement)* {
+	methods = [
+		getRuleSegmentList
+	]
+}
 
 ruleElement ::= predicate?
 	          ( string
@@ -141,12 +150,11 @@ string ::= string_tripleQuotes
 }
 
 identifier ::= ID {
-	mixin="uk.ac.gla.teamL.psi.impl.EBNFNamedElementImpl"
-	implements="uk.ac.gla.teamL.psi.EBNFNamedElement"
 	methods=[
-		toString
+//		toString
 		getName
 		setName
 		getNameIdentifier
+		getReference
 	]
 }

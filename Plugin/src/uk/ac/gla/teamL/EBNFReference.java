@@ -3,11 +3,14 @@ package uk.ac.gla.teamL;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReferenceBase;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.parser.EBNFParserUtil;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +20,12 @@ import java.util.List;
  * Date: 25/01/15
  * Time: 21:13
  */
-public class EBNFReference extends PsiReferenceBase<PsiNamedElement> {
+public class EBNFReference extends PsiReferenceBase<EBNFIdentifier> {
     private String name;
 
     public EBNFReference(@NotNull PsiElement element, TextRange textRange) {
-        super((PsiNamedElement) element, textRange);
-        name = ((PsiNamedElement) element).getName();
+        super((EBNFIdentifier) element, textRange);
+        name = ((EBNFIdentifier) element).getName();
     }
 
     @Nullable
@@ -39,12 +42,17 @@ public class EBNFReference extends PsiReferenceBase<PsiNamedElement> {
         List<LookupElement> variants = new ArrayList<LookupElement>();
 
         for (EBNFAssignment rule : properties) {
-            if (rule.getName() != null && rule.getName().length() > 0) {
-                variants.add(LookupElementBuilder.create(rule.getId()));
+            if (rule.getName().length() > 0) {
+                variants.add(LookupElementBuilder.create(rule));
             }
         }
 
         return variants.toArray();
+    }
+
+    @Override
+    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        return ((EBNFIdentifier) myElement).setName(newElementName);
     }
 
     @Override

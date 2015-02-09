@@ -57,7 +57,7 @@ public class EBNFLeftRecursionInspection extends LocalInspectionTool {
                     problemsHolder.registerProblem(
                             ebnfAssignment,
                             "Left Recursive: Some parser generators don't like this.",
-                            new LeftRecursionQuickFix()
+                            new LeftRecursionQuickFix(ebnfAssignment.getContainingFile())
                     );
                 }
             }

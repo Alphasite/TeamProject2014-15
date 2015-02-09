@@ -58,7 +58,7 @@ public class EBNFUndeclaredRuleInspection extends LocalInspectionTool {
 
             Set<String> declaredIdentifiers = new HashSet<>();
 
-            if (rules != null) {
+            if (rules != null && rules.length > 0) {
                 for (EBNFAssignment rule: rules) {
                     declaredIdentifiers.add(rule.getName().toLowerCase());
                 }

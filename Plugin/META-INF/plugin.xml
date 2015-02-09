@@ -29,14 +29,14 @@
     <lang.parserDefinition language="EBNF" implementationClass="uk.ac.gla.teamL.parser.EBNFParserDefinition"/>
     <lang.syntaxHighlighterFactory key="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFSyntaxHighlighterFactory"/>
     <lang.commenter language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCommenter"/>
-    <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCompletionContributor"/>
+    <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.contributors.EBNFCompletionContributor"/>
 
     <colorSettingsPage implementation="uk.ac.gla.teamL.EBNFColourSettingsPage"/>
 
     <lang.findUsagesProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFFindUsagesProvider"/>
 
-    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRangeErrorAnnotator"/>
-    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFAnnotationAnnotator"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Annotators.EBNFRangeErrorAnnotator"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Annotators.EBNFAnnotationAnnotator"/>
 
     <localInspection language="EBNF" shortName="EBNFUnusedRuleInspection" displayName="Unused rule" groupName="Grammar Inspections"
                      enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUnusedRuleInspection"/>
@@ -44,13 +44,17 @@
                      enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUndeclaredRuleInspection"/>
     <localInspection language="EBNF" shortName="EBNFDuplicateRuleInspection" displayName="Duplicate Reference" groupName="Grammar Inspections"
                      enabledByDefault="true" level="ERROR" implementationClass="uk.ac.gla.teamL.inspections.EBNFDuplicateRuleInspection"/>
-
     <localInspection language="EBNF" shortName="EBNFLeftRecursionInspection" displayName="Left Recursion" groupName="Grammar Inspections"
                      enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFLeftRecursionInspection"/>
 
     <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
-
     <elementDescriptionProvider implementation="uk.ac.gla.teamL.EBNFDescriptionProvider"/>
+    <gotoSymbolContributor implementation="uk.ac.gla.teamL.editor.contributors.EBNFChooseByNameContributor"/>
+    <defaultLiveTemplatesProvider implementation="uk.ac.gla.teamL.editor.EBNFDefaultLiveTemplateProvider"/>
+    <lang.psiStructureViewFactory language="EBNF" implementationClass="uk.ac.gla.teamL.editor.structureView.EBNFStructureViewFactory"/>
+    <lang.namesValidator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Validator.EBNFNamesValidator"/>
+    <lang.braceMatcher language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFBraceMatcher"/>
+
   </extensions>
 
   <application-components>
