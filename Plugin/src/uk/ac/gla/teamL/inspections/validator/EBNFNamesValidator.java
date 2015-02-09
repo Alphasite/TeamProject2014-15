@@ -1,10 +1,10 @@
-package uk.ac.gla.teamL.inspections.Validator;
+package uk.ac.gla.teamL.inspections.validator;
 
 import com.intellij.lang.refactoring.NamesValidator;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import static uk.ac.gla.teamL.inspections.Annotators.EBNFAnnotationAnnotator.isValidAnnotation;
+import static uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator.isValidAnnotation;
 
 /**
  * User: nishad

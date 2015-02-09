@@ -35,8 +35,8 @@
 
     <lang.findUsagesProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFFindUsagesProvider"/>
 
-    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Annotators.EBNFRangeErrorAnnotator"/>
-    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Annotators.EBNFAnnotationAnnotator"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.annotators.EBNFRangeErrorAnnotator"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator"/>
 
     <localInspection language="EBNF" shortName="EBNFUnusedRuleInspection" displayName="Unused rule" groupName="Grammar Inspections"
                      enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUnusedRuleInspection"/>
@@ -52,7 +52,7 @@
     <gotoSymbolContributor implementation="uk.ac.gla.teamL.editor.contributors.EBNFChooseByNameContributor"/>
     <defaultLiveTemplatesProvider implementation="uk.ac.gla.teamL.editor.EBNFDefaultLiveTemplateProvider"/>
     <lang.psiStructureViewFactory language="EBNF" implementationClass="uk.ac.gla.teamL.editor.structureView.EBNFStructureViewFactory"/>
-    <lang.namesValidator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.Validator.EBNFNamesValidator"/>
+    <lang.namesValidator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.validator.EBNFNamesValidator"/>
     <lang.braceMatcher language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFBraceMatcher"/>
 
   </extensions>

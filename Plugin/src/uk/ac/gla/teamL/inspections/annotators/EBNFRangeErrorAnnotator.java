@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.inspections.Annotators;
+package uk.ac.gla.teamL.inspections.annotators;
 
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
