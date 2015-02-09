@@ -1,23 +1,26 @@
 package uk.ac.gla.teamL.inspections;
 
-import com.intellij.codeInspection.InspectionManager;
-import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
+import com.intellij.codeInspection.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiWhiteSpace;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFFile;
+import uk.ac.gla.teamL.inspections.quickFixes.LeftRecursionQuickFix;
+import uk.ac.gla.teamL.parser.EBNFParserUtil;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
+import uk.ac.gla.teamL.psi.EBNFIdentifier;
+import uk.ac.gla.teamL.psi.EBNFOr;
+import uk.ac.gla.teamL.psi.EBNFRuleElement;
 
-/**
- * User: nishad
- * Date: 23/11/14
- * Time: 16:26
- */
-public class EBNFLeftRecursionInspection extends LocalInspectionTool implements LocalQuickFix {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+
+public class EBNFLeftRecursionInspection extends LocalInspectionTool {
 
     @NotNull
     @Override
@@ -45,43 +48,88 @@ public class EBNFLeftRecursionInspection extends LocalInspectionTool implements 
     @Override
     public ProblemDescriptor[] checkFile(@NotNull PsiFile file, @NotNull InspectionManager manager, boolean isOnTheFly) {
         ProblemDescriptor[] problems = super.checkFile(file, manager, isOnTheFly);
+        ProblemsHolder problemsHolder = new ProblemsHolder(manager, file, isOnTheFly);
 
         if (file instanceof EBNFFile) {
             //TODO Implement this method.
+            for (EBNFAssignment ebnfAssignment : EBNFParserUtil.findRules(file)) {
+                if (isLeftRecursive(ebnfAssignment)) {
+                    problemsHolder.registerProblem(
+                            ebnfAssignment,
+                            "Left Recursive: Some parser generators don't like this.",
+                            new LeftRecursionQuickFix(ebnfAssignment.getContainingFile())
+                    );
+                }
+            }
         }
 
-        return problems;
+        return problemsHolder.getResultsArray();
     }
 
+    private static boolean isLeftRecursive(EBNFAssignment assignment) {
 
-    // Quickfix Methods.
-    // I'm a bit undecided if this should be a separate class, but w/e.
-    // It seems okay atm, in its current state. Lets see how big it gets...
+        ArrayList<String> visited = new ArrayList<String>();
 
-    @NotNull
-    @Override
-    public String getName() {
-        return "Remove Left Recursion";
-    }
+        String name = assignment.getName();
 
-    @NotNull
-    @Override
-    public String getFamilyName() {
-        return this.getName();
-    }
+        Stack<EBNFAssignment> stack = new Stack<EBNFAssignment>();
+        stack.push(assignment);
+        visited.add(assignment.getName());
 
-    @Override
-    public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor problemDescriptor) {
-        PsiElement element = problemDescriptor.getPsiElement();
+        while (!stack.empty()) {
+            EBNFAssignment poppedAssignment = stack.pop();
+            ArrayList<String> identifiers = getLeftmostIdentifiers(poppedAssignment);
 
-        if (!element.isValid()) {
-            return;
+            for (String identifier: identifiers) {
+                if (identifier.equals(name)) {
+                    stack.clear();
+                    return true;
+                } else {
+                    EBNFAssignment idAssignment = getAssignment(identifier, poppedAssignment);
+                    if (idAssignment != null && !(visited.contains(idAssignment.getName()))) {
+                        stack.push(idAssignment);
+                        visited.add(idAssignment.getName());
+                    }
+                }
+            }
         }
+        return false;
+    }
 
-        PsiElement parent = element.getParent();
+    private static ArrayList<String> getLeftmostIdentifiers(EBNFAssignment assignment) {
+        ArrayList<String> identifiers = new ArrayList<String>();
 
-        if (element instanceof EBNFAssignment) {
-            //TODO implement this as well.
+        List<EBNFRuleElement> rules = assignment.getRules().getRuleElementList();
+        for (EBNFRuleElement rule : rules) {
+            if (rule.getFirstChild() instanceof EBNFIdentifier) {
+
+                PsiElement prevSibling = rule.getPrevSibling();
+
+                if (prevSibling == null) {
+                    identifiers.add(rule.getText());
+                    continue;
+                }
+
+                if (prevSibling instanceof PsiWhiteSpace) {
+                    prevSibling = prevSibling.getPrevSibling();
+                }
+
+                if (prevSibling instanceof EBNFOr) {
+                    identifiers.add(rule.getText());
+                }
+            }
+        }
+        return identifiers;
+    }
+
+    private static EBNFAssignment getAssignment(String identifier, EBNFAssignment assignment) {
+        PsiFile file = assignment.getContainingFile();
+        List<EBNFAssignment> rules = EBNFParserUtil.findRules(file, identifier);
+
+        if (rules.size() > 0) {
+            return rules.get(0);
+        } else {
+            return null;
         }
     }
 }

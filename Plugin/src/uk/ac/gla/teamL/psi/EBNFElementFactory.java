@@ -27,6 +27,17 @@ public class EBNFElementFactory {
         
     }
 
+    public static EBNFAssignment createAssignment(Project project, String name, String body) {
+        final EBNFFile file = createFile(project, "let "+name+" = " + name + " ;");
+        List<EBNFAssignment> rules = EBNFParserUtil.findRules(file);
+
+        if (rules.size() >= 1) {
+            return rules.get(0);
+        } else {
+            return null;
+        }
+    }
+
     public static EBNFFile createFile(Project project, String text) {
         String name = "dummy.ebnf";
         return (EBNFFile) PsiFileFactory.getInstance(project).createFileFromText(

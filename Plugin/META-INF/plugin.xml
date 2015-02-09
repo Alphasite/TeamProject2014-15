@@ -44,6 +44,8 @@
                      enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUndeclaredRuleInspection"/>
     <localInspection language="EBNF" shortName="EBNFDuplicateRuleInspection" displayName="Duplicate Reference" groupName="Grammar Inspections"
                      enabledByDefault="true" level="ERROR" implementationClass="uk.ac.gla.teamL.inspections.EBNFDuplicateRuleInspection"/>
+    <localInspection language="EBNF" shortName="EBNFLeftRecursionInspection" displayName="Left Recursion" groupName="Grammar Inspections"
+                     enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFLeftRecursionInspection"/>
 
     <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
     <elementDescriptionProvider implementation="uk.ac.gla.teamL.EBNFDescriptionProvider"/>
