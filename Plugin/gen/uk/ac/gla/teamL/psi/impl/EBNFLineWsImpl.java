@@ -10,27 +10,15 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static uk.ac.gla.teamL.psi.EBNFTypes.*;
 import uk.ac.gla.teamL.psi.*;
 
-public class EBNFRulesImpl extends EBNFCompositeElementImpl implements EBNFRules {
+public class EBNFLineWsImpl extends EBNFCompositeElementImpl implements EBNFLineWs {
 
-  public EBNFRulesImpl(ASTNode node) {
+  public EBNFLineWsImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof EBNFVisitor) ((EBNFVisitor)visitor).visitRules(this);
+    if (visitor instanceof EBNFVisitor) ((EBNFVisitor)visitor).visitLineWs(this);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<EBNFOr> getOrList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, EBNFOr.class);
-  }
-
-  @Override
-  @NotNull
-  public List<EBNFRulesSegment> getRulesSegmentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, EBNFRulesSegment.class);
   }
 
 }

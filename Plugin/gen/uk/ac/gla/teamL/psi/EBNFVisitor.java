@@ -6,6 +6,18 @@ import com.intellij.psi.PsiElementVisitor;
 
 public class EBNFVisitor extends PsiElementVisitor {
 
+  public void visitEol(@NotNull EBNFEol o) {
+    visitCompositeElement(o);
+  }
+
+  public void visitLineWs(@NotNull EBNFLineWs o) {
+    visitCompositeElement(o);
+  }
+
+  public void visitWhiteSpace(@NotNull EBNFWhiteSpace o) {
+    visitCompositeElement(o);
+  }
+
   public void visitAnnotation(@NotNull EBNFAnnotation o) {
     visitCompositeElement(o);
   }
@@ -23,6 +35,10 @@ public class EBNFVisitor extends PsiElementVisitor {
   }
 
   public void visitAssignmentRecover(@NotNull EBNFAssignmentRecover o) {
+    visitCompositeElement(o);
+  }
+
+  public void visitEquals(@NotNull EBNFEquals o) {
     visitCompositeElement(o);
   }
 
@@ -59,6 +75,10 @@ public class EBNFVisitor extends PsiElementVisitor {
   }
 
   public void visitRules(@NotNull EBNFRules o) {
+    visitCompositeElement(o);
+  }
+
+  public void visitRulesSegment(@NotNull EBNFRulesSegment o) {
     visitCompositeElement(o);
   }
 

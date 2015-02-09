@@ -126,31 +126,4 @@ public class EBNFParserImplUtil {
             }
         };
     }
-
-    @NotNull
-    public static List<List<EBNFRuleElement>> getRuleSegmentList(EBNFRules rules) {
-        List<List<EBNFRuleElement>> segments = new ArrayList<>();
-        PsiElement child = rules.getFirstChild();
-
-        List<EBNFRuleElement> segment = new ArrayList<>();
-        for (EBNFRuleElement ruleElement : rules.getRuleElementList()) {
-            segment.add(ruleElement);
-
-            PsiElement nextSibling = ruleElement.getNextSibling();
-            if (nextSibling instanceof PsiWhiteSpace) {
-                nextSibling = nextSibling.getNextSibling();
-            }
-
-            if (nextSibling instanceof EBNFOr) {
-                segments.add(segment);
-                segment = new ArrayList<>();
-            }
-        }
-
-
-
-        segments.add(segment);
-
-        return segments;
-    }
 }

@@ -53,6 +53,8 @@
     <lang.namesValidator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.validator.EBNFNamesValidator"/>
     <lang.braceMatcher language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFBraceMatcher"/>
 
+    <lang.formatter language="EBNF" implementationClass="uk.ac.gla.teamL.editor.codeFormatter.EBNFFormattingModelBuilder"/>
+
   </extensions>
 
   <application-components>

@@ -13,7 +13,10 @@ public interface EBNFTypes {
   IElementType ARBITRARY_QUANTIFIER = new EBNFElementType("ARBITRARY_QUANTIFIER");
   IElementType ASSIGNMENT = new EBNFElementType("ASSIGNMENT");
   IElementType ASSIGNMENT_RECOVER = new EBNFElementType("ASSIGNMENT_RECOVER");
+  IElementType EOL = new EBNFElementType("EOL");
+  IElementType EQUALS = new EBNFElementType("EQUALS");
   IElementType IDENTIFIER = new EBNFElementType("IDENTIFIER");
+  IElementType LINE_WS = new EBNFElementType("LINE_WS");
   IElementType NESTED_RULES = new EBNFElementType("NESTED_RULES");
   IElementType NUM = new EBNFElementType("NUM");
   IElementType OR = new EBNFElementType("OR");
@@ -21,8 +24,10 @@ public interface EBNFTypes {
   IElementType QUANTIFIER = new EBNFElementType("QUANTIFIER");
   IElementType RANGE = new EBNFElementType("RANGE");
   IElementType RULES = new EBNFElementType("RULES");
+  IElementType RULES_SEGMENT = new EBNFElementType("RULES_SEGMENT");
   IElementType RULE_ELEMENT = new EBNFElementType("RULE_ELEMENT");
   IElementType STRING = new EBNFElementType("STRING");
+  IElementType WHITE_SPACE = new EBNFElementType("WHITE_SPACE");
 
   IElementType ANNOTATION_OPERATOR = new EBNFTokenType("@");
   IElementType ANY_OPERATOR = new EBNFTokenType(".");
@@ -68,8 +73,17 @@ public interface EBNFTypes {
       else if (type == ASSIGNMENT_RECOVER) {
         return new EBNFAssignmentRecoverImpl(node);
       }
+      else if (type == EOL) {
+        return new EBNFEolImpl(node);
+      }
+      else if (type == EQUALS) {
+        return new EBNFEqualsImpl(node);
+      }
       else if (type == IDENTIFIER) {
         return new EBNFIdentifierImpl(node);
+      }
+      else if (type == LINE_WS) {
+        return new EBNFLineWsImpl(node);
       }
       else if (type == NESTED_RULES) {
         return new EBNFNestedRulesImpl(node);
@@ -92,11 +106,17 @@ public interface EBNFTypes {
       else if (type == RULES) {
         return new EBNFRulesImpl(node);
       }
+      else if (type == RULES_SEGMENT) {
+        return new EBNFRulesSegmentImpl(node);
+      }
       else if (type == RULE_ELEMENT) {
         return new EBNFRuleElementImpl(node);
       }
       else if (type == STRING) {
         return new EBNFStringImpl(node);
+      }
+      else if (type == WHITE_SPACE) {
+        return new EBNFWhiteSpaceImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

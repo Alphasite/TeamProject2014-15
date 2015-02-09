@@ -10,27 +10,27 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static uk.ac.gla.teamL.psi.EBNFTypes.*;
 import uk.ac.gla.teamL.psi.*;
 
-public class EBNFRulesImpl extends EBNFCompositeElementImpl implements EBNFRules {
+public class EBNFWhiteSpaceImpl extends EBNFCompositeElementImpl implements EBNFWhiteSpace {
 
-  public EBNFRulesImpl(ASTNode node) {
+  public EBNFWhiteSpaceImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof EBNFVisitor) ((EBNFVisitor)visitor).visitRules(this);
+    if (visitor instanceof EBNFVisitor) ((EBNFVisitor)visitor).visitWhiteSpace(this);
     else super.accept(visitor);
   }
 
   @Override
   @NotNull
-  public List<EBNFOr> getOrList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, EBNFOr.class);
+  public List<EBNFEol> getEolList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, EBNFEol.class);
   }
 
   @Override
   @NotNull
-  public List<EBNFRulesSegment> getRulesSegmentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, EBNFRulesSegment.class);
+  public List<EBNFLineWs> getLineWsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, EBNFLineWs.class);
   }
 
 }

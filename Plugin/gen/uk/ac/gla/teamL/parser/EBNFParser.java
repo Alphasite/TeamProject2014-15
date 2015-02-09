@@ -22,7 +22,16 @@ public class EBNFParser implements PsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, null);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t == ANNOTATION) {
+    if (t == EOL) {
+      r = EOL(b, 0);
+    }
+    else if (t == LINE_WS) {
+      r = LINE_WS(b, 0);
+    }
+    else if (t == WHITE_SPACE) {
+      r = WHITE_SPACE(b, 0);
+    }
+    else if (t == ANNOTATION) {
       r = annotation(b, 0);
     }
     else if (t == ANY) {
@@ -36,6 +45,9 @@ public class EBNFParser implements PsiParser {
     }
     else if (t == ASSIGNMENT_RECOVER) {
       r = assignment_recover(b, 0);
+    }
+    else if (t == EQUALS) {
+      r = equals(b, 0);
     }
     else if (t == IDENTIFIER) {
       r = identifier(b, 0);
@@ -64,6 +76,9 @@ public class EBNFParser implements PsiParser {
     else if (t == RULES) {
       r = rules(b, 0);
     }
+    else if (t == RULES_SEGMENT) {
+      r = rulesSegment(b, 0);
+    }
     else if (t == STRING) {
       r = string(b, 0);
     }
@@ -75,6 +90,56 @@ public class EBNFParser implements PsiParser {
 
   protected boolean parse_root_(IElementType t, PsiBuilder b, int l) {
     return program(b, l + 1);
+  }
+
+  /* ********************************************************** */
+  // "regexp:\\r|\\n|\\r\\n"
+  public static boolean EOL(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EOL")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<eol>");
+    r = consumeToken(b, "regexp:\\r|\\n|\\r\\n");
+    exit_section_(b, l, m, EOL, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // "regexp:[\\ \\t\\f]"
+  public static boolean LINE_WS(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "LINE_WS")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<line ws>");
+    r = consumeToken(b, "regexp:[\\ \\t\\f]");
+    exit_section_(b, l, m, LINE_WS, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // (LINE_WS|EOL)+
+  public static boolean WHITE_SPACE(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "WHITE_SPACE")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<white space>");
+    r = WHITE_SPACE_0(b, l + 1);
+    int c = current_position_(b);
+    while (r) {
+      if (!WHITE_SPACE_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "WHITE_SPACE", c)) break;
+      c = current_position_(b);
+    }
+    exit_section_(b, l, m, WHITE_SPACE, r, false, null);
+    return r;
+  }
+
+  // LINE_WS|EOL
+  private static boolean WHITE_SPACE_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "WHITE_SPACE_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = LINE_WS(b, l + 1);
+    if (!r) r = EOL(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -189,6 +254,18 @@ public class EBNFParser implements PsiParser {
     if (!r) r = consumeToken(b, RCB);
     if (!r) r = consumeToken(b, ANNOTATION_OPERATOR);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // EQ
+  public static boolean equals(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equals")) return false;
+    if (!nextTokenIs(b, EQ)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EQ);
+    exit_section_(b, m, EQUALS, r);
     return r;
   }
 
@@ -354,18 +431,22 @@ public class EBNFParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ruleElement (or? ruleElement)*
+  // rulesSegment (or rulesSegment)* {
+  // //	pin = 2
+  // //	recoverWhile = rulesRecover
+  // }
   public static boolean rules(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "rules")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, "<rules>");
-    r = ruleElement(b, l + 1);
+    r = rulesSegment(b, l + 1);
     r = r && rules_1(b, l + 1);
+    r = r && rules_2(b, l + 1);
     exit_section_(b, l, m, RULES, r, false, null);
     return r;
   }
 
-  // (or? ruleElement)*
+  // (or rulesSegment)*
   private static boolean rules_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "rules_1")) return false;
     int c = current_position_(b);
@@ -377,22 +458,40 @@ public class EBNFParser implements PsiParser {
     return true;
   }
 
-  // or? ruleElement
+  // or rulesSegment
   private static boolean rules_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "rules_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = rules_1_0_0(b, l + 1);
-    r = r && ruleElement(b, l + 1);
+    r = or(b, l + 1);
+    r = r && rulesSegment(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // or?
-  private static boolean rules_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "rules_1_0_0")) return false;
-    or(b, l + 1);
+  // {
+  // //	pin = 2
+  // //	recoverWhile = rulesRecover
+  // }
+  private static boolean rules_2(PsiBuilder b, int l) {
     return true;
+  }
+
+  /* ********************************************************** */
+  // ruleElement+
+  public static boolean rulesSegment(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "rulesSegment")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, "<rules segment>");
+    r = ruleElement(b, l + 1);
+    int c = current_position_(b);
+    while (r) {
+      if (!ruleElement(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "rulesSegment", c)) break;
+      c = current_position_(b);
+    }
+    exit_section_(b, l, m, RULES_SEGMENT, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */

@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface EBNFRules extends EBNFCompositeElement {
-
-  @NotNull
-  List<EBNFOr> getOrList();
-
-  @NotNull
-  List<EBNFRulesSegment> getRulesSegmentList();
+public interface EBNFLineWs extends EBNFCompositeElement {
 
 }

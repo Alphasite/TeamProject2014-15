@@ -28,4 +28,7 @@ public interface EBNFAssignment extends EBNFNamedElement {
   @NotNull
   EBNFIdentifier getId();
 
+  @NotNull
+  PsiElement getGetEquals();
+
 }

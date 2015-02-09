@@ -59,4 +59,10 @@ public class EBNFAssignmentImpl extends EBNFNamedElementImpl implements EBNFAssi
     return findNotNullChildByClass(EBNFIdentifier.class);
   }
 
+  @Override
+  @NotNull
+  public PsiElement getGetEquals() {
+    return findNotNullChildByType(EQ);
+  }
+
 }

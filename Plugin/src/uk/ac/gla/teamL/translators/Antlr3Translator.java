@@ -182,26 +182,33 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
     }
 
     public void generateLiteral(EBNFAssignment assignment, StringBuilder builder) {
-        List<EBNFRuleElement> ruleElementList = assignment.getRules().getRuleElementList();
-        int size = ruleElementList.size();
-
-        if (size == 0 || ruleElementList.get(0).getString() == null) {
+        List<EBNFRulesSegment> rulesSegmentList = assignment.getRules().getRulesSegmentList();
+        if (rulesSegmentList.size() != 1) {
             builder.append("// Token: (");
             builder.append(assignment.getName());
-            builder.append(") has no valid tokens.");
+            builder.append(") is too complex. treat as a lexer or parser rule");
         } else {
-            if (size > 1) {
-                builder.append("// This token was truncated as it contained >1 children.");
+            List<EBNFRuleElement> ruleElementList = rulesSegmentList.get(0).getRuleElementList();
+            int size = ruleElementList.size();
+
+            if (size == 0 || ruleElementList.get(0).getString() == null) {
+                builder.append("// Token: (");
+                builder.append(assignment.getName());
+                builder.append(") has no valid tokens.");
+            } else {
+                if (size > 1) {
+                    builder.append("// This token was truncated as it contained >1 children.");
+                }
+
+                EBNFString ruleElement = ruleElementList.get(0).getString();
+
+                assert ruleElement != null;
+
+                builder.append(this.canonicalNames.get(assignment.getName().toLowerCase()));
+                builder.append(" = ");
+                builder.append(createString(ruleElement.getString()));
+                builder.append(";");
             }
-
-            EBNFString ruleElement = ruleElementList.get(0).getString();
-
-            assert ruleElement != null;
-
-            builder.append(this.canonicalNames.get(assignment.getName().toLowerCase()));
-            builder.append(" = ");
-            builder.append(createString(ruleElement.getString()));
-            builder.append(";");
         }
     }
 
