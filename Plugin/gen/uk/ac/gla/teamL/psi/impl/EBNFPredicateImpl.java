@@ -21,4 +21,10 @@ public class EBNFPredicateImpl extends EBNFCompositeElementImpl implements EBNFP
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public EBNFNegation getNegation() {
+    return findNotNullChildByClass(EBNFNegation.class);
+  }
+
 }

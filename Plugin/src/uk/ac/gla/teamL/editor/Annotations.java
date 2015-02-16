@@ -7,7 +7,8 @@ package uk.ac.gla.teamL.editor;
  */
 public enum Annotations {
     ignored("ignored"),
-    literal("literal");
+    literal("literal"),
+    regex("regex");
 
     public final String identifier;
 

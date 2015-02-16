@@ -52,6 +52,9 @@ public class EBNFParser implements PsiParser {
     else if (t == IDENTIFIER) {
       r = identifier(b, 0);
     }
+    else if (t == NEGATION) {
+      r = negation(b, 0);
+    }
     else if (t == NESTED_RULES) {
       r = nestedRules(b, 0);
     }
@@ -258,13 +261,13 @@ public class EBNFParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // EQ
+  // EQor do
   public static boolean equals(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equals")) return false;
-    if (!nextTokenIs(b, EQ)) return false;
+    if (!nextTokenIs(b, EQOR)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, EQ);
+    r = consumeTokens(b, 0, EQOR, DO);
     exit_section_(b, m, EQUALS, r);
     return r;
   }
@@ -278,6 +281,18 @@ public class EBNFParser implements PsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, ID);
     exit_section_(b, m, IDENTIFIER, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // NEGATION_OPERATOR
+  public static boolean negation(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "negation")) return false;
+    if (!nextTokenIs(b, NEGATION_OPERATOR)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, NEGATION_OPERATOR);
+    exit_section_(b, m, NEGATION, r);
     return r;
   }
 
@@ -320,13 +335,13 @@ public class EBNFParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // NEGATION_OPERATOR
+  // negation
   public static boolean predicate(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "predicate")) return false;
     if (!nextTokenIs(b, NEGATION_OPERATOR)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, NEGATION_OPERATOR);
+    r = negation(b, l + 1);
     exit_section_(b, m, PREDICATE, r);
     return r;
   }

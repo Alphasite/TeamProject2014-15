@@ -6,6 +6,7 @@ import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.editor.Annotations;
 import uk.ac.gla.teamL.psi.EBNFAnnotation;
+import uk.ac.gla.teamL.psi.EBNFAssignment;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,16 @@ public class EBNFAnnotationAnnotator implements Annotator {
         validAnnotations = new HashSet<>();
         validAnnotations.add(Annotations.ignored.identifier);
         validAnnotations.add(Annotations.literal.identifier);
+        validAnnotations.add(Annotations.regex.identifier);
+    }
+
+    public static Boolean hasAnnotation(EBNFAssignment assignment, Annotations annotations) {
+        for (EBNFAnnotation annotation : assignment.getAnnotationList()) {
+            if (isAnnotation(annotation.getName(), annotations)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Boolean isValidAnnotation(String name) {

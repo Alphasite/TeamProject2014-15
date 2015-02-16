@@ -97,7 +97,7 @@ assignment ::=  annotation* let identifier equals rules terminal {
 	]
 }
 
-equals ::= EQ
+equals ::= EQor do
 
 assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB | ANNOTATION_OPERATOR)
 
@@ -122,7 +122,7 @@ ruleElement ::= predicate?
 
 nestedRules ::= LB rules RB
 
-predicate ::= NEGATION_OPERATOR
+predicate ::= negation
 
 quantifier ::= ZERO_OR_MORE
 			 | ZERO_OR_ONE
@@ -139,6 +139,8 @@ arbitraryQuantifier ::= LCB num (LIST_SEPERATOR num)? RCB {
 num ::= NUMBERS {
 	methods = [getValue]
 }
+
+negation ::= NEGATION_OPERATOR
 
 any ::= ANY_OPERATOR
 

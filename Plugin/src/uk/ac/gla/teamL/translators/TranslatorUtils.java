@@ -2,13 +2,11 @@ package uk.ac.gla.teamL.translators;
 
 import com.intellij.psi.util.PsiTreeUtil;
 import uk.ac.gla.teamL.editor.Annotations;
-import uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator;
-import uk.ac.gla.teamL.psi.EBNFAnnotation;
 import uk.ac.gla.teamL.psi.EBNFAny;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
 import uk.ac.gla.teamL.psi.EBNFIdentifier;
 
-import java.util.List;
+import static uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator.hasAnnotation;
 
 /**
  * User: nishad
@@ -39,17 +37,5 @@ public class TranslatorUtils {
 //            }
 //        }
 //        return true;
-    }
-
-    public static boolean hasAnnotation(EBNFAssignment assignment, Annotations label) {
-        List<EBNFAnnotation> annotations = assignment.getAnnotationList();
-
-        for (EBNFAnnotation annotation: annotations) {
-            if (EBNFAnnotationAnnotator.isAnnotation(annotation.getName(), label)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

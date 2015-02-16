@@ -37,6 +37,7 @@
 
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.annotators.EBNFRangeErrorAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator"/>
+    <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.annotators.EBNFRegexAnnotator"/>
 
     <localInspection language="EBNF" shortName="EBNFUnusedRuleInspection" displayName="Unused rule" groupName="Grammar Inspections"
                      enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUnusedRuleInspection"/>
