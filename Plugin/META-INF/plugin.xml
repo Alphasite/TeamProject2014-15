@@ -70,10 +70,19 @@
 
   <actions>
     <!-- Add your actions here -->
+      <action id="uk.ac.gla.teamL.actions.createDiagram" class="uk.ac.gla.teamL.actions.createDiagram"
+              text="Generate RR Diagram" description="Convert BNF file into Diagram">
+          <add-to-group group-id="CodeMenu" anchor="first"/>
+      </action>
     <action id="uk.ac.gla.teamL.actions.EBNFGenerateAntlr" class="uk.ac.gla.teamL.actions.EBNFGenerateAntlr"
             text="Generate Antlr3 Code..." description="Convert eBNF code into Antlr3">
       <add-to-group group-id="CodeMenu" anchor="first"/>
     </action>
+      <action id="uk.ac.gla.teamL.actions.RREBNFTranslator" class="uk.ac.gla.teamL.actions.EBNFGenerateRRBNF"
+              text="Generate RR-BNF code..." description="Convert eBNF code into (a version of) BNF">
+          <add-to-group group-id="CodeMenu" anchor="first"/>
+      </action>
+
   </actions>
 
 </idea-plugin>
