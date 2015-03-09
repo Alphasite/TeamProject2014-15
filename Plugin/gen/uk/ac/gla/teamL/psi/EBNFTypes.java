@@ -17,6 +17,7 @@ public interface EBNFTypes {
   IElementType EQUALS = new EBNFElementType("EQUALS");
   IElementType IDENTIFIER = new EBNFElementType("IDENTIFIER");
   IElementType LINE_WS = new EBNFElementType("LINE_WS");
+  IElementType NEGATION = new EBNFElementType("NEGATION");
   IElementType NESTED_RULES = new EBNFElementType("NESTED_RULES");
   IElementType NUM = new EBNFElementType("NUM");
   IElementType OR = new EBNFElementType("OR");
@@ -33,7 +34,9 @@ public interface EBNFTypes {
   IElementType ANY_OPERATOR = new EBNFTokenType(".");
   IElementType COMMENT_BLOCK = new EBNFTokenType("comment_block");
   IElementType COMMENT_SINGLELINE = new EBNFTokenType("comment_singleline");
+  IElementType DO = new EBNFTokenType("do");
   IElementType EQ = new EBNFTokenType("=");
+  IElementType EQOR = new EBNFTokenType("EQor");
   IElementType ID = new EBNFTokenType("ID");
   IElementType LB = new EBNFTokenType("(");
   IElementType LCB = new EBNFTokenType("{");
@@ -84,6 +87,9 @@ public interface EBNFTypes {
       }
       else if (type == LINE_WS) {
         return new EBNFLineWsImpl(node);
+      }
+      else if (type == NEGATION) {
+        return new EBNFNegationImpl(node);
       }
       else if (type == NESTED_RULES) {
         return new EBNFNestedRulesImpl(node);

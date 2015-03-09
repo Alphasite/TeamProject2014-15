@@ -46,6 +46,10 @@ public class EBNFVisitor extends PsiElementVisitor {
     visitCompositeElement(o);
   }
 
+  public void visitNegation(@NotNull EBNFNegation o) {
+    visitCompositeElement(o);
+  }
+
   public void visitNestedRules(@NotNull EBNFNestedRules o) {
     visitCompositeElement(o);
   }

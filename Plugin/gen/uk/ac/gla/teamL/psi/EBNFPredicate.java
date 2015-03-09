@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface EBNFPredicate extends EBNFCompositeElement {
 
+  @NotNull
+  EBNFNegation getNegation();
+
 }
