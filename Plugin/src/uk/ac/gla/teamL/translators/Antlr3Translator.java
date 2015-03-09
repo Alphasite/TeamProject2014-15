@@ -17,7 +17,7 @@ import static uk.ac.gla.teamL.translators.TranslatorUtils.*;
  * Date: 12/12/14
  * Time: 13:27
  */
-public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator {
+public class Antlr3Translator extends Translator {
     private static enum Type {
         lexer, literal, parser
     }

@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.translators.Translator;
 import uk.ac.gla.teamL.translators.YaccTranslator;
 
 import java.io.IOException;
