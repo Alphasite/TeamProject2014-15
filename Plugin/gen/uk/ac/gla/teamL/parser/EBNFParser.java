@@ -261,13 +261,13 @@ public class EBNFParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // EQor do
+  // EQ
   public static boolean equals(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "equals")) return false;
-    if (!nextTokenIs(b, EQOR)) return false;
+    if (!nextTokenIs(b, EQ)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, EQOR, DO);
+    r = consumeToken(b, EQ);
     exit_section_(b, m, EQUALS, r);
     return r;
   }

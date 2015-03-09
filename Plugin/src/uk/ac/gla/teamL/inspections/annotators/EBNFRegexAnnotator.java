@@ -3,7 +3,6 @@ package uk.ac.gla.teamL.inspections.annotators;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import uk.ac.gla.teamL.editor.Annotations;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
 import uk.ac.gla.teamL.psi.EBNFIdentifier;
@@ -11,6 +10,7 @@ import uk.ac.gla.teamL.psi.EBNFNegation;
 
 import java.util.Collection;
 
+import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfType;
 import static uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator.hasAnnotation;
 
 /**
@@ -35,14 +35,14 @@ public class EBNFRegexAnnotator implements Annotator {
             boolean isRegex = hasAnnotation(assignment, Annotations.regex);
 
             if (!isRegex) {
-                Collection<EBNFNegation> negations = PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFNegation.class);
+                Collection<EBNFNegation> negations = findChildrenOfType(assignment.getRules(), EBNFNegation.class);
                 if (negations.size() > 0) {
                     for (EBNFNegation negation : negations) {
                         holder.createErrorAnnotation(negation, "Only rule annotated as @regex may contain negations.");
                     }
                 }
             } else {
-                Collection<EBNFIdentifier> identifiers = PsiTreeUtil.findChildrenOfType(assignment.getRules(), EBNFIdentifier.class);
+                Collection<EBNFIdentifier> identifiers = findChildrenOfType(assignment.getRules(), EBNFIdentifier.class);
                 if (identifiers.size() > 0) {
                     for (EBNFIdentifier identifier : identifiers) {
                         holder.createErrorAnnotation(identifier, "Rules annotated as @regex may not contain references to other rules.");
@@ -51,5 +51,25 @@ public class EBNFRegexAnnotator implements Annotator {
             }
 
         }
+    }
+
+    public static boolean referencesNonRegex(EBNFIdentifier identifier) {
+        // TODO verify that its not recursive.
+
+        EBNFAssignment assignment = (EBNFAssignment) identifier.getReference().resolve();
+
+        if (assignment != null) {
+            if (!hasAnnotation(assignment, Annotations.regex)) {
+                return true;
+            }
+
+            for (EBNFIdentifier id : findChildrenOfType(assignment.getRules(), EBNFIdentifier.class)) {
+                if (referencesNonRegex(id)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -34,9 +34,7 @@ public interface EBNFTypes {
   IElementType ANY_OPERATOR = new EBNFTokenType(".");
   IElementType COMMENT_BLOCK = new EBNFTokenType("comment_block");
   IElementType COMMENT_SINGLELINE = new EBNFTokenType("comment_singleline");
-  IElementType DO = new EBNFTokenType("do");
   IElementType EQ = new EBNFTokenType("=");
-  IElementType EQOR = new EBNFTokenType("EQor");
   IElementType ID = new EBNFTokenType("ID");
   IElementType LB = new EBNFTokenType("(");
   IElementType LCB = new EBNFTokenType("{");

@@ -1,4 +1,4 @@
-package uk.ac.gla.teamL.editor;
+package uk.ac.gla.teamL.editor.codeFolders;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
@@ -7,9 +7,16 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import uk.ac.gla.teamL.EBNFFile;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
 import uk.ac.gla.teamL.psi.EBNFNestedRules;
 import uk.ac.gla.teamL.psi.EBNFTypes;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfType;
+import static uk.ac.gla.teamL.EBNFUtil.notNull;
 
 /**
  * User: nishad
@@ -33,7 +40,23 @@ public class EBNFFoldingBuilding extends FoldingBuilderEx {
     public FoldingDescriptor[] buildFoldRegions(PsiElement root, Document document, boolean quick) {
         // TODO
 
-        return new FoldingDescriptor[0];
+        if (root instanceof EBNFFile) {
+            List<FoldingDescriptor> regions = new ArrayList<>();
+
+            for (EBNFAssignment assignment : notNull(findChildrenOfType(root, EBNFAssignment.class))) {
+                regions.add(new FoldingDescriptor(assignment.getRules(), assignment.getRules().getTextRange()));
+            }
+
+            for (EBNFNestedRules nestedRules : notNull(findChildrenOfType(root, EBNFNestedRules.class))) {
+                regions.add(new FoldingDescriptor(nestedRules, nestedRules.getTextRange()));
+            }
+
+            // findChildrenOfType(root, )
+
+            return regions.toArray(new FoldingDescriptor[regions.size()]);
+        } else {
+            return new FoldingDescriptor[0];
+        }
     }
 
     /**
@@ -52,7 +75,7 @@ public class EBNFFoldingBuilding extends FoldingBuilderEx {
         }
 
         if (psi instanceof EBNFAssignment) {
-            return "let " + ((EBNFAssignment)psi).getName() + " = ... ;";
+            return  "...";
         }
 
         if (node.getElementType() == EBNFTypes.COMMENT_BLOCK) {

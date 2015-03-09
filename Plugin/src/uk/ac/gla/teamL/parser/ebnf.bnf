@@ -97,7 +97,7 @@ assignment ::=  annotation* let identifier equals rules terminal {
 	]
 }
 
-equals ::= EQor do
+equals ::= EQ
 
 assignment_recover ::= !(let | terminal | LSB | RSB | LB | RB | LCB | RCB | ANNOTATION_OPERATOR)
 

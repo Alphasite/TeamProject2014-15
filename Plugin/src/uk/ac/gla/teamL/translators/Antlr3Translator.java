@@ -10,6 +10,7 @@ import java.util.*;
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildrenOfAnyType;
 import static uk.ac.gla.teamL.EBNFUtil.notNull;
+import static uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator.hasAnnotation;
 import static uk.ac.gla.teamL.translators.TranslatorUtils.*;
 
 /**
