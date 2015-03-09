@@ -68,9 +68,12 @@
   </project-components>
 
   <actions>
-    <!-- Add your actions here -->
     <action id="uk.ac.gla.teamL.actions.EBNFGenerateAntlr" class="uk.ac.gla.teamL.actions.EBNFGenerateAntlr"
-            text="Generate Antlr3 Code..." description="Convert eBNF code into Antlr3">
+            text="Generate Antlr3 Grammar" description="Convert eBNF code into Antlr3">
+      <add-to-group group-id="CodeMenu" anchor="first"/>
+    </action>
+    <action id="uk.ac.gla.teamL.actions.EBNFGenerateYacc" class="uk.ac.gla.teamL.actions.EBNFGenerateYacc"
+            text="Generate Yacc Grammar" description="Convert eBNF code into Yacc">
       <add-to-group group-id="CodeMenu" anchor="first"/>
     </action>
   </actions>
