@@ -27,9 +27,11 @@
     <fileTypeFactory implementation="uk.ac.gla.teamL.EBNFFileTypeFactory"/>
 
     <lang.parserDefinition language="EBNF" implementationClass="uk.ac.gla.teamL.parser.EBNFParserDefinition"/>
-    <lang.syntaxHighlighterFactory key="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFSyntaxHighlighterFactory"/>
+    <lang.syntaxHighlighterFactory key="EBNF"
+                                   implementationClass="uk.ac.gla.teamL.editor.EBNFSyntaxHighlighterFactory"/>
     <lang.commenter language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFCommenter"/>
-    <completion.contributor language="EBNF" implementationClass="uk.ac.gla.teamL.editor.contributors.EBNFCompletionContributor"/>
+    <completion.contributor language="EBNF"
+                            implementationClass="uk.ac.gla.teamL.editor.contributors.EBNFCompletionContributor"/>
 
     <colorSettingsPage implementation="uk.ac.gla.teamL.EBNFColourSettingsPage"/>
 
@@ -39,25 +41,37 @@
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.annotators.EBNFAnnotationAnnotator"/>
     <annotator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.annotators.EBNFRegexAnnotator"/>
 
-    <localInspection language="EBNF" shortName="EBNFUnusedRuleInspection" displayName="Unused rule" groupName="Grammar Inspections"
-                     enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUnusedRuleInspection"/>
-    <localInspection language="EBNF" shortName="EBNFUndeclaredIdentifierInspection" displayName="Unrecognised Reference" groupName="Grammar Inspections"
-                     enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFUndeclaredRuleInspection"/>
-    <localInspection language="EBNF" shortName="EBNFDuplicateRuleInspection" displayName="Duplicate Reference" groupName="Grammar Inspections"
-                     enabledByDefault="true" level="ERROR" implementationClass="uk.ac.gla.teamL.inspections.EBNFDuplicateRuleInspection"/>
-    <localInspection language="EBNF" shortName="EBNFLeftRecursionInspection" displayName="Left Recursion" groupName="Grammar Inspections"
-                     enabledByDefault="true" level="WARNING" implementationClass="uk.ac.gla.teamL.inspections.EBNFLeftRecursionInspection"/>
+    <localInspection language="EBNF" shortName="EBNFUnusedRuleInspection" displayName="Unused rule"
+                     groupName="Grammar Inspections"
+                     enabledByDefault="true" level="WARNING"
+                     implementationClass="uk.ac.gla.teamL.inspections.EBNFUnusedRuleInspection"/>
+    <localInspection language="EBNF" shortName="EBNFUndeclaredIdentifierInspection" displayName="Unrecognised Reference"
+                     groupName="Grammar Inspections"
+                     enabledByDefault="true" level="WARNING"
+                     implementationClass="uk.ac.gla.teamL.inspections.EBNFUndeclaredRuleInspection"/>
+    <localInspection language="EBNF" shortName="EBNFDuplicateRuleInspection" displayName="Duplicate Reference"
+                     groupName="Grammar Inspections"
+                     enabledByDefault="true" level="ERROR"
+                     implementationClass="uk.ac.gla.teamL.inspections.EBNFDuplicateRuleInspection"/>
+    <localInspection language="EBNF" shortName="EBNFLeftRecursionInspection" displayName="Left Recursion"
+                     groupName="Grammar Inspections"
+                     enabledByDefault="true" level="WARNING"
+                     implementationClass="uk.ac.gla.teamL.inspections.EBNFLeftRecursionInspection"/>
 
-    <codeInsight.lineMarkerProvider language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
+    <codeInsight.lineMarkerProvider language="EBNF"
+                                    implementationClass="uk.ac.gla.teamL.editor.EBNFRecursiveLineMarkerProvider"/>
     <elementDescriptionProvider implementation="uk.ac.gla.teamL.EBNFDescriptionProvider"/>
     <gotoSymbolContributor implementation="uk.ac.gla.teamL.editor.contributors.EBNFChooseByNameContributor"/>
     <defaultLiveTemplatesProvider implementation="uk.ac.gla.teamL.editor.EBNFDefaultLiveTemplateProvider"/>
-    <lang.psiStructureViewFactory language="EBNF" implementationClass="uk.ac.gla.teamL.editor.structureView.EBNFStructureViewFactory"/>
-    <lang.namesValidator language="EBNF" implementationClass="uk.ac.gla.teamL.inspections.validator.EBNFNamesValidator"/>
+    <lang.psiStructureViewFactory language="EBNF"
+                                  implementationClass="uk.ac.gla.teamL.editor.structureView.EBNFStructureViewFactory"/>
+    <lang.namesValidator language="EBNF"
+                         implementationClass="uk.ac.gla.teamL.inspections.validator.EBNFNamesValidator"/>
     <lang.braceMatcher language="EBNF" implementationClass="uk.ac.gla.teamL.editor.EBNFBraceMatcher"/>
     <lang.foldingBuilder language="EBNF" implementationClass="uk.ac.gla.teamL.editor.codeFolders.EBNFFoldingBuilding"/>
 
-    <lang.formatter language="EBNF" implementationClass="uk.ac.gla.teamL.editor.codeFormatter.EBNFFormattingModelBuilder"/>
+    <lang.formatter language="EBNF"
+                    implementationClass="uk.ac.gla.teamL.editor.codeFormatter.EBNFFormattingModelBuilder"/>
 
   </extensions>
 
@@ -71,18 +85,22 @@
 
   <actions>
     <!-- Add your actions here -->
-      <action id="uk.ac.gla.teamL.actions.createDiagram" class="uk.ac.gla.teamL.actions.createDiagram"
-              text="Generate RR Diagram" description="Convert BNF file into Diagram">
-          <add-to-group group-id="CodeMenu" anchor="first"/>
-      </action>
+    <action id="uk.ac.gla.teamL.actions.createDiagram" class="uk.ac.gla.teamL.actions.createDiagram"
+            text="Generate RR Diagram" description="Convert BNF file into Diagram">
+      <add-to-group group-id="CodeMenu" anchor="first"/>
+    </action>
     <action id="uk.ac.gla.teamL.actions.EBNFGenerateAntlr" class="uk.ac.gla.teamL.actions.EBNFGenerateAntlr"
             text="Generate Antlr3 Code..." description="Convert eBNF code into Antlr3">
       <add-to-group group-id="CodeMenu" anchor="first"/>
     </action>
-      <action id="uk.ac.gla.teamL.actions.RREBNFTranslator" class="uk.ac.gla.teamL.actions.EBNFGenerateRRBNF"
-              text="Generate RR-BNF code..." description="Convert eBNF code into (a version of) BNF">
-          <add-to-group group-id="CodeMenu" anchor="first"/>
-      </action>
+    <action id="uk.ac.gla.teamL.actions.EBNFGenerateYacc" class="uk.ac.gla.teamL.actions.EBNFGenerateYacc"
+            text="Generate Yacc Code..." description="Convert eBNF code into Yacc">
+      <add-to-group group-id="CodeMenu" anchor="first"/>
+    </action>
+    <action id="uk.ac.gla.teamL.actions.RREBNFTranslator" class="uk.ac.gla.teamL.actions.EBNFGenerateRRBNF"
+            text="Generate RR-BNF code..." description="Convert eBNF code into (a version of) BNF">
+      <add-to-group group-id="CodeMenu" anchor="first"/>
+    </action>
 
   </actions>
 
