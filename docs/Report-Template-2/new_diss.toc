@@ -1,0 +1,57 @@
+\contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}
+\contentsline {section}{\numberline {1.1}Motivation}{4}{section.1.1}
+\contentsline {section}{\numberline {1.2}Project Aims}{4}{section.1.2}
+\contentsline {section}{\numberline {1.3}Overview}{5}{section.1.3}
+\contentsline {section}{\numberline {1.4}Preliminaries}{5}{section.1.4}
+\contentsline {chapter}{\numberline {2}Design}{7}{chapter.2}
+\contentsline {section}{\numberline {2.1}Client Interview}{7}{section.2.1}
+\contentsline {section}{\numberline {2.2}User Case Diagram}{8}{section.2.2}
+\contentsline {section}{\numberline {2.3}Project Specification}{10}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Feature Specification}{10}{subsection.2.3.1}
+\contentsline {subsubsection}{Required Specification}{10}{section*.3}
+\contentsline {subsubsection}{Optional Features}{12}{section*.4}
+\contentsline {section}{\numberline {2.4}Decisions}{13}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Deciding on roles}{13}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}IntelliJ Plugin or Develop own IDE}{14}{subsection.2.4.2}
+\contentsline {subsubsection}{IntelliJ}{14}{section*.5}
+\contentsline {subsubsection}{IDE}{15}{section*.6}
+\contentsline {subsubsection}{Overall Decision}{16}{section*.7}
+\contentsline {subsection}{\numberline {2.4.3}Including left recursion}{16}{subsection.2.4.3}
+\contentsline {subsection}{\numberline {2.4.4}Using strings in parser}{17}{subsection.2.4.4}
+\contentsline {subsection}{\numberline {2.4.5}Communication method}{17}{subsection.2.4.5}
+\contentsline {subsubsection}{Facebook}{17}{section*.8}
+\contentsline {subsubsection}{Skype}{18}{section*.9}
+\contentsline {subsubsection}{Overall Decision}{19}{section*.10}
+\contentsline {subsection}{\numberline {2.4.6}BNF vs. EBNF}{19}{subsection.2.4.6}
+\contentsline {subsubsection}{BNF}{19}{section*.11}
+\contentsline {subsubsection}{EBNF}{20}{section*.12}
+\contentsline {section}{\numberline {2.5}Project Plan and Timetable}{21}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Project TimeTable}{21}{subsection.2.5.1}
+\contentsline {subsection}{\numberline {2.5.2}Optional Features TimeTable}{22}{subsection.2.5.2}
+\contentsline {chapter}{\numberline {3}Implementation}{24}{chapter.3}
+\contentsline {section}{\numberline {3.1}Project Stages}{24}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Define Specification, Initial Set up}{24}{subsection.3.1.1}
+\contentsline {section}{\numberline {3.2}Implementing Plugin Stages}{25}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Research IntelliJ plugins}{25}{subsection.3.2.1}
+\contentsline {section}{\numberline {3.3}Design Changes}{25}{section.3.3}
+\contentsline {subsubsection}{Left Recursion}{25}{section*.13}
+\contentsline {section}{\numberline {3.4}Problems}{26}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Misleading IntelliJ Documentation}{26}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2} Misreading of the IntelliJ documentation}{26}{subsection.3.4.2}
+\contentsline {chapter}{\numberline {4}Evaluation}{28}{chapter.4}
+\contentsline {section}{\numberline {4.1}Product Evaluation}{28}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}IntelliJ Testing}{28}{subsection.4.1.1}
+\contentsline {subsubsection}{Operating Systems}{28}{section*.14}
+\contentsline {subsubsection}{IntelliJ implementation}{29}{section*.15}
+\contentsline {section}{\numberline {4.2}Project Evaluation}{29}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Team Problems}{29}{subsection.4.2.1}
+\contentsline {subsubsection}{Locate Team Members}{29}{section*.16}
+\contentsline {subsubsection}{Missing Team Member}{30}{section*.17}
+\contentsline {subsection}{\numberline {4.2.2}Team Successes}{30}{subsection.4.2.2}
+\contentsline {subsubsection}{Successful collaboration}{30}{section*.18}
+\contentsline {subsubsection}{Communication}{30}{section*.19}
+\contentsline {chapter}{\numberline {5}Conclusion}{32}{chapter.5}
+\contentsline {section}{\numberline {5.1}Future Work}{32}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Parser Generator}{32}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Code Formatter}{32}{subsection.5.1.2}
+\contentsline {section}{\numberline {5.2}Contributions}{32}{section.5.2}
