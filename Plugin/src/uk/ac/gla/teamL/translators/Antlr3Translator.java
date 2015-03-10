@@ -339,13 +339,7 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
     }
 
     public static String createString(String string) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append('\'');
-        builder.append(escapeString(string));
-        builder.append('\'');
-
-        return builder.toString();
+        return "'" + escapeString(string) + "'";
     }
 
     public static String reformatLine(String line) {
@@ -371,6 +365,10 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
         boolean inCommand = false;
         boolean inASTDeclaration = false;
 
+        // These are for
+        int depthOfSegmentToBeNewLined = 0;
+        int depthOfCurrentSegment = 0;
+
         for (char c: line.substring(offset).toCharArray()) {
             if (c == ' ') {
                 inWhiteSpace = true;
@@ -385,6 +383,14 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
 
             if (c == '^') {
                 inASTDeclaration = true;
+            }
+
+            if (c == '(') {
+                depthOfCurrentSegment++;
+            }
+
+            if (c == ')') {
+                depthOfCurrentSegment--;
             }
 
             if (escape) {
@@ -414,7 +420,6 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
                         if (!escape) {
                             inString = !inString;
                         }
-
                         break;
 
                     case '\\':
@@ -424,7 +429,11 @@ public class Antlr3Translator implements uk.ac.gla.teamL.translators.Translator 
                     case '|':
                     case '(':
                     case ')':
-                        newLine.append(offsetString);
+                        // This currently only segments the top level segments, but needs further
+                        // attention to figure out what exactly to do here.
+                        if (!inString && depthOfSegmentToBeNewLined <= depthOfCurrentSegment) {
+                            newLine.append(offsetString);
+                        }
                         break;
                     default:
                         break;
