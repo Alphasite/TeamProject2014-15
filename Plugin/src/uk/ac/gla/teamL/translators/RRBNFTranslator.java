@@ -109,13 +109,13 @@ public class RRBNFTranslator implements Translator {
         if (isIgnored) {
             switch (this.type.get(assignment.getName().toLowerCase())) {
                 case lexer:
-                    builder.append("(* $channel=HIDDEN *)");
+                    builder.append("(* Ignored *)");
                     break;
                 case parser:
                     builder.append("(* Cannot ignore parser rules. *)");
                     break;
                 case literal:
-                    builder.append("(* $channel=HIDDEN *)");
+                    builder.append("(* Ignored *)");
                     break;
             }
         }
@@ -127,14 +127,35 @@ public class RRBNFTranslator implements Translator {
     private void generateRules(EBNFRules rule, StringBuilder builder) {
 
         for (PsiElement element : rule.getChildren()) {
-            if (element instanceof EBNFRuleElement) {
-                generateRuleElement((EBNFRuleElement) element, builder);
+            if (element instanceof EBNFRulesSegment) {
+                generateRuleSegment((EBNFRulesSegment) element, builder);
             } else if (element instanceof EBNFOr) {
                 builder.append("|");
+            } else {
+                System.err.println(
+                          "Rule structure doesnt match expected structure for " +
+                                  this.getClass().getName() +
+                                  " check generateRules()."
+                );
             }
             builder.append(" ");
         }
     }
+
+    private void generateRuleSegment(EBNFRulesSegment rulesSegment, StringBuilder builder) {
+        for (PsiElement element : rulesSegment.getChildren()) {
+            if (element instanceof EBNFRuleElement) {
+                generateRuleElement((EBNFRuleElement) element, builder);
+            } else {
+                System.err.println(
+                    "Rule structure doesnt match expected structure for " +
+                    this.getClass().getName() +
+                    " check generateRuleSegment()."
+                );
+            }
+        }
+    }
+
 
     private void generateRuleElement(EBNFRuleElement ruleElement, StringBuilder builder) {
         EBNFPredicate predicate = ruleElement.getPredicate();
@@ -197,13 +218,13 @@ public class RRBNFTranslator implements Translator {
                 builder.append(local);
                 switch (ruleElement.getQuantifier().getText()) {
                     case "?":
-                        builder.append("?");
+                        builder.append("? ");
                         break;
                     case "+":
-                        builder.append("+");
+                        builder.append("+ ");
                         break;
                     case "*":
-                        builder.append("*");
+                        builder.append("* ");
                         break;
                 }
             }
@@ -214,17 +235,24 @@ public class RRBNFTranslator implements Translator {
 
     public static String createString(String string) {
         StringBuilder builder = new StringBuilder();
+        boolean containsSingle = string.contains("'");
+        boolean containsDouble = string.contains("\"");
 
         //for the case when ''' occurs, need to change to "'" in order for it to be read
-        if(string.equals("'")){
+        if (containsSingle && !containsDouble){
             builder.append("\"");
             builder.append(string);
             builder.append("\"");
-        }else {
+        } else if (containsDouble && !containsSingle) {
             builder.append("\'");
             builder.append(string);
             builder.append("\'");
+        } else {
+            builder.append('"');
+            builder.append(string.replace("\"", "\\\""));
+            builder.append('"');
         }
+
         return builder.toString();
     }
 

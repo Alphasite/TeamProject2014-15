@@ -28,19 +28,20 @@ public class createDiagram extends AnAction{
             String svg;
 
             try {
-                reader =new BufferedReader(new FileReader("C:\\Users\\Rosie\\IdeaProjects\\EBNFTest\\src\\Test.bnf"));
+                reader = new BufferedReader(new FileReader("C:\\Users\\Rosie\\IdeaProjects\\EBNFTest\\src\\Test.bnf"));
             } catch (FileNotFoundException e) {
                 System.err.println("could not read file");
                 e.printStackTrace();
             }
+
             BNFToGrammar bnfToGrammar = new BNFToGrammar();
+
             try {
                 grammar = bnfToGrammar.convert(reader);
             } catch (IOException e) {
                 System.err.println("could not convert to grammar");
                 e.printStackTrace();
-            }finally
-            {
+            } finally {
                 if(reader != null)
                 {
                     try {
