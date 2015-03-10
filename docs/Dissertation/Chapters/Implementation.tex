@@ -1,0 +1,41 @@
+\chapter{Implementation}
+\label{impl}
+
+\section {Project Stages}
+This section covers the stage we went though to complete the project. It includes a section for each of the requirement tasks and the optional features. It will cover any problems we went under in developing each of the features and our final design decisions. 
+
+\subsection{Define Specification, Initial Set up}
+In the first few weeks we spent time with our client, Dr. Simon Gay, deciding on the projects specification and the possible features we could implement. This first meeting unveiled to us a collection of new information regarding the project:
+\begin {itemize}
+	\item Can develop tool for web or desktop: we were informed that we could write our project for whatever format we decided would be best. This meant that we could write an embedded interactive website for writing grammars, or develop an individual program, or develop an embedded program for our project. This gave us the freedom to suit our own implementation style as team members previous experience meant that developing an interactive website would take too long. (See Decisions Chapter 3).
+	\item Future possible users: discussion with our client revealed that our possible future users would include individuals wishing to program grammars without needing to excessively study them. It was also suggested that future students of Computing Science at the University of Glasgow could possibly use the developed project to enhance their understanding of grammars. 
+	\item Optional features: our client had little restriction on what features we were allowed to add. His only request was that the program would export to a number of parsers and that our users could view their grammar in a graphical matter through some form of diagram. The parsers we could export too were up to our discretion, so long as we were able to fully export to our preferred choices. The diagram option was also down to our teams choice; we could choose what graphical form to represent the grammar in and how the user views it e.g side panel, external file creation etc. We were also informed that beyond these features, our plugin could include whatever optional features we decided would suit our project. 
+\end{itemize}
+From this initial meeting we were able to make important design decisions (see Decisions Chapter 3) and begin implementation by the following week. We also arranged for weekly meetings with our client to ensure they were kept up to speed regarding our project and to gain their input on our progress.\\
+
+\section{Implementing Plugin Stages}
+This section covers the implementation of our project, by dividing our progress into the stages we undertook in order to complete our project. Each section will discuss why the stage was important to the overall project, how we conducted it, and any problem that we met during the implementation.\\
+\\
+\subsection{Research IntelliJ plugins}
+Our first stage was to research IntelliJ plugins. 
+\section{Design Changes}
+During the process of our project we had to change several of our original design discussions in order to implement the final design. 
+
+\subsubsection{Left Recursion}
+Left Recursion support is something we wanted to implement from the start as it is a very common problem when developing grammars. It is briefly touched upon in our design chapter (Chapter 2). Left Recursion is a grammar problem where the grammar rule that has been set contains a infinite loop due to the placement of the expressions. This is a seriously problem which is also very complicated due to the freedom of development when it comes to grammar creation and editing. In the early days of our project when we contacted our client, Dr Simon Gay, for development guidance we discussed the possibility of adding left recursion support for the user. It was something we were interested in ,as it would increase our range of parser exporting possibilities. Some parsers allow for grammars to have left recursion in them on the assumption that grammar creators will know about the potential problem and will have added their own internal solution. The remaining parsers do not allow for any left recursion at all, working on the assumption that grammars creators will not be aware of the potential problem and thereby do not allow any left recursion at all. As such we decided to add left recursion support into our plugin, thereby allowing users to export their grammars to a wider variety of parsers. \\
+\\
+In order to add left recursion support, we needed to research the full possibility of left recursion occurrences and possible algorithms for identifying left recursion. 
+
+
+
+\section{Problems}
+We ran into a variety of problems during the lifetime of the project. Those problems are covered here and discussed in terms of how we solved them or will solve them in future adaptations to the plugin. 
+
+\subsection {Misleading IntelliJ Documentation}
+We made use of the official IntelliJ documentation for developing a generic plugin for the software, which was especially useful since none of our team members had developed one previously. In the later stages of development, however, we discovered that there was an error in our reference contributor. Discovering, and attempting to solve this problem, delayed us by considerable weeks as the documentation insisted that this was a key part of the plugin. Upon asking our client , Dr. Simon Gay, for advice and permission we sent the plugin to an IntelliJ developer to see if the problem could be fixed as it had pushed us back considerably already. It was uncovered by the developer that the documentation was in fact incorrect, the reference contributor was in fact not needed any more due to advancements of the IntelliJ package. This meant, that whilst we had wasted time of something no longer required, it allowed us to move onto to other areas of the plugin that needed development, with the online documentation being corrected by the developer. 
+
+\subsection{ Misreading of the IntelliJ documentation}
+On a few occasions our problems were caused by team members either mis-reading or mis-understanding the IntelliJ documentation. One such problem was a mis-named method which suggested a return type of the start of a file, when in fact it should have been returning the start of a node structure. This was caused by mis-understanding of the IntelliJ documentation which are very long and complicated. They stated what the method should do, but did so in an experienced manner which none of our team members are. As such we mis-understood the point of the method, developing it the wrong way. This problem was uncovered and solved by the IntelliJ developer we asked for help (see Misleading IntelliJ Documentation) who altered the method for us such that it now complied with the documentation requirements. Thankfully, this problem was not as damaging as the previous one, it only affected a small area of the plugin which was required but rarely used, allowing us to continue with other areas of the plugin without delay.\\
+Our team also misunderstood the documentations defined structure. It suggested that all elements that have a defined name in the plugin should be classed as a NamedElement. It was uncovered however that only the owners of the names should be classed, with references only needing to implement a method to return the reference. This was discussed with the IntelliJ developer before correcting the problem with the documentation being altered in order to clarify the difference.\\
+\\
+Whilst these problems have delayed us and caused our team members stress, they have helped our team development. It has allowed our team members to learn about working as a team in order to solve problems, whilst also altering our client and the IntelliJ developers to problems with such a project and with the documentation available. 

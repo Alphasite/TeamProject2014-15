@@ -1,0 +1,50 @@
+\chapter{Introduction}
+This chapter will give provide information regarding the motivation of the project, a description of our project aims, and a brief overview of the reports remaining chapters. This chapter will provide a base for the remaining chapters, allowing later information to be clearly understood.
+
+\label{intro}
+
+\section{Motivation}
+Team L is comprised of five students currently studying Computer Science at the University of Glasgow. Our team will be working from September 2014 until March 2015 on this project which is the solitary measure of assessment for the Team Project 3 course. By the end of the 7 month period, the team hopes to provide a fully functioning tool that will fulfil the requirements set out by the teams client. 
+
+Our project is to provide an 'Interactive Grammar Toolkit' in an implementation method of our choice. Our client is Dr Simon Gay, a senior lecturer at the Computer Science department at the University of Glasgow whom taught our team the background information regarding Grammars and their purpose. In addition to our client there are several other possible clients who will be interested in this project: future third year students of the Computer Science department will be able to use our toolkit to further develop their understanding of Grammars; other individuals outside the university interested in developing grammars and future lecturers at our University and others who wish to further their students understanding of Grammars with interactive measures.  The basis behind the toolkit is to implement an easier way for grammars to be developed which does not heavily rely on knowledge of grammar development "black arts".
+
+\section{Project Aims}
+The aim of our project was to develop an 'Interactive Grammar Toolkit' for future students of the University of Glasgow and possible external users who wish for an easier way to develop and learn about Grammar development. As a project this has been heavily client dependent and knowledge based, our team has had weekly meetings with our client Dr Simon Gay in order to gain advice and ensure that our high quality solution meets his original requirements. 
+
+Throughout the process we identified the following additional aims to our project:
+\begin {itemize}
+	\item To develop the tool as a IntelliJ Plugin
+	\item To develop the editor for EBNF formatting
+	\item To provide users with some feedback coetaneously as development of the Grammar
+	\item To provide a variety of visualisers for the grammar
+	\item Make the development of a grammar easier than current methods
+\end{itemize}
+ 
+\section{Overview}
+The dissertation discusses the overall team development behind the Interactive Grammar ToolKit project:\\
+
+Chapter 2 discusses the background behind the project and similar systems that currently exist.\\
+Chapter 3 discusses the design in terms of project requirements,decisions made and project timetable.\\ 
+Chapter 4 discusses the implementation of the project and team organisation.\\
+Chapter 5 discusses the testing process used and evaluates the final product in comparison with original design plans.\\
+Chapter 6 concludes the dissertation and discusses potential future work that could be done to the project.\\
+\\
+Following from this will be the appendices which include the following:
+\begin {enumerate}
+	\item \textbf{Source Code} : the source code of all files and classes implemented in the project
+	\item \textbf{Instruction Manual}: the Instruction Manual, covering how to install the product, using the product and troubleshooting.
+\end{enumerate}
+
+\section{Preliminaries}
+In order to fully understand and enjoy this report to the greatest possible extent, some background knowledge is required. The interesting summaries that follow will provide any reader with some background in computing science to comprehend the significance of this report.\\
+\\
+Regardless of your previous knowledge regarding grammars and their purpose, it is worth researching the role a grammar plays in a programming language. A Grammar is the set of rules which lay the framework of the entire programming language whilst providing structure and laws regarding the programming languages use. It is very similar to a spoken languages grammar and defines how the programming language appears to the user and how it is translated into a machine readable format. Defining your grammar correctly is one of the most important stages in developing a programming language as it plays a key crucial role ; meaning that it can be difficult to change if a mistake is uncovered and can lead to a incorrect Abstract Syntax Tree (AST) for your language. \\
+\\
+Lexers and parsers both make up syntactic analysis whose purpose is to check that the source is well-formed and determines it's overall structure. The lexer breaks the source down into individual tokens which are then passed to the parser which determines the structure of the source based on these tokens. A lexer itself can be divided into two stages: the scanner, which segments the input sequence into groups and categorizes these into token classes; and the evaluator, which converts the raw input characters into a processed value.
+\\
+IntelliJ is a development environment that is very popular amongst program developers. It allows users to develop their own plugins to enhance and personalise their use of the environment. This method allows any user of the software to share the plugins they create, to the extent that there is instructions explaining the steps for developing them. IntelliJ's adaptability makes it very popular, as it can program in a variety of languages meaning that users do not need to change their work IDE to write a program in an alternate language.\\
+\\
+IDE, Integrated Development Environment or Interactive Development Environment. This is a software application that allows software developers to program, normally in either a specified language or multiple. These applications normally allow multiple programming language support through plugin installation. This allows users of such systems to personalise their work space, however not all IDE's allow for programming in all languages. As such further plugin development is required for some IDE's but they may not fully support the options. IDE's can often include additional options such as version control systems and additional tools like a graphical application appearance for GUI development assistance.\\
+\\
+JFlex is a scanner generator, also known as a lexical analyser generator, which was written in Java for Java programs. It is a Java rewrite of JLex , and is used to develop and write Lexers for programming language development. Learning this language is a requirement for developing the toolkit. \\
+\\
