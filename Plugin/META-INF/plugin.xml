@@ -98,11 +98,6 @@
             text="Generate Yacc Code..." description="Convert eBNF code into Yacc">
       <add-to-group group-id="CodeMenu" anchor="first"/>
     </action>
-    <action id="uk.ac.gla.teamL.actions.RREBNFTranslator" class="uk.ac.gla.teamL.actions.EBNFGenerateRRBNF"
-            text="Generate RR-BNF code..." description="Convert eBNF code into (a version of) BNF">
-      <add-to-group group-id="CodeMenu" anchor="first"/>
-    </action>
-
   </actions>
 
 </idea-plugin>
