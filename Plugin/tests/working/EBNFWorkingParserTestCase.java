@@ -8,8 +8,8 @@ import uk.ac.gla.teamL.parser.EBNFParserDefinition;
  * Date: 03/03/15
  * Time: 00:16
  */
-public class EBNFWorkingTestCase extends ParsingTestCase {
-    public EBNFWorkingTestCase() {
+public class EBNFWorkingParserTestCase extends ParsingTestCase {
+    public EBNFWorkingParserTestCase() {
         super("", "ebnf", new EBNFParserDefinition());
     }
 
@@ -19,7 +19,7 @@ public class EBNFWorkingTestCase extends ParsingTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "../../TestAssets/working/ebnf.ebnf";
+        return "working";
     }
 
     @Override
