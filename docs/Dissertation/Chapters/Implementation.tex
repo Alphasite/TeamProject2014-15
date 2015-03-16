@@ -27,31 +27,32 @@ Left Recursion support is something we wanted to implement from the start as it 
 In order to add left recursion support, we needed to research the full possibility of left recursion occurrences and possible algorithms for identifying left recursion. 
 
 \subsection{Diagram Generator and BNF Translator}
-One of the initial features we had agreed to implement was a Diagram generator which would allow the user to see their grammar in a graphical format for ease of understandng and comparison with other grammars. This is a useful feature to have in our tookkit, and we decided to implement such that it would generate the diagrams into an external file. This 
-Diagram/Translator (was separate classes, now all in one) (actions/createDiagram.java)
-Translator: Translates our ebnf to a version of bnf used in the diagram library.
-Altered from Nishads antlr translator (translators/Antlr3Translator), to a much simplier translator that basically changes the syntax a little bit as the bnf used in the diagrams is very similar to our ebnf.
-Changes include:
+One of the initial features we had agreed to implement was a Diagram generator which would allow the user to see their grammar in a graphical format for ease of understandng and comparison with other grammars. This is a useful feature to have in our tookkit, and we decided to implement such that it would generate the diagrams into an external file. This was to avoid trying to adpat IntelliJ's graphical user interface, as well as allowing users to compare their current grammar implementation with previously saved versions. As a learners toolkit, this would allow a student to make changes to their grammar and grahically see how the change affects the grammar as a whole.\\
+\\
+We implemented the Diagram generator using a variety of library function that are located in our libs folder as RRDiagram.jar. In order to create the generator we followed a guide located here: https://github.com/Chrriis/RRDiagram.
+From this our diagram generator works as follows:
 \begin{itemize}
-\item Handling of qouted quotes, eg: “ ’ ” and ‘ “ ‘ 
-\item Changing ‘=’ to ‘::=’
-\item Changing added comments to the correct syntax ‘(* comment *)’ 
-\end{itemize}
-Initially this was done in a separate file with a handler that output the translation to a .bnf file now the diagram generator takes the stringbuilder, reads it directly and uses it
-
-Diagram generator: Basically everything is just using library functions found in (libs/RRDIagram.jar) from  (https://github.com/Chrriis/RRDiagram)
-\begin{itemize}
-\item Reads the string in a bufferedReader, translates to a grammar structure
-\item Translates each rule in the grammar 
+\item Our plugin translates the users grammar into a format understood by the Diagram classes. (see Below)
+\item Our plugin takes the entire translation in as a string into the bufferedReader, which translates this into a grammar structure for proper rule identification
+\item It then applies the translation technique onto each individual rule that is has previously identified. 
 	\begin{itemize}
-	\item to an RRdiagram object
-	\item Then translates that RRDigram object to an SVG object (Scalable Vector Graphics) 
+	\item The translation is converted to an RRdiagram object using the libraries previously mentioned
+	\item Then it translates that RRDigram object into an SVG object (Scalable Vector Graphics) for easier file saving
 	\end{itemize}
-\item These (SVG objs) are grouped together and added to a html file which is created 
-\item And the user can open this is any browser to see the diagrams 
+\item The Scalable Vector Graphics are then grouped together into a single html file for the grammar
+\item This can then be opened using any browser since it is a basic html file. This allows our users to load their diagrams regardless of operating system whilst allowing them portability between personal computers and work. 
 \end{itemize}
 
-
+A problem occured in the original stages of this features implementation as we discovered that our chosen EBNF method made diagram creation very difficult. As such we also needed to develop a translator which converted our EBNF notation into the BNF notation used by the diagram conversion libraries. For development puroses this was originally in seperate classes in order to allow easier debugging of errors, however upon completion and testing this was moved to the createDiagram.java class for a higher level of cohesion and a low level of coupling as taught by our lecturers. \\
+\\
+Our Diagram Translator was altered from the previously implemented Antlr translator (found: translators/Antlr3Translator), to provide a much simpler translator that changes the syntax slightly to the BNF used in the diagrams. The BNF notation is very similar to our EBNF notation, meaning that the translator only needs to do the following:
+\begin{itemize}
+\item Handles quoted quotes, such as having single quotation within double quotation and vice versa, eg: “ ’ ” and ‘ “ ‘ 
+\item Changing ‘=’ to ‘::=’ as the diagram converter prefers equal signs as the secondary format.
+\item Changing added comments to the prefered syntax ‘(* comment *)’ 
+\end{itemize}
+The translator takes the created Grammar and converts it into a string with the changes previously mentioned implemented. This is then passed to the diagram converter methods mentioned above. This orginally was implemented as seperate classes, meaning the the string containing the grammar was passed as a argument between classes, however now that we have converte it into a single class, it is passed as a local variable between methods. \\
+\\
 \section{Problems}
 We ran into a variety of problems during the lifetime of the project. Those problems are covered here and discussed in terms of how we solved them or will solve them in future adaptations to the plugin. 
 
