@@ -27,6 +27,7 @@ Left Recursion support is something we wanted to implement from the start as it 
 In order to add left recursion support, we needed to research the full possibility of left recursion occurrences and possible algorithms for identifying left recursion. 
 
 \subsection{Diagram Generator and BNF Translator}
+One of the initial features we had agreed to implement was a Diagram generator which would allow the user to see their grammar in a graphical format for ease of understandng and comparison with other grammars. This is a useful feature to have in our tookkit, and we decided to implement such that it would generate the diagrams into an external file. This 
 Diagram/Translator (was separate classes, now all in one) (actions/createDiagram.java)
 Translator: Translates our ebnf to a version of bnf used in the diagram library.
 Altered from Nishads antlr translator (translators/Antlr3Translator), to a much simplier translator that basically changes the syntax a little bit as the bnf used in the diagrams is very similar to our ebnf.
