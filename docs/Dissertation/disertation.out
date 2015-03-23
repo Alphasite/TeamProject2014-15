@@ -1,0 +1,41 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Motivation}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Project Aims}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Overview}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.4}{Preliminaries}{chapter.1}% 5
+\BOOKMARK [0][-]{chapter.2}{Design}{}% 6
+\BOOKMARK [1][-]{section.2.1}{Client Interview}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.2}{User Case Diagram}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.3}{Project Specification}{chapter.2}% 9
+\BOOKMARK [2][-]{subsection.2.3.1}{Feature Specification}{section.2.3}% 10
+\BOOKMARK [1][-]{section.2.4}{Decisions}{chapter.2}% 11
+\BOOKMARK [2][-]{subsection.2.4.1}{Deciding on roles}{section.2.4}% 12
+\BOOKMARK [2][-]{subsection.2.4.2}{IntelliJ Plugin or Develop own IDE}{section.2.4}% 13
+\BOOKMARK [2][-]{subsection.2.4.3}{Including left recursion}{section.2.4}% 14
+\BOOKMARK [2][-]{subsection.2.4.4}{Using strings in parser}{section.2.4}% 15
+\BOOKMARK [2][-]{subsection.2.4.5}{Communication method}{section.2.4}% 16
+\BOOKMARK [2][-]{subsection.2.4.6}{BNF vs. EBNF}{section.2.4}% 17
+\BOOKMARK [1][-]{section.2.5}{Project Plan and Timetable}{chapter.2}% 18
+\BOOKMARK [2][-]{subsection.2.5.1}{Project TimeTable}{section.2.5}% 19
+\BOOKMARK [2][-]{subsection.2.5.2}{Optional Features TimeTable}{section.2.5}% 20
+\BOOKMARK [0][-]{chapter.3}{Implementation}{}% 21
+\BOOKMARK [1][-]{section.3.1}{Project Stages}{chapter.3}% 22
+\BOOKMARK [2][-]{subsection.3.1.1}{Define Specification, Initial Set up}{section.3.1}% 23
+\BOOKMARK [1][-]{section.3.2}{Implementing Plugin Stages}{chapter.3}% 24
+\BOOKMARK [2][-]{subsection.3.2.1}{Research IntelliJ plugins}{section.3.2}% 25
+\BOOKMARK [1][-]{section.3.3}{Design Changes}{chapter.3}% 26
+\BOOKMARK [2][-]{subsection.3.3.1}{Diagram Generator and BNF Translator}{section.3.3}% 27
+\BOOKMARK [1][-]{section.3.4}{Problems}{chapter.3}% 28
+\BOOKMARK [2][-]{subsection.3.4.1}{Misleading IntelliJ Documentation}{section.3.4}% 29
+\BOOKMARK [2][-]{subsection.3.4.2}{ Misreading of the IntelliJ documentation}{section.3.4}% 30
+\BOOKMARK [0][-]{chapter.4}{Evaluation}{}% 31
+\BOOKMARK [1][-]{section.4.1}{Product Evaluation}{chapter.4}% 32
+\BOOKMARK [2][-]{subsection.4.1.1}{IntelliJ Testing}{section.4.1}% 33
+\BOOKMARK [1][-]{section.4.2}{Project Evaluation}{chapter.4}% 34
+\BOOKMARK [2][-]{subsection.4.2.1}{Team Problems}{section.4.2}% 35
+\BOOKMARK [2][-]{subsection.4.2.2}{Team Successes}{section.4.2}% 36
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 37
+\BOOKMARK [1][-]{section.5.1}{Future Work}{chapter.5}% 38
+\BOOKMARK [2][-]{subsection.5.1.1}{Parser Generator}{section.5.1}% 39
+\BOOKMARK [2][-]{subsection.5.1.2}{Code Formatter}{section.5.1}% 40
+\BOOKMARK [1][-]{section.5.2}{Contributions}{chapter.5}% 41

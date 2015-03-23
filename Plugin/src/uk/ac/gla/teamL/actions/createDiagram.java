@@ -105,7 +105,8 @@ public class createDiagram extends AnAction{
             svg = rrDiagramToSVG.convert(rrDiagram);
 
             //add each svg object to a string to be written to a html file later
-            svgObjs = svgObjs + ("\n<br>\n" + svg.toString());
+            svgObjs = svgObjs +("\n<br><br>" + "<font face=\"Veranda\" ><b>" + rule.getName() + "</b></font><br>" + svg.toString());
+
         }
         //System.out.println(svgObjs);
         return svgObjs;
