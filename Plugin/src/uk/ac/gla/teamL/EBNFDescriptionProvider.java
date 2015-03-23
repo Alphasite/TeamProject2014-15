@@ -6,7 +6,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import uk.ac.gla.teamL.psi.EBNFNamedElement;
 
 /**
  * User: nishad
@@ -18,7 +17,7 @@ public class EBNFDescriptionProvider implements ElementDescriptionProvider {
     @Override
     public String getElementDescription(@NotNull PsiElement psiElement, @NotNull ElementDescriptionLocation elementDescriptionLocation) {
         if (psiElement instanceof PsiNamedElement) {
-            return ((EBNFNamedElement) psiElement).getName();
+            return ((PsiNamedElement) psiElement).getName();
         } else {
             return null;
         }
