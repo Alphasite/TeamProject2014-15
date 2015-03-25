@@ -1,6 +1,6 @@
--- Source: http://www.lua.org/manual/5.1/manual.html
--- MIT licensed http://www.lua.org/license.html
--- Translated by Nishad
+// Source: http://www.lua.org/manual/5.1/manual.html
+// MIT licensed http://www.lua.org/license.html
+// Translated by Nishad
 
 let chunk = (stat ';'?)* (laststat ';'?)?;
 

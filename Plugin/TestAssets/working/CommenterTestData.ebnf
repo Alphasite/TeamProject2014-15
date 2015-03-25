@@ -1,0 +1,4 @@
+let a = b;
+let b = b;
+let c = a;<caret>
+//let banana = "123";

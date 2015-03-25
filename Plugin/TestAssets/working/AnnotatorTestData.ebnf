@@ -1,0 +1,59 @@
+
+<error descr="Unrecognised annotation">@bananana</error>
+let a = a | <warning>b</warning> | c;
+
+let asd = (asd);
+
+let c = "bbasdas";
+
+
+// asdasdas d
+
+// asdasda my hands...
+
+/*  Hi there
+    How are you?
+    I am well...
+    Good for you...
+    This is a very long comment, isnt it?
+
+    ...
+
+    Yep.
+ */
+
+@Ignored
+let pa = "bbasdas" banana ;
+
+
+@Ignored
+let bb = bb | "aaa" | asd  ;
+
+let <warning descr="Rule is never used.">ccc</warning> = (a <warning>b</warning>) | c ;
+
+let <warning descr="Rule is never used.">dddd</warning> = "Asdasd \"";
+
+@Literal
+let <warning descr="Rule is never used.">eeeee</warning> = '''asdas \' ''';
+
+@Literal
+let <warning descr="Rule is never used.">dfas</warning> = "dasda";
+
+let <warning descr="Rule is never used.">f</warning> = "asdasdasd"*;
+
+let <warning descr="Rule is never used.">g</warning> = <error descr="Only rule annotated as @regex may contain negations.">!</error>('x'|'x'|'s'|'s'|'a');
+
+let <warning descr="Rule is never used.">h</warning> = <warning>['s'..'d']</warning> banana;
+
+let <warning descr="Rule is never used.">bacon</warning> = "a"{5,9};
+
+let <warning descr="Rule is never used.">toast</warning> = <warning>asdasd</warning>;
+
+let banana = asd;
+
+let <warning descr="Rule is never used.">ajsd</warning> = bacon <warning>roll</warning>;
+
+
+let m = n;
+let n = o;
+let o = m;

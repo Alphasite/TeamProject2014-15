@@ -5,7 +5,7 @@ let assignment =  annotation* 'let' identifier '=' rules ';';
 let rules = ruleElement ('|'?  ruleElement)*;
 
 let ruleElement = predicate?
-                  ( string
+                  <fold text="(..)">( string
                     | identifier
                     | range
                     | nestedRules
@@ -14,7 +14,7 @@ let ruleElement = predicate?
 
 let nestedRules = "(" rules ")";
 
-let quantifier = '*'
+let quantifier = <fold text="...">'*'
                  | '?'
                  | '+'
                  | arbitraryQuantifier;

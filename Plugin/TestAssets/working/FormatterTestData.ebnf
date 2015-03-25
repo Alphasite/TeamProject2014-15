@@ -2,22 +2,22 @@ let program = assignment*;
 
 let assignment =  annotation* 'let' identifier '=' rules ';';
 
-let rules = ruleElement ('|'?  ruleElement)*;
+let rules = ruleElement ('|'  ?  ruleElement)*;
 
 let ruleElement = predicate?
-                  ( string
-                    | identifier
-                    | range
-                    | nestedRules
-                    | any
-                  ) quantifier?;
+                ( string
+                | identifier
+                | range
+                | nestedRules
+                | any
+                ) quantifier?;
 
 let nestedRules = "(" rules ")";
 
 let quantifier = '*'
-                 | '?'
-                 | '+'
-                 | arbitraryQuantifier;
+               | '?'
+               | '+'
+               | arbitraryQuantifier;
 
 let annotation = '@' identifier;
 
@@ -25,15 +25,15 @@ let arbitraryQuantifier = '{' number (',' number)? '}';
 
 let range = '['string '..'']';
 
-let identifier = character+;
+let identifier = character +;
 
-let string = ('"' | "'") (character | number | whitespace)* ('"' | "'");
+                    let string = ('"' | "'") (character | number | whitespace)* ('"' | "'");
 
-@Literal let predicate =     '!' ;
-@Literal let any = '.';
+@Literal let    predicate =     '!' ;
+@Literal                let any = '.';
 
 let character = ['A'..'z']   ;
-let number = ['0'..'9'];
+let number= ['0'..'9'];
 
 @Ignored let linebreak = '\n' | '\r';
 @Ignored let whitespace = ' ' | '\t';

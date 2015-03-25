@@ -25,18 +25,18 @@ let arbitraryQuantifier = '{' number (',' number)? '}';
 
 let range = '['string '..'']';
 
-let identifier = character+;
+let identifier = char+;
 
-let string = ('"' | "'") (character | number | whitespace)* ('"' | "'");
+let string = ('"' | "'") (char | number | whitespace)* ('"' | "'");
 
 @Literal let predicate =     '!' ;
 @Literal let any = '.';
 
-let character = ['A'..'z']   ;
+let char = ['A'..'z']   ;
 let number = ['0'..'9'];
 
 @Ignored let linebreak = '\n' | '\r';
 @Ignored let whitespace = ' ' | '\t';
 
-@Ignored let lineComment = '//' (character | number | whitespace)*;
-@Ignored let blockComment = '/*' (character | number | whitespace | linebreak)* '*/';
+@Ignored let lineComment = '//' (char | number | whitespace)*;
+@Ignored let blockComment = '/*' (char | number | whitespace | linebreak)* '*/';
