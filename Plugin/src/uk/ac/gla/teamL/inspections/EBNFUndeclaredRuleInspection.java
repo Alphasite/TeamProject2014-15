@@ -9,6 +9,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFFile;
+import uk.ac.gla.teamL.inspections.quickFixes.EBNFUndefinedRuleQuickFix;
 import uk.ac.gla.teamL.parser.EBNFParserUtil;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
 import uk.ac.gla.teamL.psi.EBNFIdentifier;
@@ -65,7 +66,7 @@ public class EBNFUndeclaredRuleInspection extends LocalInspectionTool {
 
                 for (EBNFIdentifier identifier: identifiers) {
                     if (!declaredIdentifiers.contains(identifier.getName().toLowerCase())) {
-                        problemsHolder.registerProblem(identifier.getId(), "Identifier doesnt point to a known rule.");
+                        problemsHolder.registerProblem(identifier, "Identifier doesnt point to a known rule.", new EBNFUndefinedRuleQuickFix());
                     }
                 }
             }

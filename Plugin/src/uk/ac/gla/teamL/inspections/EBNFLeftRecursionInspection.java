@@ -11,7 +11,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import uk.ac.gla.teamL.EBNFFile;
-import uk.ac.gla.teamL.inspections.quickFixes.LeftRecursionQuickFix;
+import uk.ac.gla.teamL.inspections.quickFixes.EBNFLeftRecursionQuickFix;
 import uk.ac.gla.teamL.parser.EBNFParserUtil;
 import uk.ac.gla.teamL.psi.EBNFAssignment;
 import uk.ac.gla.teamL.psi.EBNFIdentifier;
@@ -60,7 +60,7 @@ public class EBNFLeftRecursionInspection extends LocalInspectionTool {
                     problemsHolder.registerProblem(
                             ebnfAssignment,
                             "Left Recursive: Some parser generators don't like this.",
-                            new LeftRecursionQuickFix(ebnfAssignment.getContainingFile())
+                            new EBNFLeftRecursionQuickFix(ebnfAssignment.getContainingFile())
                     );
                 }
             }

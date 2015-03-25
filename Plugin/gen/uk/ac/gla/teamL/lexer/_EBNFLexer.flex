@@ -27,7 +27,7 @@ COMMENT_BLOCK="/"\*[^*/\*]*\*"/"
 STRING_TRIPLEQUOTES='''([^(''')]|(\'))*'''
 STRING_DOUBLEQUOTES=\"([^\"\\\"]|\\.)*\"
 STRING_SINGLEQUOTES='([^(')]|(\\\'))*'
-ID=[a-zA-Z][_a-zA-Z0-9]*
+ID=[a-zA-Z][\-_a-zA-Z0-9]*
 NUMBERS=[0-9]+
 
 %%

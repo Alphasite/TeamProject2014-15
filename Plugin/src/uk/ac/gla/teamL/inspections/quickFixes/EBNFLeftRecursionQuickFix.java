@@ -17,12 +17,12 @@ import static uk.ac.gla.teamL.parser.EBNFParserUtil.findRules;
 /**
  * Created by Bryan on 27/01/15.
  */
-public class LeftRecursionQuickFix implements LocalQuickFix {
+public class EBNFLeftRecursionQuickFix implements LocalQuickFix {
     // Quickfix Methods.
 
     PsiFile file;
 
-    public LeftRecursionQuickFix(PsiFile file) {
+    public EBNFLeftRecursionQuickFix(PsiFile file) {
         this.file = file;
     }
 

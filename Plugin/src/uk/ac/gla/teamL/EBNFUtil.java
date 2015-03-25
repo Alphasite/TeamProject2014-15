@@ -23,6 +23,13 @@ public class EBNFUtil {
         return PsiTreeUtil.getDeepestFirst(file);
     }
 
+    public static PsiElement[] createElementAndGetAllChildren(Project inProject, String withText) {
+        PsiFile file = PsiFileFactory
+                               .getInstance(inProject)
+                               .createFileFromText("_temp.ebnf", EBNFLanguage.INSTANCE, withText, false, false);
+        return file.getChildren();
+    }
+
     // TODO This is worth investigating, but for now its not much of an overhead to allocate an empty array.
     // public static final List emptyList = new ArrayList();
 
