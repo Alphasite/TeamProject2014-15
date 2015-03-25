@@ -1,0 +1,296 @@
+//Definitions of Syntactic Classes
+
+//Programs and Blocks
+
+let program = program_heading block "." ;
+let program_heading = program identifier "(" identifier_list ")" ";" ;
+
+let block = declaration_part statement_part ;
+
+let declaration_part = ( label_declaration_part )?
+                       ( constant_definition_part )?
+                       ( type_definition_part )?
+                       ( variable_declaration_part )?
+                       procedure_and_function_declaration_part ;
+
+let label_declaration_part = label label ( "," label )* ";" ;
+
+let constant_definition_part = const constant_definition ";" ( constant_definition ";" )* ;
+
+let constant_definition = identifier "=" constant ;
+
+let type_definition_part = type type_definition ";" ( type_definition ";" )* ;
+
+let type_definition = identifier "=" type ;
+
+let variable_declaration_part = var variable_declaration ";" ( variable_declaration ";" )* ;
+
+let variable_declaration = identifier_list ":" type ;
+
+let procedure_and_function_declaration_part = ( (procedure_declaration | function_declaration) ";" )* ;
+
+let procedure_declaration = procedure_heading ";" procedure_body
+                            | procedure_heading ";" directive
+                            | procedure_identification ";" procedure_body ;
+
+let procedure_body = block ;
+
+let function_declaration = function_heading ";" function_body
+                           | function_heading ";" directive
+                           | function_identification ";" function_body ;
+
+let function_body = block ;
+
+let directive = forward | compiler_defined_directives ;
+
+let statement_part = begin statement_sequence end ;
+
+
+
+// Procedure and Function Definitions
+
+let procedure_heading = procedure identifier ( formal_parameter_list )? ;
+
+let function_heading = function identifier ( formal_parameter_list )? ":" result_type ;
+
+let result_type = type_identifier ;
+
+let procedure_identification = procedure procedure_identifier ;
+
+let function_identification = function function_identifier ;
+
+let formal_parameter_list = "(" formal_parameter_section ( ";" formal_parameter_section )* ")" ;
+
+let formal_parameter_section = value_parameter_section
+                               | variable_parameter_section
+                               | procedure_parameter_section
+                               | function_parameter_section ;
+
+let value_parameter_section = identifier_list ":" parameter_type ;
+
+let variable_parameter_section = var identifier_list ":" parameter_type ;
+
+let procedure_parameter_section = procedure_heading ;
+
+let function_parameter_section = function_heading ;
+
+let parameter_type = type_identifier | conformant_array_schema ;
+
+let conformant_array_schema = packed_conformant_array_schema
+                              | unpacked_conformant_array_schema ;
+
+let packed_conformant_array_schema = packed array "[ " bound_specification " ]" of type_identifier ;
+
+let unpacked_conformant_array_schema = array "[ " bound_specification ( ";" bound_specification )* " ]"
+                                       of (type_identifier | conformant_array_schema) ;
+
+let bound_specification = identifier ".." identifier ":" ordinal_type_identifier ;
+
+let ordinal_type_identifier = type_identifier ;
+
+
+// Statements
+
+let statement_sequence = statement ( ";" statement )* ;
+
+let statement = ( label ":" )? (simple_statement | structured_statement) ;
+
+let simple_statement = ( assignment_statement | procedure_statement | goto_statement )? ;
+let assignment_statement = (variable | function_identifier) ":=" expression ;
+let procedure_statement = procedure_identifier ( actual_parameter_list )? ;
+let goto_statement = goto label ;
+let structured_statement = compound_statement | repetitive_statement | conditional_statement | with_statement ;
+let compound_statement = begin statement_sequence end ;
+let repetitive_statement = while_statement | repeat_statement | for_statement ;
+let while_statement = while expression do statement ;
+let repeat_statement = repeat statement_sequence until expression ;
+let for_statement = for variable_identifier ":=" initial_expression (to | downto) final_expression do statement ;
+
+let initial_expression = expression ;
+let final_expression = expression ;
+
+let conditional_statement = if_statement | case_statement ;
+let if_statement = if expression then statement ( else statement )? ;
+let case_statement = case expression of case_limb ( ";" case_limb )* ( ";" )? end ;
+
+let case_limb = case_label_list ":" statement ;
+let case_label_list = constant ( "," constant )* ;
+
+let with_statement = with record_variable ( "," record_variable )* do statement ;
+
+let actual_parameter_list = "(" actual_parameter ( "," actual_parameter )* ")" ;
+let actual_parameter = actual_value | actual_variable | actual_procedure | actual_function ;
+
+let actual_value = expression ;
+
+let actual_procedure = procedure_identifier ;
+
+let actual_function = function_identifier ;
+
+
+
+// Expressions
+
+let expression = simple_expression ( relational_operator simple_expression )? ;
+let simple_expression = ( sign )? term ( addition_operator term )* ;
+
+let term = factor ( multiplication_operator factor )* ;
+
+let factor = variable
+             | number
+             | string
+             | set
+             | nil
+             | constant_identifier
+             | bound_identifier
+             | function_designator
+             | "(" expression ")"
+             | not factor ;
+
+let relational_operator = "=" | "<>" | "<" | "<=" | ">" | ">=" | "in" ;
+
+let addition_operator = "+" | "-" | or ;
+let multiplication_operator = "*" | "/" | div | mod | and ;
+
+let variable = entire_variable | component_variable | referenced_variable ;
+let entire_variable = variable_identifier | field_identifier ;
+let component_variable = indexed_variable | field_designator | file_buffer ;
+let indexed_variable = array_variable "[ " expression_list " ]" ;
+
+let field_designator = record_variable "." field_identifier ;
+
+let set = "[ " element_list " ]" ;
+
+let element_list = ( expression ( "," expression )* )? ;
+
+let function_designator = function_identifier ( actual_parameter_list )? ;
+
+let file_buffer = file_variable "^" ;
+
+
+
+// Types
+
+let type = simple_type | structured_type | pointer_type | type_identifier ;
+let simple_type = subrange_type | enumerated_type ;
+let enumerated_type = "(" identifier_list ")" ;
+let subrange_type = lower_bound ".." upper_bound ;
+
+let lower_bound = constant ;
+let upper_bound = constant ;
+
+let structured_type = ( packed )? unpacked_structured_type ;
+let unpacked_structured_type = array_type | record_type | set_type | file_type ;
+let array_type = array "[ " index_type ( "," index_type )* " ]" of element_type ;
+let index_type = simple_type ;
+let element_type = type ;
+let record_type = record field_list end ;
+let set_type = set of base_type ;
+let base_type = type ;
+let file_type = file of file_component_type ;
+let file_component_type = type ;
+let pointer_type = "^" type_identifier ;
+
+
+
+// Record Fields
+
+let field_list = ( (fixed_part ( ";" variant_part )? | variant_part) ( ";" )? )? ;
+let fixed_part = record_section ( ";" record_section )* ;
+let record_section = identifier_list ":" type ;
+let variant_part = case tag_field type_identifier of variant ( ";" variant )* ;
+let tag_field = ( identifier ":" )? ;
+let variant = case_label_list ":" "(" field_list ")" ;
+
+
+
+// Input/Output
+
+let output_list = output_value ( "," output_value )* ;
+let output_value = expression ( ";" field_width ( ":" fraction_length )? )? ;
+let field_width = expression ;
+let fraction_length = expression ;
+
+
+
+// Variable and Identifier Categories
+
+let identifier = letter ( letter | digit )* ;
+let file_variable = variable ;
+
+let referenced_variable = pointer_variable "^" ;
+let record_variable = variable ;
+let pointer_variable = variable ;
+let actual_variable = variable ;
+let array_variable = variable ;
+
+let field_identifier = identifier ;
+let constant_identifier = identifier ;
+let variable_identifier = identifier ;
+let type_identifier = identifier ;
+let procedure_identifier = identifier ;
+let function_identifier = identifier ;
+let bound_identifier = identifier ;
+
+
+
+// Low Level Definitions
+
+let variable_list = variable ( "," variable )* ; //: ; // TODO checkthis!
+let identifier_list = identifier ( "," identifier )* ;
+let expression_list = expression ( "," expression )* ;
+
+let number = integer_number | real_number ;
+let integer_number = digit_sequence ;
+let real_number = digit_sequence "." ( unsigned_digit_sequence )? ( scale_factor )?
+      | digit_sequence scale_factor ;
+
+let scale_factor = ("E" | "e")digit_sequence ;
+let unsigned_digit_sequence = digit ( digit )* ;
+let digit_sequence = (sign )? unsigned_digit_sequence ;
+
+let sign = "+" | "-" ;
+let letter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+let digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+let string = "'" string_character ( string_character )* "'" ;
+let string_character = any_character_except_quote | "''" ;
+let label = integer_number ;
+let constant = (sign)? (constant_identifier | number) | string ;
+
+let repeat = "repeat";
+@Regex let any_character_except_quote = !"'";
+let case = "case";
+let of = "of";
+let file = "file";
+let record = "record";
+let end = "end";
+let array = "array";
+let packed = "packed";
+let or = "or";
+let div = "div";
+let mod = "mod";
+let and = "and";
+let nil = "nil";
+let with = "with";
+let do = "do";
+let else = "else";
+let then = "then";
+let if = "if";
+let downto = "downto";
+let to = "to";
+let for = "for";
+let until = "until";
+let while = "while";
+let begin = "begin";
+let goto = "goto";
+let var = "var";
+let function = "function";
+let procedure = "procedure";
+let const = "const";
+let forward = "forward";
+@Regex let compiler_defined_directives = !.;
+let not = "not";
+
+@Ignored
+let whitespace = " " | "\t" | "\n" | "\r\n";

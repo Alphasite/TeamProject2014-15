@@ -1,0 +1,41 @@
+/* This is an implementation of a subset of our grammar language, which should hopefully be eventually compilable */
+
+let program = assignment*;
+
+let assignment =  'let' identifier '=' rules ';';
+
+let rules = ruleElement ('|'? ruleElement)*;
+
+let ruleElement = predicate?
+                  ( string
+                    | identifier
+                    | range
+                    | nestedRules
+                    | any
+                  ) quantifier? ;
+
+let nestedRules = "(" rules ")";
+
+let quantifier = '*'
+                 | '?'
+                 | '+'
+                 | arbitraryQuantifier;
+
+let arbitraryQuantifier = '{' number (',' number)? '}';
+
+let range = '['  string '..' string ']';
+
+let identifier = character (number | identifier)*;
+
+@regex let string = '"' ('\"' | !'"')* '"'
+                  | "'" ("\'" | !"'")* "'"
+                  | "'''" ("\'" | !"'")* "'''";
+
+@Literal let predicate = '!';
+@Literal let any = '.';
+
+let character = (['A'..'Z'] | ['a'..'z'])*;
+let number = ['0'..'9'];
+
+@Ignored let whitespace = '\n' | '\t';
+@Ignored @regex let comment = '//' !"\n" | "\*" (!"*/")* "*/";

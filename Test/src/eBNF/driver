@@ -1,0 +1,30 @@
+import groovyjarjarantlr.TokenStreamException;
+import groovyjarjarantlr.collections.AST;
+import org.antlr.runtime.RecognitionException;
+
+import java.io.Reader;
+import java.io.StringReader;
+
+/**
+ * User: nishad
+ * Date: 18/12/14
+ * Time: 11:42
+ */
+public class driver {
+    public static void main(String[] args) {
+        Reader reader = new StringReader(args[0]);
+        EBNFLexer lexer = new EBNFLexer(reader);
+        EBNFParser parser = new EBNFParser(lexer);
+
+        try {
+            parser.orexpression();
+            AST tree = parser.getAST();
+            System.out.println(tree.toStringTree());
+        } catch (RecognitionException e) {
+            System.err.println(e.toString());
+        } catch (TokenStreamException e) {
+            System.err.println(e.toString());
+        }
+    }
+}
+

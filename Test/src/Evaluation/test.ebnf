@@ -1,0 +1,33 @@
+/* Your task to create a grammar which should be able to parse this language: */
+/*
+   Identifiers should be 1 or more characters and you can add a number or an  identifier.
+*/
+
+// //banana
+// var a = 1 + 2;
+//
+// var ba = 2 + 3;
+//
+// var c = a + ba;
+
+/* v Start here v */
+
+
+
+/* ^ end here ^ */
+
+// Now generate a railroad diagram and translate it to antlr please.
+
+// Then fix the problems in these grammars:
+
+let a = blah;
+
+let b = a;
+
+let a = a;
+
+let c = ["b".."a"] | d;
+
+let d = c | a;
+
+// now fill in the survey please!

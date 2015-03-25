@@ -1,0 +1,457 @@
+let Identifier =
+IDENTIFIER;
+
+let QualifiedIdentifier =
+Identifier ( . Identifier )+
+;
+let QualifiedIdentifierList =
+QualifiedIdentifier ( "," QualifiedIdentifier )+
+;
+
+let CompilationUnit =
+((Annotations)? "package" QualifiedIdentifier ";")?
+(ImportDeclaration)+ (TypeDeclaration)+
+;
+let ImportDeclaration =
+"import" ("static")? Identifier ( . Identifier )+ (.*)? ;
+
+let TypeDeclaration =
+ClassOrInterfaceDeclaration
+
+;
+let ClassOrInterfaceDeclaration =
+(Modifier)+ (ClassDeclaration | InterfaceDeclaration)
+;
+let ClassDeclaration =
+NormalClassDeclaration
+EnumDeclaration
+;
+let InterfaceDeclaration =
+NormalInterfaceDeclaration
+AnnotationTypeDeclaration
+
+
+;
+let NormalClassDeclaration =
+"class" Identifier (TypeParameters)?
+("extends" Type)? ("implements" TypeList)? ClassBody
+;
+let EnumDeclaration =
+"enum" Identifier ("implements" TypeList)? EnumBody
+;
+let NormalInterfaceDeclaration =
+"interface" Identifier (TypeParameters)? ("extends" TypeList)? InterfaceBody
+;
+let AnnotationTypeDeclaration =
+"@" "interface" Identifier AnnotationTypeBody
+;
+let Type = BasicType ("[]")+
+           | ReferenceType  ("[]")+;
+
+let BasicType = "byte"
+                | "short"
+                | "char"
+                | "int"
+                | "long"
+                | "float"
+                | "double"
+                | "boolean";
+
+let ReferenceType = Identifier (TypeArguments)? ( . Identifier (TypeArguments)? )+;
+let TypeArguments = "<" TypeArgument ( "," TypeArgument )+ ">";
+let TypeArgument = ReferenceType? ( (extends | super) ReferenceType )?;
+let NonWildcardTypeArguments = "<" TypeList ">";
+let TypeList = ReferenceType ( "," ReferenceType )+;
+let TypeArgumentsOrDiamond = "<" ">" TypeArguments;
+let NonWildcardTypeArgumentsOrDiamond = "<" ">" NonWildcardTypeArguments;
+let TypeParameters = "<" TypeParameter ( "," TypeParameter )+ ">";
+let TypeParameter = Identifier ("extends" Bound)?;
+let Bound = ReferenceType ( "&" ReferenceType )+;
+
+
+let Modifier = Annotation
+               | public
+               | protected
+               | private
+               | static
+               | abstract
+               | final
+               | native
+               | synchronized
+               | transient
+               | volatile
+               | strictfp;
+
+let Annotations = Annotation (Annotation)+;
+let Annotation = "@" QualifiedIdentifier ( "(" (AnnotationElement)? ")" )?;
+let AnnotationElement = ElementValuePairs
+                        | ElementValue;
+
+let ElementValuePairs = ElementValuePair ( "," ElementValuePair )+;
+let ElementValuePair = Identifier "=" ElementValue;
+let ElementValue = Annotation
+                   | Expression1
+                   | ElementValueArrayInitializer;
+let ElementValueArrayInitializer = ( (ElementValues)? (",")? )+;
+let ElementValues = ElementValue ( "," ElementValue )+;
+let ClassBody = ( "{" ClassBodyDeclaration "}" )+;
+let ClassBodyDeclaration =
+";"
+| (Modifier)+ MemberDecl
+| (static)? Block;
+
+let MemberDecl = MethodOrFieldDecl
+                 | "void" Identifier VoidMethodDeclaratorRest
+                 | Identifier ConstructorDeclaratorRest
+                 | GenericMethodOrConstructorDecl
+                 | ClassDeclaration
+                 | InterfaceDeclaration;
+
+let MethodOrFieldDecl = Type Identifier MethodOrFieldRest;
+let MethodOrFieldRest = FieldDeclaratorsRest ";"
+                        | MethodDeclaratorRest;
+let FieldDeclaratorsRest = VariableDeclaratorRest
+                           ( "," VariableDeclarator )+;
+let MethodDeclaratorRest = FormalParameters ("[]")+ ("throws" QualifiedIdentifierList)? (Block | ";");
+let VoidMethodDeclaratorRest = FormalParameters ("throws" QualifiedIdentifierList)? (Block | ";");
+
+let ConstructorDeclaratorRest = FormalParameters ("throws" QualifiedIdentifierList)? Block;
+
+let GenericMethodOrConstructorDecl = TypeParameters GenericMethodOrConstructorRest;
+
+let GenericMethodOrConstructorRest = (Type | "void") Identifier MethodDeclaratorRest
+                                     | Identifier ConstructorDeclaratorRest;
+let InterfaceBody = ( "{" InterfaceBodyDeclaration "}" )+;
+let InterfaceBodyDeclaration = ";"
+                               | (Modifier)+ InterfaceMemberDecl;
+
+let InterfaceMemberDecl = InterfaceMethodOrFieldDecl
+                          | "void" Identifier VoidInterfaceMethodDeclaratorRest
+                          | InterfaceGenericMethodDecl
+                          | ClassDeclaration
+                          | InterfaceDeclaration;
+
+let InterfaceMethodOrFieldDecl = Type Identifier InterfaceMethodOrFieldRest;
+let InterfaceMethodOrFieldRest = ConstantDeclaratorsRest ";"
+                                 | InterfaceMethodDeclaratorRest;
+let ConstantDeclaratorsRest = ConstantDeclaratorRest ( "," ConstantDeclarator )+;
+
+let ConstantDeclaratorRest = "[]"+ "=" VariableInitializer;
+let ConstantDeclarator = Identifier ConstantDeclaratorRest;
+
+let InterfaceMethodDeclaratorRest = FormalParameters "[]"+ ("throws" QualifiedIdentifierList)? ";";
+                                                        let VoidInterfaceMethodDeclaratorRest =
+                                                        FormalParameters (throws QualifiedIdentifierList)? ;;
+
+                                                                                                         let InterfaceGenericMethodDecl =
+                                                                                                         TypeParameters (Type | void) Identifier InterfaceMethodDeclaratorRest
+                                                                                                                                      ;
+                                                                                                                                      let FormalParameters =
+( (FormalParameterDecls)? );
+
+                           let FormalParameterDecls =
+(VariableModifier)+  Type FormalParameterDeclsRest;
+
+                  let VariableModifier =
+                  final
+                  Annotation;
+
+let FormalParameterDeclsRest =
+VariableDeclaratorId (, FormalParameterDecls)?
+                                             ... VariableDeclaratorId
+
+
+                                             ;
+                                             let VariableDeclaratorId =
+                                             Identifier (()?)+
+
+
+                                                             ;
+                                                             let VariableDeclarators =
+                                                             VariableDeclarator ( , VariableDeclarator )+;
+
+                                                                                                        let VariableDeclarator =
+                                                                                                        Identifier VariableDeclaratorRest;
+
+                                                                                                        let VariableDeclaratorRest = ;
+                                                                                                        (()?)+ (let = VariableInitializer )?
+                                                                                                                                           ;
+                                                                                                                                           let VariableInitializer =
+                                                                                                                                           ArrayInitializer
+                                                                                                                                           Expression
+                                                                                                                                           ;
+                                                                                                                                           let ArrayInitializer =
+                                                                                                        ( ( VariableInitializer ( , VariableInitializer )+ (,)? )? )+
+                                                                                                                                                                    ;
+                                                                                                                                                                    let Block =
+                                                                                                        ( BlockStatements )+
+                                                                                                                           ;
+                                                                                                                           let BlockStatements =
+( BlockStatement )+
+                  ;
+                  let BlockStatement =
+                  LocalVariableDeclarationStatement
+                  ClassOrInterfaceDeclaration;
+(Identifier let = )? Statement
+                   ;
+                   let LocalVariableDeclarationStatement =
+( VariableModifier )+  Type VariableDeclarators ;
+                    ;
+                    let Statement =
+                    Block
+                    ;;
+                     Identifier let = Statement
+                     StatementExpression ;
+                     if ParExpression Statement (else Statement)?;
+                                                                assert Expression (let = Expression)? ;
+                                                                                                    switch ParExpression ( SwitchBlockStatementGroups )+
+                                                                                                                                                       while ParExpression Statement
+                                                                                                                                                       do Statement while ParExpression ;
+                                                                                                                                                       for ( ForControl ) Statement
+                                                                                                                                                                          break (Identifier)? ;
+                                                                                                                                                                                            continue (Identifier)? ;
+                                                                                                                                                                                                                 return (Expression)? ;
+                                                                                                                                                                                                                                    throw Expression ;
+                                                                                                                                                                                                                                    synchronized ParExpression Block
+                                                                                                                                                                                                                                    try Block (Catches | (Catches)? Finally)
+                                                                                                                                                                                                                                              try ResourceSpecification Block (Catches)? (Finally)?
+                                                                                                                                                                                                                                                                                                  ;
+                                                                                                                                                                                                                                                                                                  let StatementExpression =
+                                                                                                                                                                                                                                                                                                  Expression
+                                                                                                                                                                                                                                                                                                  ;
+                                                                                                                                                                                                                                                                                                  let Catches =
+                                                                                                                                                                                                                                              CatchClause ( CatchClause )+
+                                                                                                                                                                                                                                                                         ;
+                                                                                                                                                                                                                                                                         let CatchClause =
+                                                                                                                                                                                                                                                                         catch ( (VariableModifier)+ CatchType Identifier ) Block
+                                                                                                                                                                                                                                                                                                                            ;
+                                                                                                                                                                                                                                                                                                                            let CatchType =
+                                                                                                                                                                                                                                                                                                                            QualifiedIdentifier ( | QualifiedIdentifier )+
+                                                                                                                                                                                                                                                                                                                                                                         ;
+                                                                                                                                                                                                                                                                                                                                                                         let Finally =
+                                                                                                                                                                                                                                                                                                                                                                         finally Block
+                                                                                                                                                                                                                                                                                                                                                                         ;
+                                                                                                                                                                                                                                                                                                                                                                         let ResourceSpecification =
+                                                                                                                                                                                                                                                                                                                            ( Resources (;)? );
+
+                                                                                                                                                                                                                                                                                                                                              let Resources =
+                                                                                                                                                                                                                                                                                                                                              Resource ( ; Resource )+;
+                                                                                                                                                                                                                                                                                                                                                                     ;
+                                                                                                                                                                                                                                                                                                                                                                     let Resource =
+                                                                                                                                                                                                                                                                                                                            (VariableModifier)+ ReferenceType let VariableDeclaratorId = Expression
+
+                                                                                                                                                                                                                                                                                                                                              ; let SwitchBlockStatementGroups =
+( SwitchBlockStatementGroup )+
+                             ;
+                             let SwitchBlockStatementGroup =
+                             SwitchLabels BlockStatements
+                             ;
+                             let SwitchLabels =
+                                              SwitchLabel ( SwitchLabel )+
+                                                                         ;
+                                                                         let SwitchLabel = ;
+                                                                         case Expression let = ;
+                                                                                               case EnumConstantName let = ;
+                                                                                               default let =
+                                                                                               ;
+                             let EnumConstantName =
+                             Identifier
+
+
+                             ;
+                             let ForControl =
+                             ForVarControl
+                             ForInit ; (Expression)? ; (ForUpdate)?
+                                                                  ;
+                                                                  let ForVarControl =
+                                                                  (VariableModifier)+ Type VariableDeclaratorId  ForVarControlRest
+                                                                                    ;
+                                                                                    let ForVarControlRest =
+                                                                                    ForVariableDeclaratorsRest ; (Expression)? ; (ForUpdate)?;
+                                                                                                                                            let = Expression
+                                                                                                                                            ;
+                                                                                                                                            let ForVariableDeclaratorsRest =
+                                                                  (= VariableInitializer)? ( , VariableDeclarator )+
+                                                                                                                   ;
+                                                                                                                   let ForInit = ;
+                                                                                                                   let ForUpdate =
+                                                                                                                   StatementExpression ( , StatementExpression )+
+                                                                                                                                                                ;
+                                                                                                                                                                let Expression =
+                                                                                                                                                                Expression1 (AssignmentOperator Expression1)?
+                                                                                                                                                                                                            ;
+                                                                                                                                                                                                            let AssignmentOperator = ;
+                                                                                                                                                                                                            let =
+                                                                                                                                                                                                            + =
+                                                                                                                   - =
+                                                                                                                   * =
+                                                                                                                   / =
+                                                                                                                   & =
+                                                                                                                   | =
+                                                                                                                   ^ =
+                                                                                                                   % =
+                                                                                                                   << =
+                                                                                                                   >> =
+                                                                                                                   >>> =
+                                                                                                                   ;
+                                                                                                                   let Expression1 =
+                                                                                                                   Expression2 (Expression1Rest)?
+                                                                                                                                                ;
+                                                                                                                                                ; let Expression1Rest =
+                                                                                                                                                ? Expression let =  Expression1;
+
+                                                                                                                                                                    let Expression2 =
+                                                                                                                                                                    Expression3 (Expression2Rest)?;
+
+                                                                                                                                                                                                 let Expression2Rest =
+                                                                                                                                                                    ( InfixOp Expression3 )+
+                                                                                                                                                                                           instanceof Type;
+
+                                                                                                                                                                                           let InfixOp =
+                                                                                                                                                                                           ||
+                                                                                                                                                                                           &&
+                                                                                                                                                                                            |
+                                                                                                                                                                                            ^
+                                                                                                                                                                                            &
+                                                                                                                                                                                            = =
+                                                                                                                                                                                            ! =
+                                                                                                                                                                                            <
+                                                                                                                                                                                            >
+                                                                                                                                                                    < =
+                                                                                                                                                                    > =
+                                                                                                                                                                    <<
+                                                                                                                                                                    >>
+                                                                                                                                                                    >>>
+                                                                                                                                                                      +
+                                                                                                                                                                      -
+                                                                                                                                                                      *
+                                                                                                                                                                      /
+                                                                                                                                                                      %
+                                                                                                                                                                      ;
+                                                                                                                                                                      let Expression3 =
+                                                                                                                                                                    PrefixOp Expression3
+                                                                                                                                                                    ( (Expression | Type) ) Expression3
+                                                                                                                                                                                            Primary ( Selector )+ ( PostfixOp )+
+                                                                                                                                                                                                                               ;
+                                                                                                                                                                                                                               let PrefixOp =
+                                                                                                                                                                                                                               ++
+                                                                                                                                                                                                                               --
+                                                                                                                                                                                                                               !
+                                                                                                                                                                                            ~
+                                                                                                                                                                                            +
+                                                                                                                                                                                            -;
+
+                                                                                                                                                                                            let PostfixOp =
+                                                                                                                                                                                            ++
+                                                                                                                                                                                            --;
+
+                                                                                                                                                                                             let Primary =
+                                                                                                                                                                                             Literal
+                                                                                                                                                                                             ParExpression
+                                                                                                                                                                                             this (Arguments)?
+                                                                                                                                                                                                             super SuperSuffix
+                                                                                                                                                                                                             new Creator
+                                                                                                                                                                                                             NonWildcardTypeArguments (ExplicitGenericInvocationSuffix | this Arguments)
+Identifier ( . Identifier )+ (IdentifierSuffix)?
+                                               BasicType (()?)+ . class
+                                                              void . class
+
+
+                                                              ;
+                                                              let Literal =
+           IntegerLiteral
+           FloatingPointLiteral
+           CharacterLiteral
+           StringLiteral
+           BooleanLiteral
+           NullLiteral;
+
+           let ParExpression =
+           ( Expression );
+
+                         let Arguments =
+           ( ( Expression ( , Expression )+ )? );
+
+                                                let SuperSuffix =
+                                                Arguments
+                                                . Identifier (Arguments)?;
+
+                                                                        let ExplicitGenericInvocationSuffix =
+                                                                        super SuperSuffix
+                                                                        Identifier Arguments;
+
+                                                             let Creator =
+                                                             NonWildcardTypeArguments CreatedName ClassCreatorRest
+                                                             CreatedName (ClassCreatorRest | ArrayCreatorRest);
+
+                                                                                                              let CreatedName =
+                                                                                                              Identifier (TypeArgumentsOrDiamond)? ( . Identifier (TypeArgumentsOrDiamond)? )+
+                                                                                                                                                                                             ;
+                                                                                                                                                                                             let ClassCreatorRest =
+                                                                                                                                                                                             Arguments (ClassBody)?
+                                                                                                                                                                                                                  ;
+                                                                                                                                                                                                                  let ArrayCreatorRest =
+                                                                                                                                                                                                                  ( ()? (()?)+ ArrayInitializer  |  Expression )? (( Expression )?)+ (()?)+)
+
+                                                                                                                                                                                                                                                                                          ;
+
+                                                                                                                                                                                                                                                                                          let IdentifierSuffix =
+                                                                                                                                                                                                                  ( ((()?)+ . class | Expression) )?
+                                                                                                                                                                                                                                                   Arguments
+                                                                                                                                                                                                                                                   . (class | ExplicitGenericInvocation | this | super Arguments |
+                                                                                                                                                                                                                                                      new (NonWildcardTypeArguments)? InnerCreator);
+
+                                                                                                                                                                                                                                                                                                   let ExplicitGenericInvocation =
+                                                                                                                                                                                                                                                                                                   NonWildcardTypeArguments ExplicitGenericInvocationSuffix;
+
+                                                                                                                                                                                                                                                                                                   let InnerCreator =
+Identifier (NonWildcardTypeArgumentsOrDiamond)? ClassCreatorRest
+
+
+                                              ;
+                                              let Selector =
+                                              . Identifier (Arguments)?
+                                                                      . ExplicitGenericInvocation
+                                                                      . this
+                                                                      . super SuperSuffix
+                                                                      . new (NonWildcardTypeArguments)? InnerCreator
+( Expression )?
+              ;
+              let EnumBody =
+( (EnumConstants)? (,)? (EnumBodyDeclarations)? )+
+                                                 ;
+                                                 let EnumConstants =
+                                                 EnumConstant
+                                                 EnumConstants , EnumConstant;
+
+let EnumConstant =
+(Annotations)? Identifier (Arguments)? (ClassBody)?
+                                                  ;
+                                                  let EnumBodyDeclarations =
+                                                  ; (ClassBodyDeclaration)+
+
+
+                                                                          ;
+                                                                          let AnnotationTypeBody =
+( (AnnotationTypeElementDeclarations)? )+
+                                        ;
+                                        let AnnotationTypeElementDeclarations =
+                                        AnnotationTypeElementDeclaration
+                                        AnnotationTypeElementDeclarations AnnotationTypeElementDeclaration;
+
+                                        let AnnotationTypeElementDeclaration =
+                                        (Modifier)+ AnnotationTypeElementRest;
+
+                                                  let AnnotationTypeElementRest =
+                                                  Type Identifier AnnotationMethodOrConstantRest ;
+                                        ClassDeclaration
+                                        InterfaceDeclaration
+                                        EnumDeclaration
+                                        AnnotationTypeDeclaration
+                                        ;
+                                        let AnnotationMethodOrConstantRest =
+                                        AnnotationMethodRest
+                                        ConstantDeclaratorsRest
+                                        ;
+                                        let AnnotationMethodRest =
+                                        ( ) (()?)? (default ElementValue)?

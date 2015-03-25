@@ -1,0 +1,91 @@
+/*
+    Hi there!
+
+    This is a help file, it should give you some helpful little snippets to get you started in using our grammar!
+    Our grammar has a rather simple syntax, you have rules which are whitespace insensitive and each rule can have
+     0 or more annotations on them.
+
+     Hover over a highlighted error to see what ht problem is!
+
+     To generate the the antlr code, or the YACC version or the railroad diagram, go to the code menu,
+ */
+
+
+// A rule, called A.
+// (if you hover over it you can see it complaining about a reference to an undeclared rule)
+let a = z | c;
+
+
+// You can declare a range of acceptable values like this:
+let c = ["a".."d"];
+
+// not this way around though, hover over it to see what i says about it.
+let g = ["b".."a"];
+
+// You can nest rules by enclosing them in a pair or brackets ()
+let d = (c | a);
+
+
+// If you use or ie "|" then surround them in brackets, because "|"s take priority over everything else.
+// i.e.
+let e = c | a "=" d;
+
+// is different from
+let f = (c | a) "=" d;
+
+
+// you can ignore a rule using the @ignore annotation.
+@Ignored
+let ws = '\n' | ' ' | '\t';
+
+
+// Your strings can use standard escape characters '\' eg
+let name = '"' | "a" | " blah \" " ''' asd ''';
+let name = "again";
+
+
+// There are also two other annotations, which might be helpful, @Literal and @Regex
+// this is for very simple rules.
+@Literal let banana = "banana";
+
+// These allow the more complex features such as '!' which are not permitted outside this context.
+@Regex let regex = !"a" | "b";
+
+
+// You can always specify the number of times something cna occur using normal regex postfix operators '+' '?' '*'
+let m = a
+        | a+
+        | a?
+        | a*;
+
+
+// You can specify to use a specific range of number of values to use,
+let fiveOrSize = a{5,6};
+
+
+////////////////////////////////////////////////////////////////////////
+// Sample Grammar
+//
+// This is a small grammar which implements the example language, for
+// your convenience
+////////////////////////////////////////////////////////////////////////
+
+
+/*
+a = "asd";
+b = a + "asdasD";
+
+print("a");
+*/
+
+let program = (rule | function)*;
+
+let id = ["a".."z"]+;
+let string = '"' (["a".."z"] | ["A".."Z"] | ["0".."9"])* '"';
+
+@Ignored
+let whitespace = " " | "\n" | "\t";
+// This one is to tell the parser to ignore whitespace.
+
+let rule = id "=" string ("+" string)* ";";
+let function = id "(" (id | string) ")" ";";

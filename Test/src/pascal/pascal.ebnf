@@ -1,0 +1,144 @@
+let program = programheading semicolon block dot;
+let programheading = proglit identifier programparameterlist? ;
+let programparameterlist = lparen identifierlist rparen ;
+let block = label-declaration-part const-declaration-part type-definition-part variable-declaration-part procedure-declaration-part procedure-and-function-declaration-part statement-part;
+let label-declaration-part = ("label" number ("," number)* semicolon)?;
+let const-declaration-part = ("const" constant-definition semicolon (constant-definition semicolon)*)?;
+let type-definition-part = ("type" type-definition ";"  (type-definition ";")*)?;
+let variable-declaration-part = ("var" variable-declaration semicolon (variable-declaration semicolon)*)?;
+let procedure-and-function-declaration-part = ((procedure-declaration | function-declaration) semicolon)*;
+let statement-part = compound-statement;
+
+let constant-definition = identifier "=" constant;
+let type-definition = identifier "=" type;
+let variable-declaration = identifierlist ":" type;
+let procedure-declaration = procedure-heading semicolon directive
+                            | procedure-identification semicolon block;
+let function-declaration = function-heading semicolon block
+                           | function-heading semicolon directive
+                           | function-identification semicolon block;
+
+let procedure-heading = "procedure" identifier (formal-parameters-list)?;
+let procedure-identification = "procedure" procedure-identifier;
+let function-heading = "function" identifier (formal-parameters-list)? colon result-type;
+let formal-parameters-list = lparen formal-parameters-section (semicolon formal-parameters-section)* rparen;
+let formal-parameters-section = value-parameter-specification | variable-parameter-specification | procedural-parameter-specification | functional-parameter-specification ;
+let value-parameter-specification = identifier-list ":" (type-identifier | conformat-array-schema);
+let variable-parameter-specification = "var" identifier-list ":" (type-identifier | conformat-array-schema);
+let procedural-parameter-specification = procedure-heading;
+let functional-parameter-specification = function-heading;
+
+let conformat-array-schema = packed-constant-array-scheme | unpacked-constant-array-schema;
+let packed-constant-array-schema = "packed" "array" "[" index-type-specification "]" "of" type-identifier;
+let unpacked-constant-array-schema = "array" "[" index-type-specification ( ";" index-type-specification )* "]" "of" (type-identifier | conformat-array-schema);
+let index-type-specification = identifier ".." identifier ":" ordinal-type-identifier;
+let compound-statement = "begin" statement-sequence "end";
+
+let statement-sequence = statement (";" statement)*;
+let statement = (label ":")? (simple-statement | structured-statement);
+let simple-statement = empty-statement | assignment-statement | procedure-statement | goto-statement;
+let structured-statement = compound-statement | conditional-statement | repetitive-statement | with-statement;
+let conditional-statement = if-statement | case-statement;
+let repetitive-statement = while-statement | repeat-statement | for-statement;
+let empty-statement = empty;
+let assignment-statement = (variable | function-identifier) ":=" expression;
+let procedure-statement = procedure-identifier (actual-parameter-list | write-parameter-list)?;
+let goto-statement = "goto" label;
+let if-statement = "if" boolean-expression "then" statement ("else" statement)?;
+let case-statement = "case" case-index "of" case (semicolon case)* (semicolon)? end;
+let repeat-statement = "repeat" statement-sequence "until" boolean-expression;
+let while-statement = "while" boolean-expression "do" statement;
+let for-statement = "for" control-variable ":=" initial-value ("to" | "downto") final-value "do" statement;
+let with-statement = "with" record-variable-list "do" statement;
+
+let record-variable-list = record-variable (comma record-variable)*;
+let case-index = ordinal-expression;
+let case = constant (comma constant)* semicolon statement;
+let control-variable = variable-identifier;
+let initial-value = ordinal-expression;
+let final-value = ordinal-expression;
+
+let type = simple-type | structured-type | pointer-type;
+let simple-type = ordinal-type | real-type-identifier;
+let structured-type = ("packed")? unpacked-structure-type | structured-type-identifier;
+let pointer-type = "^" domain-type | pointer-type-identifier;
+let ordinal-type = enumerated-type | subrange-type | ordinal-type-identifier;
+let unpacked-structure-type = array-type | record-type | set-type | file-type;
+let domain-type = type-identifier;
+let enumerated-type = lparen identifier-list rparen;
+let subrange-type = constant dotdot constant;
+let array-type = "array" "[" index-type (comma index-type)* "]" "of" component-type;
+let record-type = "record" field-list "end";
+let set-type = "set" "of" basetype;
+let file-type = "file" "of" component-type;
+let index-type = ordinal-type;
+let component-type = type;
+let base-type = ordinal-type;
+let result-type = ordinal-type-identifier | real-type-identifier | pointer-type-identifier;
+
+let field-list = ((fixed-part (";" variant-part)? | variant-part) (";")?)?;
+let fixed-part = record-section (";" record-section)*;
+let variant-part = "case" variant-selector "of" variant (";" variant)*;
+let record-section = identifier-list colon type;
+
+let variant-selector = (tag-field colon)? tag-type;
+let variant = constant (comma constant)* colon lparen field-list rparen;
+
+let tag-type = ordinal-type-identifier;
+let tag-field = identifier;
+
+let constant = (sign)? (unsigned-number | constant-identifier | character-string);
+
+let expression = simple-expression (relational-operator simple-expression)?;
+let simple-expression = (sign)? term (adding-operator term)*;
+
+let term = factor (multiplying-operator factor)*;
+let factor = unsigned-constant | bound-identifier | variable | set-constructor | function-designator | "not" factor | lparen expression rparen;
+let relational-operator = op-eq | op-ne | op-lt | op-le | op-gt | op-ge | op-in;
+let adding-operator = op-add | op-sub | op-or;
+let multiplying-operator = op-mul | op-div | op-divdiv | op-mod | op-and;
+
+let unsigned-constant = unsigned-number | character-string | constant-identifier | "nil";
+
+let function-designator =  function-identifier (actual-parameter-list)?;
+let variable = entire-variable | component-variable | identified-variable | buffer-variable;
+let entire-variable = variable-identifier;
+let component-variable = indexed-variable | field-designator;
+let identified-variable = pointer-variable "^";
+let buffer-variable = file-variable "^";
+let indexed-variable = array-variable "[" index ("," index)* "]";
+let field-designator = (record-variable ".")? field-identifier;
+let set-constructor = "[" ( elememt-description ("," elememt-description)* )? "]";
+let elememt-description = ordinal-expression (".." ordinal-expression)?;
+let actual-parameter-list = lparen actual-parameter (comma actual-parameter)* rparen;
+let actual-parameter = expression | variable | procedure-identifier | function-identifier;
+let write-parameter-list = lparen (file-variable | write-parameter) rparen;
+let write-parameter = expression (colon integer-expression (colon integer-expression)?)?;
+let array-variable = variable;
+let record-variable = variable;
+let file-variable = variable;
+let pointer-variable = variable | type-identifier;
+let integer-expression = ordinal-expression;
+let boolean-expression = ordinal-expression;
+let ordinal-expression = expression;
+let structured-type-identifier = type-identifier;
+let ordinal-type-identifier = type-identifier;
+let real-type-identifier = type-identifier;
+let constant-identifier = identifier;
+let type-identifier = identifier;
+let variable-identifier = identifier;
+let field-identifier = identifier;
+let procedure-identifier = identifier;
+let function-identifier = identifier;
+let bound-identifier = identifier;
+let unsigned-number = unsigned-integer | unsigned-real;
+let identifier-list = identifier ("," identifier)*;
+
+let comma = ",";
+let lparen = "(";
+let rparen = ")";
+let colon = ";";
+let identifier = character (character | number | "_" | "-")*;
+
+let character = ['A'..'z'];
+let number = ['0'..'9'];

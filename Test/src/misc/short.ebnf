@@ -1,0 +1,12 @@
+let assignment = id '=' int;
+
+@Literal let EQUALS = '=';
+
+let id = (['a'..'z'] | ['A'..'Z'] | '_') (['a'..'z'] | ['A'..'Z'] | ['0'..'9'] | '_')*;
+
+let int = ['0'..'9']+;
+
+@Ignored
+let ws = (' ' | '\t' | '\r' | '\n');
+
+let test = ['0'..'8'] .;

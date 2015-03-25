@@ -1,0 +1,84 @@
+-- Source: http://www.lua.org/manual/5.1/manual.html
+-- MIT licensed http://www.lua.org/license.html
+-- Translated by Nishad
+
+let chunk = (stat ';'?)* (laststat ';'?)?;
+
+let block = chunk;
+
+let stat = varlist '=' explist
+           | functioncall
+           | "do" block "end"
+           | "while" exp "do" block "end"
+           | "repeat" block "until" exp
+           | "if" exp "then" block ("elseif" exp "then" block)* ("else" block)? "end"
+           | "for" Name '=' exp ',' exp (',' exp)* "do" block "end"
+           | "for" namelist "in" explist "do" block "end"
+           | "function" funcname funcbody
+           | "local function" Name funcbody
+           | "local" namelist ('=' explist)?;
+
+let laststat = "return" explist?
+               | "break";
+
+let funcname = Name ('.' Name)* (':' Name)?;
+
+let varlist = var (',' var)*;
+
+let var = Name | prefixexp '[' exp ']' | prefixexp '.' Name;
+
+let namelist = Name (',' Name)*;
+
+let explist = (exp ',')* exp;
+
+let exp = "nil"
+          | "false"
+          | "true"
+          | Number
+          | String
+          | '...'
+          | function
+          | prefixexp
+          | tableconstructor
+          | exp binop exp
+          | unop exp;
+
+let prefixexp = var | functioncall | "(" exp ")";
+
+let functioncall = prefixexp args | prefixexp ':' Name args;
+
+let args = "(" explist? ")" | tableconstructor | String;
+
+let function = function funcbody;
+
+let funcbody = "(" parlist? ")" block "end";
+
+let parlist = namelist (',' '...')? | '...';
+
+let tableconstructor = "{" fieldlist? "}";
+
+let fieldlist = field (fieldsep field)* fieldsep?;
+
+let field = "[" exp "]" ' = ' exp | Name ' =' exp | exp;
+
+let fieldsep = ',' | ';';
+
+let binop = '+' | '-' | '*' | '/' | '^' | '%' | '..' |
+            '<' | '< = ' | '>' | '> = ' | ' = = ' | '~ = ' |
+            "and" | "or";
+
+let unop = '-' | "not" | '#';
+
+@Regex let Name = (['A'..'Z'] | ['a'..'z'] | ['0'..'9'] | "_" | "-")*;
+@Regex let String = ('"' | "'") !("'" | '"')* ('"' | "'");
+
+@Regex let Number = ['0'..'9']* ("." ['0'..'9']*);
+
+@Ignored let linebreak = '\n' | '\r';
+@Ignored let whitespace = ' ' | '\t';
+
+@Ignored @Regex
+let lineComment = "--" !("\n")*;
+
+@Ignored @Regex
+let blockComment = "--[[" .* "--]]";
