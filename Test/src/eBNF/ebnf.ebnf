@@ -1,3 +1,5 @@
+// Our eBNF implemented in its self!
+
 let program = assignment*;
 
 let assignment =  annotation* 'let' identifier '=' rules ';';

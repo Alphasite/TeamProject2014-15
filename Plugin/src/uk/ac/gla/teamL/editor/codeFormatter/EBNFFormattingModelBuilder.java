@@ -84,8 +84,6 @@ public class EBNFFormattingModelBuilder implements FormattingModelBuilder {
     @Nullable
     @Override
     public TextRange getRangeAffectingIndent(PsiFile file, int offset, ASTNode elementAtOffset) {
-//        if ()
-
         return null;
     }
 }

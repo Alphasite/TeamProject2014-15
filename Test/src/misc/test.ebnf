@@ -1,4 +1,3 @@
-
 @bananana
 let a = a | b | c;
 
@@ -41,9 +40,13 @@ let dfas = "dasda";
 
 let f = "asdasdasd"*;
 
-let g = !('x'|'x'|'s'|'s'|'a');
+let g = !('x' | 'x' | 's' | 's' | 'a') waffle;
 
 let h = ['s'..'d'] banana;
+
+let foldedSample = a
+                   | bacon
+                   | f;
 
 let bacon = "a"{5,9};
 
